@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14424008955787666637"
+      "templateHash": "14495528845251350418"
     }
   },
   "parameters": {
@@ -223,10 +223,11 @@
       "name": "[parameters('publicIpVpnGwName')]",
       "location": "[resourceGroup().location]",
       "sku": {
-        "name": "Basic"
+        "name": "Standard",
+        "tier": "Regional"
       },
       "properties": {
-        "publicIPAllocationMethod": "Dynamic"
+        "publicIPAllocationMethod": "Static"
       }
     },
     {

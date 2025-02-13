@@ -5,23 +5,20 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "7995648259356978324"
+      "templateHash": "160063000462100951"
     }
   },
   "parameters": {
-    "location": {
-      "type": "string"
-    },
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "Azure Networking Training Lab"
+      "defaultValue": "Azure_Networking_Training_Lab"
     },
     "vpnGatewaySku": {
       "type": "string"
     },
     "vnetName": {
       "type": "string",
-      "defaultValue": "HUB VNET"
+      "defaultValue": "Hub_VNET_172_12_0_0_16"
     },
     "firewallName": {
       "type": "string",
@@ -45,7 +42,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2023-09-01",
       "name": "[parameters('vnetName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -84,7 +81,7 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-09-01",
       "name": "[parameters('publicIpFirewallName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard",
         "tier": "Regional"
@@ -97,7 +94,7 @@
       "type": "Microsoft.Network/azureFirewalls",
       "apiVersion": "2023-09-01",
       "name": "[parameters('firewallName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "ipConfigurations": [
           {
@@ -122,7 +119,7 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-09-01",
       "name": "[parameters('publicIpVpnGwName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "sku": {
         "name": "Basic"
       },
@@ -134,7 +131,7 @@
       "type": "Microsoft.Network/virtualNetworkGateways",
       "apiVersion": "2023-09-01",
       "name": "[parameters('vpnGatewayName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "ipConfigurations": [
           {

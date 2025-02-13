@@ -1,8 +1,7 @@
-param location string
-param resourceGroupName string = 'Azure Networking Training Lab'
+param resourceGroupName string = 'Azure_Networking_Training_Lab'
 param vpnGatewaySku string
 
-param vnetName string = 'HUB VNET'
+param vnetName string = 'Hub_VNET_172_12_0_0_16'
 param firewallName string = 'myAzureFirewall'
 param vpnGatewayName string = 'myVpnGateway'
 param publicIpFirewallName string = 'fwPublicIP'
@@ -10,7 +9,7 @@ param publicIpVpnGwName string = 'vpnGwPublicIP'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: vnetName
-  location: location
+  location: resourceGroup().location
   properties: {
     addressSpace: {
       addressPrefixes: [
@@ -48,7 +47,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
 
 resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpFirewallName
-  location: location
+  location: resourceGroup().location
   sku: {
     name: 'Standard'
     tier: 'Regional'
@@ -60,7 +59,7 @@ resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
 
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
   name: firewallName
-  location: location
+  location: resourceGroup().location
   properties: {
     ipConfigurations: [
       {
@@ -84,7 +83,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
 
 resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpVpnGwName
-  location: location
+  location: resourceGroup().location
   sku: {
     name: 'Basic'
   }
@@ -95,7 +94,7 @@ resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
 
 resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
   name: vpnGatewayName
-  location: location
+  location: resourceGroup().location
   properties: {
     ipConfigurations: [
       {

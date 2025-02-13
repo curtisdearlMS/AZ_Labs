@@ -1,4 +1,4 @@
-param vpnGatewaySku string = 'VpnGw1'
+param vpnGatewaySku string = 'vpngw1'
 param vnetName string = 'Hub_VNET_172_12_0_0_16'
 param firewallName string = 'myAzureFirewall'
 param vpnGatewayName string = 'myVpnGateway'

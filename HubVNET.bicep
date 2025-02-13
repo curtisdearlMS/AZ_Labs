@@ -97,15 +97,7 @@ resource rtGatewaySubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtGatewaySubnet'
   location: resourceGroup().location
   properties: {
-    routes: [
-      {
-        name: 'defaultRoute'
-        properties: {
-          addressPrefix: '0.0.0.0/0'
-          nextHopType: 'Internet'
-        }
-      }
-    ]
+    routes: []
   }
 }
 

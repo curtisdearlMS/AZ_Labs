@@ -233,7 +233,9 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
     ]
     gatewayType: 'Vpn'
     vpnType: 'RouteBased'
-    sku: vpnGatewaySku
+    sku: {
+      name: vpnGatewaySku
+    }
   }
   dependsOn: [
     vnet

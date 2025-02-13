@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "10384886045962999166"
+      "templateHash": "13705193806252677883"
     }
   },
   "parameters": {
@@ -14,7 +14,22 @@
     },
     "vpnGatewaySku": {
       "type": "string",
-      "defaultValue": "VpnGw1AZ"
+      "defaultValue": "VpnGw1AZ",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "HighPerformance",
+        "VpnGw1",
+        "VpnGw2",
+        "VpnGw3",
+        "VpnGw4",
+        "VpnGw5",
+        "VpnGw1AZ",
+        "VpnGw2AZ",
+        "VpnGw3AZ",
+        "VpnGw4AZ",
+        "VpnGw5AZ"
+      ]
     },
     "vnetName": {
       "type": "string",

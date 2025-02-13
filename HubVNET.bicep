@@ -1,4 +1,19 @@
 param resourceGroupName string
+@allowed([
+  'Basic'
+  'Standard'
+  'HighPerformance'
+  'VpnGw1'
+  'VpnGw2'
+  'VpnGw3'
+  'VpnGw4'
+  'VpnGw5'
+  'VpnGw1AZ'
+  'VpnGw2AZ'
+  'VpnGw3AZ'
+  'VpnGw4AZ'
+  'VpnGw5AZ'
+])
 param vpnGatewaySku string = 'VpnGw1AZ'
 
 param vnetName string = 'Hub_VNET_172_12_0_0_16'

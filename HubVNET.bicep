@@ -1,5 +1,5 @@
-param resourceGroupName string = 'Azure_Networking_Training_Lab'
-param vpnGatewaySku string
+param resourceGroupName string
+param vpnGatewaySku string = 'VpnGw1AZ'
 
 param vnetName string = 'Hub_VNET_172_12_0_0_16'
 param firewallName string = 'myAzureFirewall'
@@ -7,9 +7,11 @@ param vpnGatewayName string = 'myVpnGateway'
 param publicIpFirewallName string = 'fwPublicIP'
 param publicIpVpnGwName string = 'vpnGwPublicIP'
 
+param location string = 'southcentralus' // Default location
+
 resource nsgAzureFirewallSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
   name: 'nsgAzureFirewallSubnet'
-  location: resourceGroup().location
+  location: location
   properties: {
     securityRules: [
       // Define security rules here
@@ -19,7 +21,7 @@ resource nsgAzureFirewallSubnet 'Microsoft.Network/networkSecurityGroups@2023-09
 
 resource rtAzureFirewallSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtAzureFirewallSubnet'
-  location: resourceGroup().location
+  location: location
   properties: {
     routes: [
       // Define routes here
@@ -29,7 +31,7 @@ resource rtAzureFirewallSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
 
 resource nsgGatewaySubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
   name: 'nsgGatewaySubnet'
-  location: resourceGroup().location
+  location: location
   properties: {
     securityRules: [
       // Define security rules here
@@ -39,7 +41,7 @@ resource nsgGatewaySubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' =
 
 resource rtGatewaySubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtGatewaySubnet'
-  location: resourceGroup().location
+  location: location
   properties: {
     routes: [
       // Define routes here
@@ -49,7 +51,7 @@ resource rtGatewaySubnet 'Microsoft.Network/routeTables@2023-09-01' = {
 
 resource nsgPrivateEndpointSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
   name: 'nsgPrivateEndpointSubnet'
-  location: resourceGroup().location
+  location: location
   properties: {
     securityRules: [
       // Define security rules here
@@ -59,7 +61,7 @@ resource nsgPrivateEndpointSubnet 'Microsoft.Network/networkSecurityGroups@2023-
 
 resource rtPrivateEndpointSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtPrivateEndpointSubnet'
-  location: resourceGroup().location
+  location: location
   properties: {
     routes: [
       // Define routes here
@@ -69,7 +71,7 @@ resource rtPrivateEndpointSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
 
 resource nsgVirtualMachineSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
   name: 'nsgVirtualMachineSubnet'
-  location: resourceGroup().location
+  location: location
   properties: {
     securityRules: [
       // Define security rules here
@@ -79,7 +81,7 @@ resource nsgVirtualMachineSubnet 'Microsoft.Network/networkSecurityGroups@2023-0
 
 resource rtVirtualMachineSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtVirtualMachineSubnet'
-  location: resourceGroup().location
+  location: location
   properties: {
     routes: [
       // Define routes here
@@ -89,7 +91,7 @@ resource rtVirtualMachineSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: vnetName
-  location: resourceGroup().location
+  location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
@@ -161,7 +163,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
 
 resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpFirewallName
-  location: resourceGroup().location
+  location: location
   sku: {
     name: 'Standard'
     tier: 'Regional'
@@ -176,7 +178,7 @@ resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
 
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
   name: firewallName
-  location: resourceGroup().location
+  location: location
   properties: {
     ipConfigurations: [
       {
@@ -200,7 +202,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
 
 resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpVpnGwName
-  location: resourceGroup().location
+  location: location
   sku: {
     name: 'Basic'
   }
@@ -214,7 +216,7 @@ resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
 
 resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
   name: vpnGatewayName
-  location: resourceGroup().location
+  location: location
   properties: {
     ipConfigurations: [
       {

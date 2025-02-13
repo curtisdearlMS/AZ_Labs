@@ -1,6 +1,4 @@
-param resourceGroupName string = 'Azure_Networking_Training_Lab'
 param vpnGatewaySku string
-
 param vnetName string = 'Hub_VNET_172_12_0_0_16'
 param firewallName string = 'myAzureFirewall'
 param vpnGatewayName string = 'myVpnGateway'
@@ -21,27 +19,115 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
         name: 'AzureFirewallSubnet'
         properties: {
           addressPrefix: '172.12.0.0/24'
+          networkSecurityGroup: {
+            id: nsgAzureFirewallSubnet.id
+          }
+          routeTable: {
+            id: rtAzureFirewallSubnet.id
+          }
         }
       }
       {
         name: 'GatewaySubnet'
         properties: {
           addressPrefix: '172.12.1.0/24'
+          networkSecurityGroup: {
+            id: nsgGatewaySubnet.id
+          }
+          routeTable: {
+            id: rtGatewaySubnet.id
+          }
         }
       }
       {
         name: 'PrivateEndpointSubnet'
         properties: {
           addressPrefix: '172.12.2.0/24'
+          networkSecurityGroup: {
+            id: nsgPrivateEndpointSubnet.id
+          }
+          routeTable: {
+            id: rtPrivateEndpointSubnet.id
+          }
         }
       }
       {
         name: 'VirtualMachineSubnet'
         properties: {
           addressPrefix: '172.12.3.0/24'
+          networkSecurityGroup: {
+            id: nsgVirtualMachineSubnet.id
+          }
+          routeTable: {
+            id: rtVirtualMachineSubnet.id
+          }
         }
       }
     ]
+  }
+}
+
+resource nsgAzureFirewallSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+  name: 'nsgAzureFirewallSubnet'
+  location: resourceGroup().location
+  properties: {
+    securityRules: []
+  }
+}
+
+resource rtAzureFirewallSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
+  name: 'rtAzureFirewallSubnet'
+  location: resourceGroup().location
+  properties: {
+    routes: []
+  }
+}
+
+resource nsgGatewaySubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+  name: 'nsgGatewaySubnet'
+  location: resourceGroup().location
+  properties: {
+    securityRules: []
+  }
+}
+
+resource rtGatewaySubnet 'Microsoft.Network/routeTables@2023-09-01' = {
+  name: 'rtGatewaySubnet'
+  location: resourceGroup().location
+  properties: {
+    routes: []
+  }
+}
+
+resource nsgPrivateEndpointSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+  name: 'nsgPrivateEndpointSubnet'
+  location: resourceGroup().location
+  properties: {
+    securityRules: []
+  }
+}
+
+resource rtPrivateEndpointSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
+  name: 'rtPrivateEndpointSubnet'
+  location: resourceGroup().location
+  properties: {
+    routes: []
+  }
+}
+
+resource nsgVirtualMachineSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+  name: 'nsgVirtualMachineSubnet'
+  location: resourceGroup().location
+  properties: {
+    securityRules: []
+  }
+}
+
+resource rtVirtualMachineSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
+  name: 'rtVirtualMachineSubnet'
+  location: resourceGroup().location
+  properties: {
+    routes: []
   }
 }
 
@@ -85,10 +171,11 @@ resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpVpnGwName
   location: resourceGroup().location
   sku: {
-    name: 'Basic'
+    name: 'Standard'
+    tier: 'Regional'
   }
   properties: {
-    publicIPAllocationMethod: 'Dynamic'
+    publicIPAllocationMethod: 'Static'
   }
 }
 
@@ -114,7 +201,7 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
     sku: {
       name: vpnGatewaySku
       tier: vpnGatewaySku
-}
+    }
   }
   dependsOn: [
     vnet

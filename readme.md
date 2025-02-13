@@ -1,1 +1,1 @@
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://github.com/MicrosoftAzureAaron/NET_TrainingLabs/blob/01b7592c8f1dd488381031145d5700d29146cad9/Hub%20VNET.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/Hub%20VNET.json)

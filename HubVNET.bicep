@@ -14,7 +14,7 @@ param resourceGroupName string
   'VpnGw4AZ'
   'VpnGw5AZ'
 ])
-param vpnGatewaySku string = 'VpnGw1AZ'
+param vpnGatewaySku string = 'VpnGw1'
 
 param vnetName string = 'Hub_VNET_172_12_0_0_16'
 param firewallName string = 'myAzureFirewall'

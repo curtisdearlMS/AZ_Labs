@@ -179,10 +179,6 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
       }
     ]
   }
-  dependsOn: [
-    publicIpFirewall
-    vnet
-  ]
 }
 
 resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
@@ -221,8 +217,4 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
       tier: vpnGatewaySku
     }
   }
-  dependsOn: [
-    vnet
-    publicIpVpnGw
-  ]
 }

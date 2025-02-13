@@ -1,4 +1,5 @@
 param location string
+param resourceGroupName string = 'Azure Networking Training Lab'
 param vpnGatewaySku string
 
 param vnetName string = 'HUB VNET'
@@ -45,7 +46,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   }
 }
 
-resource firewallPublicIp 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
+resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpFirewallName
   location: location
   sku: {
@@ -57,7 +58,7 @@ resource firewallPublicIp 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   }
 }
 
-resource firewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
   name: firewallName
   location: location
   properties: {
@@ -69,15 +70,19 @@ resource firewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
             id: '${vnet.id}/subnets/AzureFirewallSubnet'
           }
           publicIPAddress: {
-            id: firewallPublicIp.id
+            id: publicIpFirewall.id
           }
         }
       }
     ]
   }
+  dependsOn: [
+    publicIpFirewall
+    vnet
+  ]
 }
 
-resource vpnGwPublicIp 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
+resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpVpnGwName
   location: location
   sku: {
@@ -100,7 +105,7 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
             id: '${vnet.id}/subnets/GatewaySubnet'
           }
           publicIPAddress: {
-            id: vpnGwPublicIp.id
+            id: publicIpVpnGw.id
           }
         }
       }
@@ -109,4 +114,8 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
     vpnType: 'RouteBased'
     sku: vpnGatewaySku
   }
+  dependsOn: [
+    vnet
+    publicIpVpnGw
+  ]
 }

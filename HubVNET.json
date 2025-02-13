@@ -12,6 +12,10 @@
     "location": {
       "type": "string"
     },
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "Azure Networking Training Lab"
+    },
     "vpnGatewaySku": {
       "type": "string"
     },

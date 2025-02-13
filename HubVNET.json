@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "6922913370065634915"
+      "templateHash": "10384886045962999166"
     }
   },
   "parameters": {
@@ -264,7 +264,9 @@
         ],
         "gatewayType": "Vpn",
         "vpnType": "RouteBased",
-        "sku": "[parameters('vpnGatewaySku')]"
+        "sku": {
+          "name": "[parameters('vpnGatewaySku')]"
+        }
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpVpnGwName'))]",

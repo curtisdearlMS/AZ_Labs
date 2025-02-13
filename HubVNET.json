@@ -5,16 +5,16 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "160063000462100951"
+      "templateHash": "6922913370065634915"
     }
   },
   "parameters": {
     "resourceGroupName": {
-      "type": "string",
-      "defaultValue": "Azure_Networking_Training_Lab"
+      "type": "string"
     },
     "vpnGatewaySku": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "VpnGw1AZ"
     },
     "vnetName": {
       "type": "string",
@@ -35,14 +35,90 @@
     "publicIpVpnGwName": {
       "type": "string",
       "defaultValue": "vpnGwPublicIP"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "southcentralus"
     }
   },
   "resources": [
     {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-09-01",
+      "name": "nsgAzureFirewallSubnet",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2023-09-01",
+      "name": "rtAzureFirewallSubnet",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-09-01",
+      "name": "nsgGatewaySubnet",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2023-09-01",
+      "name": "rtGatewaySubnet",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-09-01",
+      "name": "nsgPrivateEndpointSubnet",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2023-09-01",
+      "name": "rtPrivateEndpointSubnet",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-09-01",
+      "name": "nsgVirtualMachineSubnet",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2023-09-01",
+      "name": "rtVirtualMachineSubnet",
+      "location": "[parameters('location')]",
+      "properties": {
+        "routes": []
+      }
+    },
+    {
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2023-09-01",
       "name": "[parameters('vnetName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -53,48 +129,85 @@
           {
             "name": "AzureFirewallSubnet",
             "properties": {
-              "addressPrefix": "172.12.0.0/24"
+              "addressPrefix": "172.12.0.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgAzureFirewallSubnet')]"
+              },
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', 'rtAzureFirewallSubnet')]"
+              }
             }
           },
           {
             "name": "GatewaySubnet",
             "properties": {
-              "addressPrefix": "172.12.1.0/24"
+              "addressPrefix": "172.12.1.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgGatewaySubnet')]"
+              },
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', 'rtGatewaySubnet')]"
+              }
             }
           },
           {
             "name": "PrivateEndpointSubnet",
             "properties": {
-              "addressPrefix": "172.12.2.0/24"
+              "addressPrefix": "172.12.2.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgPrivateEndpointSubnet')]"
+              },
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', 'rtPrivateEndpointSubnet')]"
+              }
             }
           },
           {
             "name": "VirtualMachineSubnet",
             "properties": {
-              "addressPrefix": "172.12.3.0/24"
+              "addressPrefix": "172.12.3.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgVirtualMachineSubnet')]"
+              },
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', 'rtVirtualMachineSubnet')]"
+              }
             }
           }
         ]
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgAzureFirewallSubnet')]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgGatewaySubnet')]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgPrivateEndpointSubnet')]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgVirtualMachineSubnet')]",
+        "[resourceId('Microsoft.Network/routeTables', 'rtAzureFirewallSubnet')]",
+        "[resourceId('Microsoft.Network/routeTables', 'rtGatewaySubnet')]",
+        "[resourceId('Microsoft.Network/routeTables', 'rtPrivateEndpointSubnet')]",
+        "[resourceId('Microsoft.Network/routeTables', 'rtVirtualMachineSubnet')]"
+      ]
     },
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-09-01",
       "name": "[parameters('publicIpFirewallName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "sku": {
         "name": "Standard",
         "tier": "Regional"
       },
       "properties": {
         "publicIPAllocationMethod": "Static"
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+      ]
     },
     {
       "type": "Microsoft.Network/azureFirewalls",
       "apiVersion": "2023-09-01",
       "name": "[parameters('firewallName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "ipConfigurations": [
           {
@@ -119,19 +232,22 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-09-01",
       "name": "[parameters('publicIpVpnGwName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "sku": {
         "name": "Basic"
       },
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+      ]
     },
     {
       "type": "Microsoft.Network/virtualNetworkGateways",
       "apiVersion": "2023-09-01",
       "name": "[parameters('vpnGatewayName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "ipConfigurations": [
           {

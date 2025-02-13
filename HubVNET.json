@@ -11,7 +11,7 @@
   "parameters": {
     "vpnGatewaySku": {
       "type": "string",
-      "defaultValue": "VpnGw1"
+      "defaultValue": "vpngw1"
     },
     "vnetName": {
       "type": "string",

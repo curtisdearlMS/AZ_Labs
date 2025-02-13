@@ -73,7 +73,15 @@ resource rtAzureFirewallSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtAzureFirewallSubnet'
   location: resourceGroup().location
   properties: {
-    routes: []
+    routes: [
+      {
+        name: 'defaultRoute'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'Internet'
+        }
+      }
+    ]
   }
 }
 
@@ -89,7 +97,15 @@ resource rtGatewaySubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtGatewaySubnet'
   location: resourceGroup().location
   properties: {
-    routes: []
+    routes: [
+      {
+        name: 'defaultRoute'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'Internet'
+        }
+      }
+    ]
   }
 }
 
@@ -105,7 +121,15 @@ resource rtPrivateEndpointSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtPrivateEndpointSubnet'
   location: resourceGroup().location
   properties: {
-    routes: []
+    routes: [
+      {
+        name: 'defaultRoute'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'Internet'
+        }
+      }
+    ]
   }
 }
 
@@ -121,7 +145,15 @@ resource rtVirtualMachineSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: 'rtVirtualMachineSubnet'
   location: resourceGroup().location
   properties: {
-    routes: []
+    routes: [
+      {
+        name: 'defaultRoute'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'Internet'
+        }
+      }
+    ]
   }
 }
 

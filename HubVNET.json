@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "2258093068657684790"
+      "templateHash": "8509112561880540652"
     }
   },
   "parameters": {
@@ -115,7 +115,15 @@
       "name": "rtAzureFirewallSubnet",
       "location": "[resourceGroup().location]",
       "properties": {
-        "routes": []
+        "routes": [
+          {
+            "name": "defaultRoute",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "Internet"
+            }
+          }
+        ]
       }
     },
     {
@@ -133,7 +141,15 @@
       "name": "rtGatewaySubnet",
       "location": "[resourceGroup().location]",
       "properties": {
-        "routes": []
+        "routes": [
+          {
+            "name": "defaultRoute",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "Internet"
+            }
+          }
+        ]
       }
     },
     {
@@ -151,7 +167,15 @@
       "name": "rtPrivateEndpointSubnet",
       "location": "[resourceGroup().location]",
       "properties": {
-        "routes": []
+        "routes": [
+          {
+            "name": "defaultRoute",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "Internet"
+            }
+          }
+        ]
       }
     },
     {
@@ -169,7 +193,15 @@
       "name": "rtVirtualMachineSubnet",
       "location": "[resourceGroup().location]",
       "properties": {
-        "routes": []
+        "routes": [
+          {
+            "name": "defaultRoute",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "Internet"
+            }
+          }
+        ]
       }
     },
     {

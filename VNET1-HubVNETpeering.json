@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3102459428703767426"
+      "templateHash": "15563435190677642494"
     }
   },
   "parameters": {
@@ -17,10 +17,7 @@
       "type": "string",
       "defaultValue": "VNET1"
     },
-    "hubVnetResourceGroup": {
-      "type": "string"
-    },
-    "vnet1ResourceGroup": {
+    "resourceGroupName": {
       "type": "string"
     }
   },
@@ -29,10 +26,9 @@
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2023-09-01",
       "name": "[format('{0}/hubToVnet1Peering', parameters('hubVnetName'))]",
-      "location": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('hubVnetResourceGroup')), 'Microsoft.Network/virtualNetworks', parameters('hubVnetName')), '2023-09-01', 'full').location]",
       "properties": {
         "remoteVirtualNetwork": {
-          "id": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('vnet1ResourceGroup')), 'Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
+          "id": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
         },
         "allowVirtualNetworkAccess": true,
         "allowForwardedTraffic": true,
@@ -44,10 +40,9 @@
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2023-09-01",
       "name": "[format('{0}/vnet1ToHubPeering', parameters('vnet1Name'))]",
-      "location": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('vnet1ResourceGroup')), 'Microsoft.Network/virtualNetworks', parameters('vnet1Name')), '2023-09-01', 'full').location]",
       "properties": {
         "remoteVirtualNetwork": {
-          "id": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('hubVnetResourceGroup')), 'Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
+          "id": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
         },
         "allowVirtualNetworkAccess": true,
         "allowForwardedTraffic": true,

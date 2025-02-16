@@ -1,6 +1,6 @@
 param hubVnetName string = 'Hub_VNET_172_12_0_0_16'
 param vnet1Name string = 'VNET1'
-param resourceGroupName string
+param resourceGroupName string = 'NETLAB'
 
 resource hubVnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: hubVnetName

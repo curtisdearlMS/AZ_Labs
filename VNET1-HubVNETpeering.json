@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15563435190677642494"
+      "templateHash": "3218812924674871744"
     }
   },
   "parameters": {
@@ -18,7 +18,8 @@
       "defaultValue": "VNET1"
     },
     "resourceGroupName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "NETLAB"
     }
   },
   "resources": [

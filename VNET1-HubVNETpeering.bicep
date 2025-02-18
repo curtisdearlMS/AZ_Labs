@@ -3,12 +3,12 @@ param vnet1Name string = 'VNET1'
 
 resource hubVnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: hubVnetName
-  scope: resourceGroup(resourceGroupName)
+  scope: resourceGroup()
 }
 
 resource vnet1 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnet1Name
-  scope: resourceGroup(resourceGroupName)
+  scope: resourceGroup()
 }
 
 resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-09-01' = {

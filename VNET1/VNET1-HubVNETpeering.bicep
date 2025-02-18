@@ -3,16 +3,17 @@ param vnet1Name string = 'VNET1'
 
 resource hubVnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: hubVnetName
-  scope: resourceGroup(resourceGroup())
+  scope: resourceGroup()
 }
 
 resource vnet1 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnet1Name
-  scope: resourceGroup(resourceGroup())
+  scope: resourceGroup()
 }
 
 resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-09-01' = {
-  name: '${hubVnetName}/hubToVnet1Peering'
+  name: 'hubToVnet1Peering'
+  parent: hubVnet
   properties: {
     remoteVirtualNetwork: {
       id: vnet1.id
@@ -22,14 +23,11 @@ resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     allowGatewayTransit: false
     useRemoteGateways: false
   }
-  dependsOn: [
-    hubVnet
-    vnet1
-  ]
 }
 
 resource vnet1ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-09-01' = {
-  name: '${vnet1Name}/vnet1ToHubPeering'
+  name: 'vnet1ToHubPeering'
+  parent: vnet1
   properties: {
     remoteVirtualNetwork: {
       id: hubVnet.id
@@ -39,8 +37,4 @@ resource vnet1ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     allowGatewayTransit: false
     useRemoteGateways: false
   }
-  dependsOn: [
-    hubVnet
-    vnet1
-  ]
 }

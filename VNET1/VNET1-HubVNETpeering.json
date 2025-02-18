@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3218812924674871744"
+      "templateHash": "2137536911409116111"
     }
   },
   "parameters": {
@@ -16,20 +16,16 @@
     "vnet1Name": {
       "type": "string",
       "defaultValue": "VNET1"
-    },
-    "resourceGroupName": {
-      "type": "string",
-      "defaultValue": "NETLAB"
     }
   },
   "resources": [
     {
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2023-09-01",
-      "name": "[format('{0}/hubToVnet1Peering', parameters('hubVnetName'))]",
+      "name": "[format('{0}/{1}', parameters('hubVnetName'), 'hubToVnet1Peering')]",
       "properties": {
         "remoteVirtualNetwork": {
-          "id": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
         },
         "allowVirtualNetworkAccess": true,
         "allowForwardedTraffic": true,
@@ -40,10 +36,10 @@
     {
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2023-09-01",
-      "name": "[format('{0}/vnet1ToHubPeering', parameters('vnet1Name'))]",
+      "name": "[format('{0}/{1}', parameters('vnet1Name'), 'vnet1ToHubPeering')]",
       "properties": {
         "remoteVirtualNetwork": {
-          "id": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
         },
         "allowVirtualNetworkAccess": true,
         "allowForwardedTraffic": true,

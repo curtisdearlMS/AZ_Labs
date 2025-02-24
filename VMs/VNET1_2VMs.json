@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "17788932073449887562"
+      "templateHash": "9489644926732057333"
     }
   },
   "parameters": {
@@ -22,6 +22,16 @@
     },
     "adminPassword": {
       "type": "securestring"
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_B1ls",
+      "allowedValues": [
+        "Standard_B1ls",
+        "Standard_B1ms",
+        "Standard_B2s",
+        "Standard_B2ms"
+      ]
     }
   },
   "resources": [
@@ -104,7 +114,7 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_B1ls"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
           "computerName": "vm1",
@@ -144,7 +154,7 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_B1ls"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
           "computerName": "vm2",

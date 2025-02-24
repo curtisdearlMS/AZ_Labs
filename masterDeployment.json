@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "343186907561590827"
+      "templateHash": "8235587953046131685"
     }
   },
   "parameters": {
@@ -19,7 +19,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2022-09-01",
       "name": "hubVnetDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -317,7 +317,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2022-09-01",
       "name": "vnet1Deployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -437,7 +437,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2022-09-01",
       "name": "vnet1PeeringDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -511,7 +511,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2022-09-01",
       "name": "vnet2Deployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -631,7 +631,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2022-09-01",
       "name": "vnet2PeeringDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -669,7 +669,7 @@
           "resources": [
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2015-01-01",
+              "apiVersion": "2023-09-01",
               "name": "[format('{0}/{1}', parameters('hubVnetName'), 'hubToVnet2Peering')]",
               "properties": {
                 "remoteVirtualNetwork": {
@@ -683,7 +683,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2015-01-01",
+              "apiVersion": "2023-09-01",
               "name": "[format('{0}/{1}', parameters('vnet2Name'), 'vnet2ToHubPeering')]",
               "properties": {
                 "remoteVirtualNetwork": {
@@ -705,7 +705,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2022-09-01",
       "name": "vnet1VmsDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -724,6 +724,9 @@
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },
+          "vmSize": {
+            "value": "Standard_D2s_v3"
           }
         },
         "template": {
@@ -733,7 +736,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "9489644926732057333"
+              "templateHash": "4044182132718912190"
             }
           },
           "parameters": {
@@ -746,26 +749,28 @@
               "defaultValue": "VMSubnet"
             },
             "adminUsername": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": "bob"
             },
             "adminPassword": {
               "type": "securestring"
             },
             "vmSize": {
               "type": "string",
-              "defaultValue": "Standard_B1ls",
               "allowedValues": [
                 "Standard_B1ls",
                 "Standard_B1ms",
                 "Standard_B2s",
-                "Standard_B2ms"
+                "Standard_B2ms",
+                "Standard_D2s_v3",
+                "Standard_D4s_v3"
               ]
             }
           },
           "resources": [
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2015-01-01",
+              "apiVersion": "2023-09-01",
               "name": "vm1PublicIP",
               "location": "[resourceGroup().location]",
               "sku": {
@@ -777,7 +782,7 @@
             },
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2015-01-01",
+              "apiVersion": "2023-09-01",
               "name": "vm2PublicIP",
               "location": "[resourceGroup().location]",
               "sku": {
@@ -924,7 +929,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2022-09-01",
       "name": "vnet2VmsDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -943,6 +948,9 @@
           },
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },
+          "vmSize": {
+            "value": "Standard_D2s_v3"
           }
         },
         "template": {
@@ -952,7 +960,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "1977859962180149062"
+              "templateHash": "5163670806148952372"
             }
           },
           "parameters": {
@@ -965,10 +973,14 @@
               "defaultValue": "VMSubnet"
             },
             "adminUsername": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": "bob"
             },
             "adminPassword": {
               "type": "securestring"
+            },
+            "vmSize": {
+              "type": "string"
             }
           },
           "resources": [
@@ -1051,7 +1063,7 @@
               "location": "[resourceGroup().location]",
               "properties": {
                 "hardwareProfile": {
-                  "vmSize": "Standard_B1ls"
+                  "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
                   "computerName": "vm1",
@@ -1091,7 +1103,7 @@
               "location": "[resourceGroup().location]",
               "properties": {
                 "hardwareProfile": {
-                  "vmSize": "Standard_B1ls"
+                  "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
                   "computerName": "vm2",

@@ -1,4 +1,3 @@
-//param location string = resourceGroup().location
 param adminUsername string
 @secure()
 param adminPassword string
@@ -56,7 +55,7 @@ module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
     vmSubnetName: 'VMSubnet'
     adminUsername: adminUsername
     adminPassword: adminPassword
-    vmSize:
+    vmSize: 'Standard_D2s_v3'
   }
 }
 
@@ -70,5 +69,6 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
     vmSubnetName: 'VMSubnet'
     adminUsername: adminUsername
     adminPassword: adminPassword
+    vmSize: 'Standard_D2s_v3'
   }
 }

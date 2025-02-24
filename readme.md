@@ -24,3 +24,13 @@
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVNET2%2FVNET2-HubVNETpeering.json">
   <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
 </a>
+
+### Deploy VNET1 VMs
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVMs%2FVNET1_2VMs.json">
+  <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
+</a>
+
+### Deploy VNET2 VMs
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVMs%2FVNET2_2VMs.json">
+  <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
+</a>

@@ -3,14 +3,6 @@ param vmSubnetName string = 'VMSubnet'
 param adminUsername string = 'bob'
 @secure()
 param adminPassword string
-@allowed([
-  'Standard_B1ls'
-  'Standard_B1ms'
-  'Standard_B2s'
-  'Standard_B2ms'
-  'Standard_D2s_v3'
-  'Standard_D4s_v3'
-])
 param vmSize string
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {

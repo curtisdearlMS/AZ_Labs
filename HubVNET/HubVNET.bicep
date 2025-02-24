@@ -1,5 +1,5 @@
 param vpnGatewaySku string = 'vpngw1'
-param vnetName string = 'Hub_VNET_172_12_0_0_16'
+param vnetName string = 'Hub_VNET_10_28_0_0_16'
 param firewallName string = 'myAzureFirewall'
 param vpnGatewayName string = 'myVpnGateway'
 param publicIpFirewallName string = 'fwPublicIP'
@@ -11,14 +11,14 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '172.12.0.0/16'
+        '10.28.0.0/16'
       ]
     }
     subnets: [
       {
         name: 'AzureFirewallSubnet'
         properties: {
-          addressPrefix: '172.12.0.0/24'
+          addressPrefix: '10.28.15.0/24'
           routeTable: {
             id: rtAzureFirewallSubnet.id
           }
@@ -27,7 +27,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
       {
         name: 'GatewaySubnet'
         properties: {
-          addressPrefix: '172.12.1.0/24'
+          addressPrefix: '10.28.1.0/24'
           routeTable: {
             id: rtGatewaySubnet.id
           }
@@ -36,7 +36,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
       {
         name: 'PrivateEndpointSubnet'
         properties: {
-          addressPrefix: '172.12.2.0/24'
+          addressPrefix: '10.28.2.0/24'
           networkSecurityGroup: {
             id: nsgPrivateEndpointSubnet.id
           }
@@ -48,7 +48,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
       {
         name: 'VirtualMachineSubnet'
         properties: {
-          addressPrefix: '172.12.3.0/24'
+          addressPrefix: '10.28.3.0/24'
           networkSecurityGroup: {
             id: nsgVirtualMachineSubnet.id
           }

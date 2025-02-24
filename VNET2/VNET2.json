@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "5239828914054416847"
+      "templateHash": "3959382252252332285"
     }
   },
   "parameters": {
@@ -40,10 +40,10 @@
             "properties": {
               "addressPrefix": "10.2.1.0/24",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgPrivateEndpointSubnet')]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgPrivateEndpointSubnet', parameters('vnetName')))]"
               },
               "routeTable": {
-                "id": "[resourceId('Microsoft.Network/routeTables', 'rtPrivateEndpointSubnet')]"
+                "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtPrivateEndpointSubnet', parameters('vnetName')))]"
               }
             }
           },
@@ -52,26 +52,26 @@
             "properties": {
               "addressPrefix": "10.2.2.0/24",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgVMSubnet')]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgVMSubnet', parameters('vnetName')))]"
               },
               "routeTable": {
-                "id": "[resourceId('Microsoft.Network/routeTables', 'rtVMSubnet')]"
+                "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtVMSubnet', parameters('vnetName')))]"
               }
             }
           }
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgPrivateEndpointSubnet')]",
-        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsgVMSubnet')]",
-        "[resourceId('Microsoft.Network/routeTables', 'rtPrivateEndpointSubnet')]",
-        "[resourceId('Microsoft.Network/routeTables', 'rtVMSubnet')]"
+        "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgPrivateEndpointSubnet', parameters('vnetName')))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgVMSubnet', parameters('vnetName')))]",
+        "[resourceId('Microsoft.Network/routeTables', format('{0}-rtPrivateEndpointSubnet', parameters('vnetName')))]",
+        "[resourceId('Microsoft.Network/routeTables', format('{0}-rtVMSubnet', parameters('vnetName')))]"
       ]
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2023-09-01",
-      "name": "nsgPrivateEndpointSubnet",
+      "name": "[format('{0}-nsgPrivateEndpointSubnet', parameters('vnetName'))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": []
@@ -80,7 +80,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "apiVersion": "2023-09-01",
-      "name": "rtPrivateEndpointSubnet",
+      "name": "[format('{0}-rtPrivateEndpointSubnet', parameters('vnetName'))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "routes": []
@@ -89,7 +89,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2023-09-01",
-      "name": "nsgVMSubnet",
+      "name": "[format('{0}-nsgVMSubnet', parameters('vnetName'))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": []
@@ -98,7 +98,7 @@
     {
       "type": "Microsoft.Network/routeTables",
       "apiVersion": "2023-09-01",
-      "name": "rtVMSubnet",
+      "name": "[format('{0}-rtVMSubnet', parameters('vnetName'))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "routes": []

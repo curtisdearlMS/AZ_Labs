@@ -41,7 +41,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
 }
 
 resource nsgPrivateEndpointSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
-  name: 'nsgPrivateEndpointSubnet'
+  name: '${vnetName}-nsgPrivateEndpointSubnet'
   location: resourceGroup().location
   properties: {
     securityRules: []
@@ -49,7 +49,7 @@ resource nsgPrivateEndpointSubnet 'Microsoft.Network/networkSecurityGroups@2023-
 }
 
 resource rtPrivateEndpointSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
-  name: 'rtPrivateEndpointSubnet'
+  name: '${vnetName}-rtPrivateEndpointSubnet'
   location: resourceGroup().location
   properties: {
     routes: []
@@ -57,7 +57,7 @@ resource rtPrivateEndpointSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
 }
 
 resource nsgVMSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
-  name: 'nsgVMSubnet'
+  name: '${vnetName}-nsgVMSubnet'
   location: resourceGroup().location
   properties: {
     securityRules: []
@@ -65,7 +65,7 @@ resource nsgVMSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
 }
 
 resource rtVMSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
-  name: 'rtVMSubnet'
+  name: '${vnetName}-rtVMSubnet'
   location: resourceGroup().location
   properties: {
     routes: []

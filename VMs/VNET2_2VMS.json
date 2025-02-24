@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "17765521977019423316"
+      "templateHash": "4796897920811480973"
     }
   },
   "parameters": {
@@ -44,7 +44,7 @@
             "value": "[resourceGroup().location]"
           },
           "vm_Name": {
-            "value": "vm1"
+            "value": "[format('{0}-vm1', parameters('vnetName'))]"
           },
           "vmSize": {
             "value": "[parameters('vmSize')]"
@@ -56,7 +56,7 @@
             "value": "[parameters('adminPassword')]"
           },
           "nic_Name": {
-            "value": "vm1NIC"
+            "value": "[format('{0}-vm1NIC', parameters('vnetName'))]"
           },
           "accelNet": {
             "value": false
@@ -239,7 +239,7 @@
             "value": "[resourceGroup().location]"
           },
           "vm_Name": {
-            "value": "vm2"
+            "value": "[format('{0}-vm2', parameters('vnetName'))]"
           },
           "vmSize": {
             "value": "[parameters('vmSize')]"
@@ -251,7 +251,7 @@
             "value": "[parameters('adminPassword')]"
           },
           "nic_Name": {
-            "value": "vm2NIC"
+            "value": "[format('{0}-vm2NIC', parameters('vnetName'))]"
           },
           "accelNet": {
             "value": false

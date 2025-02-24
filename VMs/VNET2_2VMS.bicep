@@ -18,11 +18,11 @@ module vm1 './linuxnettestvm.bicep' = {
   name: 'vm1Deployment'
   params: {
     location: resourceGroup().location
-    vm_Name: 'vm1'
+    vm_Name: '${vnetName}-vm1'
     vmSize: vmSize
     vm_AdminUserName: adminUsername
     vm_AdminPassword: adminPassword
-    nic_Name: 'vm1NIC'
+    nic_Name: '${vnetName}-vm1NIC'
     accelNet: false
     subnetID: vmSubnet.id
   }
@@ -32,11 +32,11 @@ module vm2 './linuxnettestvm.bicep' = {
   name: 'vm2Deployment'
   params: {
     location: resourceGroup().location
-    vm_Name: 'vm2'
+    vm_Name: '${vnetName}-vm2'
     vmSize: vmSize
     vm_AdminUserName: adminUsername
     vm_AdminPassword: adminPassword
-    nic_Name: 'vm2NIC'
+    nic_Name: '${vnetName}-vm2NIC'
     accelNet: false
     subnetID: vmSubnet.id
   }

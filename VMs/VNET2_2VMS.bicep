@@ -14,28 +14,6 @@ resource vmSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existin
   parent: vnet
 }
 
-resource publicIp1 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
-  name: 'vm1PublicIP'
-  location: resourceGroup().location
-  sku: {
-    name: 'Basic'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Dynamic'
-  }
-}
-
-resource publicIp2 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
-  name: 'vm2PublicIP'
-  location: resourceGroup().location
-  sku: {
-    name: 'Basic'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Dynamic'
-  }
-}
-
 resource nic1 'Microsoft.Network/networkInterfaces@2023-09-01' = {
   name: 'vm1NIC'
   location: resourceGroup().location
@@ -46,9 +24,6 @@ resource nic1 'Microsoft.Network/networkInterfaces@2023-09-01' = {
         properties: {
           subnet: {
             id: vmSubnet.id
-          }
-          publicIPAddress: {
-            id: publicIp1.id
           }
         }
       }
@@ -66,9 +41,6 @@ resource nic2 'Microsoft.Network/networkInterfaces@2023-09-01' = {
         properties: {
           subnet: {
             id: vmSubnet.id
-          }
-          publicIPAddress: {
-            id: publicIp2.id
           }
         }
       }

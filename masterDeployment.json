@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "12335196377575339850"
+      "templateHash": "6328716264944339517"
     }
   },
   "parameters": {
@@ -736,7 +736,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "9043890220743454660"
+              "templateHash": "8389303981509265119"
             }
           },
           "parameters": {
@@ -761,30 +761,6 @@
           },
           "resources": [
             {
-              "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-09-01",
-              "name": "vm1PublicIP",
-              "location": "[resourceGroup().location]",
-              "sku": {
-                "name": "Basic"
-              },
-              "properties": {
-                "publicIPAllocationMethod": "Dynamic"
-              }
-            },
-            {
-              "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-09-01",
-              "name": "vm2PublicIP",
-              "location": "[resourceGroup().location]",
-              "sku": {
-                "name": "Basic"
-              },
-              "properties": {
-                "publicIPAllocationMethod": "Dynamic"
-              }
-            },
-            {
               "type": "Microsoft.Network/networkInterfaces",
               "apiVersion": "2023-09-01",
               "name": "vm1NIC",
@@ -796,17 +772,11 @@
                     "properties": {
                       "subnet": {
                         "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('vmSubnetName'))]"
-                      },
-                      "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'vm1PublicIP')]"
                       }
                     }
                   }
                 ]
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', 'vm1PublicIP')]"
-              ]
+              }
             },
             {
               "type": "Microsoft.Network/networkInterfaces",
@@ -820,17 +790,11 @@
                     "properties": {
                       "subnet": {
                         "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('vmSubnetName'))]"
-                      },
-                      "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'vm2PublicIP')]"
                       }
                     }
                   }
                 ]
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', 'vm2PublicIP')]"
-              ]
+              }
             },
             {
               "type": "Microsoft.Compute/virtualMachines",
@@ -952,7 +916,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "5163670806148952372"
+              "templateHash": "4243213454259129595"
             }
           },
           "parameters": {
@@ -977,30 +941,6 @@
           },
           "resources": [
             {
-              "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-09-01",
-              "name": "vm1PublicIP",
-              "location": "[resourceGroup().location]",
-              "sku": {
-                "name": "Basic"
-              },
-              "properties": {
-                "publicIPAllocationMethod": "Dynamic"
-              }
-            },
-            {
-              "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-09-01",
-              "name": "vm2PublicIP",
-              "location": "[resourceGroup().location]",
-              "sku": {
-                "name": "Basic"
-              },
-              "properties": {
-                "publicIPAllocationMethod": "Dynamic"
-              }
-            },
-            {
               "type": "Microsoft.Network/networkInterfaces",
               "apiVersion": "2023-09-01",
               "name": "vm1NIC",
@@ -1012,17 +952,11 @@
                     "properties": {
                       "subnet": {
                         "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('vmSubnetName'))]"
-                      },
-                      "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'vm1PublicIP')]"
                       }
                     }
                   }
                 ]
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', 'vm1PublicIP')]"
-              ]
+              }
             },
             {
               "type": "Microsoft.Network/networkInterfaces",
@@ -1036,17 +970,11 @@
                     "properties": {
                       "subnet": {
                         "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('vmSubnetName'))]"
-                      },
-                      "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'vm2PublicIP')]"
                       }
                     }
                   }
                 ]
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', 'vm2PublicIP')]"
-              ]
+              }
             },
             {
               "type": "Microsoft.Compute/virtualMachines",

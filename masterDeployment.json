@@ -19,7 +19,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2015-01-01",
       "name": "hubVnetDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -317,7 +317,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2015-01-01",
       "name": "vnet1Deployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -437,7 +437,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2015-01-01",
       "name": "vnet1PeeringDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -511,7 +511,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2015-01-01",
       "name": "vnet2Deployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -631,7 +631,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2015-01-01",
       "name": "vnet2PeeringDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -669,7 +669,7 @@
           "resources": [
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2023-09-01",
+              "apiVersion": "2015-01-01",
               "name": "[format('{0}/{1}', parameters('hubVnetName'), 'hubToVnet2Peering')]",
               "properties": {
                 "remoteVirtualNetwork": {
@@ -683,7 +683,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2023-09-01",
+              "apiVersion": "2015-01-01",
               "name": "[format('{0}/{1}', parameters('vnet2Name'), 'vnet2ToHubPeering')]",
               "properties": {
                 "remoteVirtualNetwork": {
@@ -705,7 +705,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2015-01-01",
       "name": "vnet1VmsDeployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -765,7 +765,7 @@
           "resources": [
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-09-01",
+              "apiVersion": "2015-01-01",
               "name": "vm1PublicIP",
               "location": "[resourceGroup().location]",
               "sku": {
@@ -777,7 +777,7 @@
             },
             {
               "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-09-01",
+              "apiVersion": "2015-01-01",
               "name": "vm2PublicIP",
               "location": "[resourceGroup().location]",
               "sku": {
@@ -924,7 +924,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2015-01-01",
       "name": "vnet2VmsDeployment",
       "properties": {
         "expressionEvaluationOptions": {

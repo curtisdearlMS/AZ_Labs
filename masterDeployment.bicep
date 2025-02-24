@@ -1,23 +1,22 @@
-param location string = resourceGroup().location
+//param location string = resourceGroup().location
 param adminUsername string
 @secure()
 param adminPassword string
 
-module hubVnet 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/HubVNET/HubVNET.bicep' = {
+module hubVnet './HubVNET/HubVNET.bicep' = {
   name: 'hubVnetDeployment'
   params: {
-    location: location
+    vnetName: 'HubVNET'
   }
 }
 
-module vnet1 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/VNET1/VNET1.bicep' = {
+module vnet1 './VNET1/VNET1.bicep' = {
   name: 'vnet1Deployment'
   params: {
-    location: location
   }
 }
 
-module vnet1Peering 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/VNET1/VNET1-HubVNETpeering.bicep' = {
+module vnet1Peering './VNET1/VNET1-HubVNETpeering.bicep' = {
   name: 'vnet1PeeringDeployment'
   dependsOn: [
     hubVnet
@@ -29,14 +28,13 @@ module vnet1Peering 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_T
   }
 }
 
-module vnet2 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/VNET2/VNET2.bicep' = {
+module vnet2 './VNET2/VNET2.bicep' = {
   name: 'vnet2Deployment'
   params: {
-    location: location
   }
 }
 
-module vnet2Peering 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/VNET2/VNET2-HubVNETpeering.bicep' = {
+module vnet2Peering './VNET2/VNET2-HubVNETpeering.bicep' = {
   name: 'vnet2PeeringDeployment'
   dependsOn: [
     hubVnet
@@ -48,7 +46,7 @@ module vnet2Peering 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_T
   }
 }
 
-module vnet1Vms 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/VMs/VNET1_2VMs.bicep' = {
+module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
   name: 'vnet1VmsDeployment'
   dependsOn: [
     vnet1
@@ -61,7 +59,7 @@ module vnet1Vms 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_Train
   }
 }
 
-module vnet2Vms 'https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/VMs/VNET2_2VMs.bicep' = {
+module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
   name: 'vnet2VmsDeployment'
   dependsOn: [
     vnet2

@@ -3,6 +3,13 @@ param vmSubnetName string = 'VMSubnet'
 param adminUsername string
 @secure()
 param adminPassword string
+@allowed([
+  'Standard_B1ls'
+  'Standard_B1ms'
+  'Standard_B2s'
+  'Standard_B2ms'
+])
+param vmSize string = 'Standard_B1ls'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnetName
@@ -80,7 +87,7 @@ resource vm1 'Microsoft.Compute/virtualMachines@2023-09-01' = {
   location: resourceGroup().location
   properties: {
     hardwareProfile: {
-      vmSize: 'Standard_B1ls'
+      vmSize: vmSize
     }
     osProfile: {
       computerName: 'vm1'
@@ -116,7 +123,7 @@ resource vm2 'Microsoft.Compute/virtualMachines@2023-09-01' = {
   location: resourceGroup().location
   properties: {
     hardwareProfile: {
-      vmSize: 'Standard_B1ls'
+      vmSize: vmSize
     }
     osProfile: {
       computerName: 'vm2'

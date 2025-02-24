@@ -4,6 +4,7 @@ param adminUsername string ='bob'
 @secure()
 param adminPassword string
 param vmSize string
+param osImage object
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnetName
@@ -59,17 +60,15 @@ resource vm1 'Microsoft.Compute/virtualMachines@2023-09-01' = {
       computerName: 'vm1'
       adminUsername: adminUsername
       adminPassword: adminPassword
-      linuxConfiguration: {
+      linuxConfiguration: osImage.publisher == 'Canonical' ? {
         disablePasswordAuthentication: false
-      }
+      } : null
+      windowsConfiguration: osImage.publisher == 'MicrosoftWindowsServer' ? {
+        enableAutomaticUpdates: true
+      } : null
     }
     storageProfile: {
-      imageReference: {
-        publisher: 'Canonical'
-        offer: 'UbuntuServer'
-        sku: '18.04-LTS'
-        version: 'latest'
-      }
+      imageReference: osImage
       osDisk: {
         createOption: 'FromImage'
       }
@@ -92,20 +91,18 @@ resource vm2 'Microsoft.Compute/virtualMachines@2023-09-01' = {
       vmSize: vmSize
     }
     osProfile: {
-      computerName: 'vm2'
+      computerName: 'vm1'
       adminUsername: adminUsername
       adminPassword: adminPassword
-      linuxConfiguration: {
+      linuxConfiguration: osImage.publisher == 'Canonical' ? {
         disablePasswordAuthentication: false
-      }
+      } : null
+      windowsConfiguration: osImage.publisher == 'MicrosoftWindowsServer' ? {
+        enableAutomaticUpdates: true
+      } : null
     }
     storageProfile: {
-      imageReference: {
-        publisher: 'Canonical'
-        offer: 'UbuntuServer'
-        sku: '18.04-LTS'
-        version: 'latest'
-      }
+      imageReference: osImage
       osDisk: {
         createOption: 'FromImage'
       }

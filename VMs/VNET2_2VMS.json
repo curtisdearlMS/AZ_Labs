@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "4243213454259129595"
+      "templateHash": "7414997691719188976"
     }
   },
   "parameters": {
@@ -26,6 +26,9 @@
     },
     "vmSize": {
       "type": "string"
+    },
+    "osImage": {
+      "type": "object"
     }
   },
   "resources": [
@@ -78,17 +81,11 @@
           "computerName": "vm1",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": false
-          }
+          "linuxConfiguration": "[if(equals(parameters('osImage').publisher, 'Canonical'), createObject('disablePasswordAuthentication', false()), null())]",
+          "windowsConfiguration": "[if(equals(parameters('osImage').publisher, 'MicrosoftWindowsServer'), createObject('enableAutomaticUpdates', true()), null())]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "18.04-LTS",
-            "version": "latest"
-          },
+          "imageReference": "[parameters('osImage')]",
           "osDisk": {
             "createOption": "FromImage"
           }
@@ -115,20 +112,14 @@
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computerName": "vm2",
+          "computerName": "vm1",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": false
-          }
+          "linuxConfiguration": "[if(equals(parameters('osImage').publisher, 'Canonical'), createObject('disablePasswordAuthentication', false()), null())]",
+          "windowsConfiguration": "[if(equals(parameters('osImage').publisher, 'MicrosoftWindowsServer'), createObject('enableAutomaticUpdates', true()), null())]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "18.04-LTS",
-            "version": "latest"
-          },
+          "imageReference": "[parameters('osImage')]",
           "osDisk": {
             "createOption": "FromImage"
           }

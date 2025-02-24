@@ -1,4 +1,6 @@
-param adminUsername string
+param vmSize string
+param osImage object
+param adminUsername string = 'bob'
 @secure()
 param adminPassword string
 
@@ -55,7 +57,8 @@ module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
     vmSubnetName: 'VMSubnet'
     adminUsername: adminUsername
     adminPassword: adminPassword
-    vmSize: 'Standard_D2s_v3'
+    vmSize: vmSize
+    osImage: osImage
   }
 }
 
@@ -69,6 +72,7 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
     vmSubnetName: 'VMSubnet'
     adminUsername: adminUsername
     adminPassword: adminPassword
-    vmSize: 'Standard_D2s_v3'
+    vmSize: vmSize
+    osImage: osImage
   }
 }

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "8389303981509265119"
+      "templateHash": "12463132913658024991"
     }
   },
   "parameters": {
@@ -26,6 +26,9 @@
     },
     "vmSize": {
       "type": "string"
+    },
+    "osImage": {
+      "type": "object"
     }
   },
   "resources": [
@@ -78,17 +81,11 @@
           "computerName": "vm1",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": false
-          }
+          "linuxConfiguration": "[if(equals(parameters('osImage').publisher, 'Canonical'), createObject('disablePasswordAuthentication', false()), null())]",
+          "windowsConfiguration": "[if(equals(parameters('osImage').publisher, 'MicrosoftWindowsServer'), createObject('enableAutomaticUpdates', true()), null())]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "18.04-LTS",
-            "version": "latest"
-          },
+          "imageReference": "[parameters('osImage')]",
           "osDisk": {
             "createOption": "FromImage"
           }
@@ -118,17 +115,11 @@
           "computerName": "vm2",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": false
-          }
+          "linuxConfiguration": "[if(equals(parameters('osImage').publisher, 'Canonical'), createObject('disablePasswordAuthentication', false()), null())]",
+          "windowsConfiguration": "[if(equals(parameters('osImage').publisher, 'MicrosoftWindowsServer'), createObject('enableAutomaticUpdates', true()), null())]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "18.04-LTS",
-            "version": "latest"
-          },
+          "imageReference": "[parameters('osImage')]",
           "osDisk": {
             "createOption": "FromImage"
           }

@@ -1,4 +1,4 @@
-param vmSize string = 'Standard_B2ms' 
+param vmSize string = 'Standard_D2s_v6' 
 param adminUsername string = 'bob'
 @secure()
 param adminPassword string

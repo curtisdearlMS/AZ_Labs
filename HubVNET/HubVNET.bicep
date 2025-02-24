@@ -62,7 +62,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
 }
 
 resource nsgAzureFirewallSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
-  name: 'nsgAzureFirewallSubnet'
+  name: '${vnetName}-nsgAzureFirewallSubnet'
   location: resourceGroup().location
   properties: {
     securityRules: []
@@ -70,7 +70,7 @@ resource nsgAzureFirewallSubnet 'Microsoft.Network/networkSecurityGroups@2023-09
 }
 
 resource rtAzureFirewallSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
-  name: 'rtAzureFirewallSubnet'
+  name: '${vnetName}-rtAzureFirewallSubnet'
   location: resourceGroup().location
   properties: {
     routes: [
@@ -86,7 +86,7 @@ resource rtAzureFirewallSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
 }
 
 resource nsgGatewaySubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
-  name: 'nsgGatewaySubnet'
+  name: '${vnetName}-nsgGatewaySubnet'
   location: resourceGroup().location
   properties: {
     securityRules: []
@@ -94,7 +94,7 @@ resource nsgGatewaySubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' =
 }
 
 resource rtGatewaySubnet 'Microsoft.Network/routeTables@2023-09-01' = {
-  name: 'rtGatewaySubnet'
+  name: '${vnetName}-rtGatewaySubnet'
   location: resourceGroup().location
   properties: {
     routes: []
@@ -102,7 +102,7 @@ resource rtGatewaySubnet 'Microsoft.Network/routeTables@2023-09-01' = {
 }
 
 resource nsgPrivateEndpointSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
-  name: 'nsgPrivateEndpointSubnet'
+  name: '${vnetName}-nsgPrivateEndpointSubnet'
   location: resourceGroup().location
   properties: {
     securityRules: []
@@ -110,7 +110,7 @@ resource nsgPrivateEndpointSubnet 'Microsoft.Network/networkSecurityGroups@2023-
 }
 
 resource rtPrivateEndpointSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
-  name: 'rtPrivateEndpointSubnet'
+  name: '${vnetName}-rtPrivateEndpointSubnet'
   location: resourceGroup().location
   properties: {
     routes: [
@@ -126,7 +126,7 @@ resource rtPrivateEndpointSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
 }
 
 resource nsgVirtualMachineSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
-  name: 'nsgVirtualMachineSubnet'
+  name: '${vnetName}-nsgVirtualMachineSubnet'
   location: resourceGroup().location
   properties: {
     securityRules: []
@@ -134,7 +134,7 @@ resource nsgVirtualMachineSubnet 'Microsoft.Network/networkSecurityGroups@2023-0
 }
 
 resource rtVirtualMachineSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
-  name: 'rtVirtualMachineSubnet'
+  name: '${vnetName}-rtVirtualMachineSubnet'
   location: resourceGroup().location
   properties: {
     routes: [

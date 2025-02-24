@@ -5,12 +5,13 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3442230087443777117"
+      "templateHash": "18350861793549718578"
     }
   },
   "parameters": {
     "vmSize": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "Standard_B2ms"
     },
     "adminUsername": {
       "type": "string",
@@ -740,7 +741,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "1766311707192911790"
+              "templateHash": "8736313252339392981"
             }
           },
           "parameters": {
@@ -760,7 +761,8 @@
               "type": "securestring"
             },
             "vmSize": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": "Standard_B2ms"
             }
           },
           "resources": [
@@ -1194,7 +1196,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "12882098020473167799"
+              "templateHash": "5637377333947850334"
             }
           },
           "parameters": {
@@ -1214,7 +1216,8 @@
               "type": "securestring"
             },
             "vmSize": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": "Standard_B2ms"
             }
           },
           "resources": [

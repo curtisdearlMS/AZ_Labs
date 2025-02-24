@@ -142,7 +142,8 @@ resource rtVirtualMachineSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
         name: 'defaultRoute'
         properties: {
           addressPrefix: '0.0.0.0/0'
-          nextHopType: 'Internet'
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: '10.28.15.4' // Azure Firewall private IP
         }
       }
     ]

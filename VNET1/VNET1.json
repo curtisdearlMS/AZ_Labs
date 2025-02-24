@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "16963950571315696630"
+      "templateHash": "14843707286278198817"
     }
   },
   "parameters": {
@@ -101,7 +101,23 @@
       "name": "[format('{0}-rtVMSubnet', parameters('vnetName'))]",
       "location": "[resourceGroup().location]",
       "properties": {
-        "routes": []
+        "routes": [
+          {
+            "name": "defaultRoute",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "10.28.15.4"
+            }
+          },
+          {
+            "name": "vnet2Route",
+            "properties": {
+              "addressPrefix": "10.2.0.0/16",
+              "nextHopType": "VirtualNetworkGateway"
+            }
+          }
+        ]
       }
     }
   ]

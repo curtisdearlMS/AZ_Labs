@@ -68,6 +68,22 @@ resource rtVMSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
   name: '${vnetName}-rtVMSubnet'
   location: resourceGroup().location
   properties: {
-    routes: []
+    routes: [
+      {
+        name: 'defaultRoute'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: '10.28.15.4' // Azure Firewall private IP
+        }
+      }
+      {
+        name: 'vnet1Route'
+        properties: {
+          addressPrefix: '10.1.0.0/16'
+          nextHopType: 'VirtualNetworkGateway'
+        }
+      }
+    ]
   }
 }

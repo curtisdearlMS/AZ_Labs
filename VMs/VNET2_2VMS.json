@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "1977859962180149062"
+      "templateHash": "5163670806148952372"
     }
   },
   "parameters": {
@@ -18,10 +18,14 @@
       "defaultValue": "VMSubnet"
     },
     "adminUsername": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "bob"
     },
     "adminPassword": {
       "type": "securestring"
+    },
+    "vmSize": {
+      "type": "string"
     }
   },
   "resources": [
@@ -104,7 +108,7 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_B1ls"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
           "computerName": "vm1",
@@ -144,7 +148,7 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_B1ls"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
           "computerName": "vm2",

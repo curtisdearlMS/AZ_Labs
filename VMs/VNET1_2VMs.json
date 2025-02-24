@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "16682246552762036104"
+      "templateHash": "9043890220743454660"
     }
   },
   "parameters": {
@@ -18,19 +18,14 @@
       "defaultValue": "VMSubnet"
     },
     "adminUsername": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "bob"
     },
     "adminPassword": {
       "type": "securestring"
     },
     "vmSize": {
-      "type": "string",
-      "allowedValues": [
-        "Standard_B1ls",
-        "Standard_B1ms",
-        "Standard_B2s",
-        "Standard_B2ms"
-      ]
+      "type": "string"
     }
   },
   "resources": [

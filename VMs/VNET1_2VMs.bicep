@@ -1,15 +1,9 @@
 param vnetName string = 'VNET1'
 param vmSubnetName string = 'VMSubnet'
-param adminUsername string
+param adminUsername string = 'bob'
 @secure()
 param adminPassword string
-@allowed([
-  'Standard_B1ls'
-  'Standard_B1ms'
-  'Standard_B2s'
-  'Standard_B2ms'
-])
-param vmSize string 
+param vmSize string
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnetName

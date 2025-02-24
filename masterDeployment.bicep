@@ -56,6 +56,7 @@ module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
     vmSubnetName: 'VMSubnet'
     adminUsername: adminUsername
     adminPassword: adminPassword
+    vmSize:
   }
 }
 

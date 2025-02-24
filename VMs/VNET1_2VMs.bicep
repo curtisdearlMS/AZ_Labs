@@ -9,7 +9,7 @@ param adminPassword string
   'Standard_B2s'
   'Standard_B2ms'
 ])
-param vmSize string = 'Standard_B1ls'
+param vmSize string 
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnetName

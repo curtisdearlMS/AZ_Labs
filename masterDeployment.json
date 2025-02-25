@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3720360166715340425"
+      "templateHash": "6321334979233637745"
     }
   },
   "parameters": {
@@ -1698,11 +1698,11 @@
         },
         "mode": "Incremental",
         "parameters": {
-          "storageAccountName": {
-            "value": "[variables('storageAccountName')]"
+          "kind": {
+            "value": "StorageV2"
           },
-          "location": {
-            "value": "[resourceGroup().location]"
+          "skuName": {
+            "value": "Standard_LRS"
           }
         },
         "template": {
@@ -1712,13 +1712,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "16329021624997551344"
+              "templateHash": "15082439066379998526"
             }
           },
           "parameters": {
-            "storageAccountName": {
-              "type": "string"
-            },
             "location": {
               "type": "string",
               "defaultValue": "[resourceGroup().location]"
@@ -1732,11 +1729,14 @@
               "defaultValue": "StorageV2"
             }
           },
+          "variables": {
+            "storageAccountName": "[uniqueString(resourceGroup().id, 'storageAccount')]"
+          },
           "resources": [
             {
               "type": "Microsoft.Storage/storageAccounts",
               "apiVersion": "2021-04-01",
-              "name": "[parameters('storageAccountName')]",
+              "name": "[variables('storageAccountName')]",
               "location": "[parameters('location')]",
               "sku": {
                 "name": "[parameters('skuName')]"
@@ -1762,9 +1762,6 @@
         "parameters": {
           "storageAccountName": {
             "value": "[variables('storageAccountName')]"
-          },
-          "location": {
-            "value": "[resourceGroup().location]"
           },
           "vnetName": {
             "value": "HubVNET"

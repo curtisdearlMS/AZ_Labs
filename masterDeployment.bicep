@@ -90,8 +90,9 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
 module storageAccountModule './StorageAccount/StorageAccount.bicep' = {
   name: 'storageAccountModule'
   params: {
-    storageAccountName: storageAccountName
-    location: resourceGroup().location
+    kind: 'StorageV2'
+    skuName: 'Standard_LRS'
+
   }
 }
 
@@ -100,7 +101,6 @@ module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoints.bi
   name: 'privateEndpointModule'
   params: {
     storageAccountName: storageAccountName
-    location: resourceGroup().location
     vnetName: 'HubVNET'
     subnetName: 'AzureFirewallSubnet'
     privateEndpointName: 'troubleshooting-hub-pe'

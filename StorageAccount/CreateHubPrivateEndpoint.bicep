@@ -1,13 +1,14 @@
-param storageAccountName string = 'troubleshooting'
+var storageAccountName = uniqueString(resourceGroup().id, 'storageAccount')
 param hubVnetName string
-param hubSubnetName string
-param privateEndpointName string = '${storageAccountName}-hub-pe'
+param privateEndpointName string
+var resolvedPrivateEndpointName = empty(privateEndpointName) ? '${storageAccountName}-hub-pe' : privateEndpointName
 
 // Module to create the storage account
 module storageAccountModule 'StorageAccount.bicep' = {
   name: 'storageAccountModule'
   params: {
-    storageAccountName: storageAccountName
+    kind: 'StorageV2'
+    skuName: 'Standard_LRS'
   }
 }
 
@@ -17,8 +18,8 @@ module privateEndpointModule 'StorageAccountPrivateEndpoints.bicep' = {
   params: {
     storageAccountName: storageAccountName
     vnetName: hubVnetName
-    subnetName: hubSubnetName
-    privateEndpointName: privateEndpointName
+    privateEndpointName: resolvedPrivateEndpointName
+    subnetName: 'default'
   }
 }
 // Module to create the private DNS zone for the private endpoint

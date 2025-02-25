@@ -1,4 +1,4 @@
-param storageAccountName string
+var storageAccountName = uniqueString(resourceGroup().id, 'storageAccount')
 param location string = resourceGroup().location
 param skuName string = 'Standard_LRS'
 param kind string = 'StorageV2'

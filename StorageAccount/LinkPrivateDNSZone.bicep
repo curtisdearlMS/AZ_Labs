@@ -9,7 +9,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' existing 
   name: privateDnsZoneName
 }
 
-resource vnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2023-05-01' = {
+resource vnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2024-06-01' = {
   name: '${privateDnsZoneName}-${vnetName}-link'
   location: 'global'
   parent: privateDnsZone

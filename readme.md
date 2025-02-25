@@ -41,6 +41,10 @@ az vm list-skus --location REGION --output table
   <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
 </a>
 
+### Deploy Storage Account, Private Endpoint, and Private DNS Zone
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FStorageAccount%2FCreateHubPrivateEndpoint.bicep"> <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /> 
+</a>
+
 ### Deploy All Resources
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FmasterDeployment.json">
   <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />

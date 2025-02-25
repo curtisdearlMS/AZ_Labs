@@ -97,7 +97,7 @@ module storageAccountModule './StorageAccount/StorageAccount.bicep' = {
 }
 
 // Module to create the private endpoint for the storage account
-module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoints.bicep' = {
+module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoint.bicep' = {
   name: 'privateEndpointModule'
   params: {
     storageAccountName: storageAccountName

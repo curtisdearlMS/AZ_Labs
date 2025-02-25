@@ -1,4 +1,4 @@
-param hubVnetName string = 'Hub_VNET'
+param hubVnetName string = 'HubVNET'
 param vnet1Name string = 'VNET1'
 
 resource hubVnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {

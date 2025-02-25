@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "9228051105978901109"
+      "templateHash": "9946734734726297094"
     }
   },
   "parameters": {
@@ -15,7 +15,7 @@
     },
     "vnetName": {
       "type": "string",
-      "defaultValue": "Hub_VNET"
+      "defaultValue": "HubVNET"
     },
     "firewallName": {
       "type": "string",

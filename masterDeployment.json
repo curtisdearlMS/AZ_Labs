@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "1642780260360447054"
+      "templateHash": "12032437296598211919"
     }
   },
   "parameters": {
@@ -564,7 +564,7 @@
         "mode": "Incremental",
         "parameters": {
           "hubVnetName": {
-            "value": "Hub_VNET_172_12_0_0_16"
+            "value": "Hub_VNET_10_28_0_0_16"
           },
           "vnet1Name": {
             "value": "VNET1"
@@ -774,7 +774,7 @@
         "mode": "Incremental",
         "parameters": {
           "hubVnetName": {
-            "value": "Hub_VNET_172_12_0_0_16"
+            "value": "Hub_VNET_10_28_0_0_16"
           },
           "vnet2Name": {
             "value": "VNET2"

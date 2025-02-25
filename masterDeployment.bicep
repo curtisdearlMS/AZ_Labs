@@ -24,7 +24,7 @@ module vnet1Peering './VNET1/VNET1-HubVNETpeering.bicep' = {
     vnet1
   ]
   params: {
-    hubVnetName: 'Hub_VNET_172_12_0_0_16'
+    hubVnetName: 'Hub_VNET_10_28_0_0_16'
     vnet1Name: 'VNET1'
   }
 }
@@ -42,7 +42,7 @@ module vnet2Peering './VNET2/VNET2-HubVNETpeering.bicep' = {
     vnet2
   ]
   params: {
-    hubVnetName: 'Hub_VNET_172_12_0_0_16'
+    hubVnetName: 'Hub_VNET_10_28_0_0_16'
     vnet2Name: 'VNET2'
   }
 }

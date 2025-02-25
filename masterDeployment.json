@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "8140992332675378442"
+      "templateHash": "9334607699762726334"
     }
   },
   "parameters": {
@@ -19,15 +19,10 @@
     },
     "adminPassword": {
       "type": "securestring"
-    },
-    "deployVnetGwAndAzFw": {
-      "type": "bool",
-      "defaultValue": false
     }
   },
   "resources": [
     {
-      "condition": "[parameters('deployVnetGwAndAzFw')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-09-01",
       "name": "fwPublicIP",
@@ -41,7 +36,6 @@
       }
     },
     {
-      "condition": "[parameters('deployVnetGwAndAzFw')]",
       "type": "Microsoft.Network/azureFirewalls",
       "apiVersion": "2023-09-01",
       "name": "myAzureFirewall",
@@ -66,53 +60,6 @@
         "[resourceId('Microsoft.Network/publicIPAddresses', 'fwPublicIP')]",
         "[resourceId('Microsoft.Resources/deployments', 'vnet1VmsDeployment')]",
         "[resourceId('Microsoft.Resources/deployments', 'vnet2VmsDeployment')]"
-      ]
-    },
-    {
-      "condition": "[parameters('deployVnetGwAndAzFw')]",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2023-09-01",
-      "name": "vpnGwPublicIP",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "Standard",
-        "tier": "Regional"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "Static"
-      }
-    },
-    {
-      "condition": "[parameters('deployVnetGwAndAzFw')]",
-      "type": "Microsoft.Network/virtualNetworkGateways",
-      "apiVersion": "2023-09-01",
-      "name": "myVpnGateway",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "vnetGatewayConfig",
-            "properties": {
-              "subnet": {
-                "id": "[format('{0}/subnets/GatewaySubnet', reference(resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment'), '2022-09-01').outputs.vnetId.value)]"
-              },
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]"
-              }
-            }
-          }
-        ],
-        "gatewayType": "Vpn",
-        "vpnType": "RouteBased",
-        "sku": {
-          "name": "vpngw1",
-          "tier": "vpngw1"
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/azureFirewalls', 'myAzureFirewall')]",
-        "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]",
-        "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]"
       ]
     },
     {

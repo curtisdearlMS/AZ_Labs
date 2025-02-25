@@ -2,7 +2,6 @@ param vmSize string = 'Standard_D2s_v6'
 param adminUsername string = 'bob'
 @secure()
 param adminPassword string
-param deployVnetGwAndAzFw bool = false
 
 module hubVnet './HubVNET/HubVNET.bicep' = {
   name: 'hubVnetDeployment'
@@ -77,8 +76,8 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
   }
 }
 
-// Deploy VNET Gateway and Azure Firewall only if deployVnetGwAndAzFw is true
-resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = if (deployVnetGwAndAzFw) {
+// Deploy VNET Gateway and Azure Firewall only if you have time for the creation
+resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: 'fwPublicIP'
   location: resourceGroup().location
   sku: {
@@ -90,7 +89,7 @@ resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = if 
   }
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = if (deployVnetGwAndAzFw) {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
   name: 'myAzureFirewall'
   location: resourceGroup().location
   dependsOn: [
@@ -114,43 +113,43 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = if (deplo
   }
 }
 
-resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = if (deployVnetGwAndAzFw) {
-  name: 'vpnGwPublicIP'
-  location: resourceGroup().location
-  sku: {
-    name: 'Standard'
-    tier: 'Regional'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Static'
-  }
-}
+// resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = if (deployVnetGwAndAzFw) {
+//   name: 'vpnGwPublicIP'
+//   location: resourceGroup().location
+//   sku: {
+//     name: 'Standard'
+//     tier: 'Regional'
+//   }
+//   properties: {
+//     publicIPAllocationMethod: 'Static'
+//   }
+// }
 
-resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = if (deployVnetGwAndAzFw) {
-  name: 'myVpnGateway'
-  location: resourceGroup().location
-  dependsOn: [
-    azureFirewall
-  ]
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'vnetGatewayConfig'
-        properties: {
-          subnet: {
-            id: '${hubVnet.outputs.vnetId}/subnets/GatewaySubnet'
-          }
-          publicIPAddress: {
-            id: publicIpVpnGw.id
-          }
-        }
-      }
-    ]
-    gatewayType: 'Vpn'
-    vpnType: 'RouteBased'
-    sku: {
-      name: 'vpngw1'
-      tier: 'vpngw1'
-    }
-  }
-}
+// resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = if (deployVnetGwAndAzFw) {
+//   name: 'myVpnGateway'
+//   location: resourceGroup().location
+//   dependsOn: [
+//     azureFirewall
+//   ]
+//   properties: {
+//     ipConfigurations: [
+//       {
+//         name: 'vnetGatewayConfig'
+//         properties: {
+//           subnet: {
+//             id: '${hubVnet.outputs.vnetId}/subnets/GatewaySubnet'
+//           }
+//           publicIPAddress: {
+//             id: publicIpVpnGw.id
+//           }
+//         }
+//       }
+//     ]
+//     gatewayType: 'Vpn'
+//     vpnType: 'RouteBased'
+//     sku: {
+//       name: 'vpngw1'
+//       tier: 'vpngw1'
+//     }
+//   }
+// }

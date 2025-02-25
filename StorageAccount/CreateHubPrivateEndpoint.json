@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "8497417287018777623"
+      "templateHash": "7728747971458345359"
     }
   },
   "parameters": {
@@ -183,6 +183,45 @@
                 "[resourceId('Microsoft.Network/privateDnsZones', format('privatelink.blob.{0}', environment().suffixes.storage))]",
                 "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpointName'))]"
               ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "privateDnsZoneModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "privateDnsZoneName": {
+            "value": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "13035341709470661617"
+            }
+          },
+          "parameters": {
+            "privateDnsZoneName": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2023-05-01",
+              "name": "[parameters('privateDnsZoneName')]"
             }
           ]
         }

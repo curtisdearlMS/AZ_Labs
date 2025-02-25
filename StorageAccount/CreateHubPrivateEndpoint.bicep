@@ -21,7 +21,13 @@ module privateEndpointModule 'StorageAccountPrivateEndpoints.bicep' = {
     privateEndpointName: privateEndpointName
   }
 }
-
+// Module to create the private DNS zone for the private endpoint
+module privateDnsZoneModule 'PrivateDNSZone.bicep' = {
+  name: 'privateDnsZoneModule'
+  params: {
+    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
+  }
+}
 // Module to link the private DNS zone to the VNET
 module linkPrivateDnsZoneModule 'LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneModule'

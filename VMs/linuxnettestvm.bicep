@@ -102,14 +102,14 @@ resource linuxVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   }
 }
 
-resource vm_NetworkWatcherExtension 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' = {
-  parent: linuxVM
-  name: 'AzureNetworkWatcherExtension'
-  location: location
-  properties: {
-    autoUpgradeMinorVersion: true
-    publisher: 'Microsoft.Azure.NetworkWatcher'
-    type: 'NetworkWatcherAgentLinux'
-    typeHandlerVersion: '1.4'
-  }
-}
+// resource vm_NetworkWatcherExtension 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' = {
+//   parent: linuxVM
+//   name: 'AzureNetworkWatcherExtension'
+//   location: location
+//   properties: {
+//     autoUpgradeMinorVersion: true
+//     publisher: 'Microsoft.Azure.NetworkWatcher'
+//     type: 'NetworkWatcherAgentLinux'
+//     typeHandlerVersion: '1.4'
+//   }
+// }

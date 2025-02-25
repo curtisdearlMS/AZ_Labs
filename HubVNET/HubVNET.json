@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "7171851209795164540"
+      "templateHash": "9228051105978901109"
     }
   },
   "parameters": {
@@ -15,7 +15,7 @@
     },
     "vnetName": {
       "type": "string",
-      "defaultValue": "Hub_VNET_10_28_0_0_16"
+      "defaultValue": "Hub_VNET"
     },
     "firewallName": {
       "type": "string",
@@ -279,5 +279,11 @@
         "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
       ]
     }
-  ]
+  ],
+  "outputs": {
+    "vnetId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+    }
+  }
 }

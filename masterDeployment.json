@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "12032437296598211919"
+      "templateHash": "3528401816299967753"
     }
   },
   "parameters": {
@@ -133,7 +133,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "5448267556879197842"
+              "templateHash": "9228051105978901109"
             }
           },
           "parameters": {
@@ -143,7 +143,7 @@
             },
             "vnetName": {
               "type": "string",
-              "defaultValue": "Hub_VNET_10_28_0_0_16"
+              "defaultValue": "Hub_VNET"
             },
             "firewallName": {
               "type": "string",
@@ -564,7 +564,7 @@
         "mode": "Incremental",
         "parameters": {
           "hubVnetName": {
-            "value": "Hub_VNET_10_28_0_0_16"
+            "value": "Hub_VNET"
           },
           "vnet1Name": {
             "value": "VNET1"
@@ -577,13 +577,13 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "18090243336972609858"
+              "templateHash": "15915062787303907456"
             }
           },
           "parameters": {
             "hubVnetName": {
               "type": "string",
-              "defaultValue": "Hub_VNET_10_28_0_0_16"
+              "defaultValue": "Hub_VNET"
             },
             "vnet1Name": {
               "type": "string",
@@ -774,7 +774,7 @@
         "mode": "Incremental",
         "parameters": {
           "hubVnetName": {
-            "value": "Hub_VNET_10_28_0_0_16"
+            "value": "Hub_VNET"
           },
           "vnet2Name": {
             "value": "VNET2"
@@ -787,13 +787,13 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "17499824619072479312"
+              "templateHash": "6055909626822107207"
             }
           },
           "parameters": {
             "hubVnetName": {
               "type": "string",
-              "defaultValue": "Hub_VNET_10_28_0_0_16"
+              "defaultValue": "Hub_VNET"
             },
             "vnet2Name": {
               "type": "string",

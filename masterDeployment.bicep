@@ -3,6 +3,7 @@ param adminUsername string = 'bob'
 @secure()
 param adminPassword string
 
+// Module to deploy HubVNET
 module hubVnet './HubVNET/HubVNET.bicep' = {
   name: 'hubVnetDeployment'
   params: {
@@ -10,12 +11,14 @@ module hubVnet './HubVNET/HubVNET.bicep' = {
   }
 }
 
+// Module to deploy VNET1
 module vnet1 './VNET1/VNET1.bicep' = {
   name: 'vnet1Deployment'
   params: {
   }
 }
 
+// Module to create peering between VNET1 and HubVNET
 module vnet1Peering './VNET1/VNET1-HubVNETpeering.bicep' = {
   name: 'vnet1PeeringDeployment'
   dependsOn: [
@@ -28,12 +31,14 @@ module vnet1Peering './VNET1/VNET1-HubVNETpeering.bicep' = {
   }
 }
 
+// Module to deploy VNET2
 module vnet2 './VNET2/VNET2.bicep' = {
   name: 'vnet2Deployment'
   params: {
   }
 }
 
+// Module to create peering between VNET2 and HubVNET
 module vnet2Peering './VNET2/VNET2-HubVNETpeering.bicep' = {
   name: 'vnet2PeeringDeployment'
   dependsOn: [
@@ -46,6 +51,7 @@ module vnet2Peering './VNET2/VNET2-HubVNETpeering.bicep' = {
   }
 }
 
+// Module to deploy VMs in VNET1
 module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
   name: 'vnet1VmsDeployment'
   dependsOn: [
@@ -61,6 +67,7 @@ module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
   }
 }
 
+// Module to deploy VMs in VNET2
 module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
   name: 'vnet2VmsDeployment'
   dependsOn: [
@@ -90,7 +97,7 @@ module storageAccountModule './StorageAccount/StorageAccount.bicep' = {
 module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoints.bicep' = {
   name: 'privateEndpointModule'
   params: {
-    storageAccountName: 'troubleshooting'
+    storageAccountName: uniqueString(resourceGroup().id, 'storageAccount')
     location: resourceGroup().location
     vnetName: 'HubVNET'
     subnetName: 'AzureFirewallSubnet'
@@ -98,11 +105,22 @@ module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoints.bi
   }
 }
 
+// Module to create the private DNS zone for the private endpoint
+module privateDnsZoneModule './StorageAccount/PrivateDNSZone.bicep' = {
+  name: 'privateDnsZoneModule'
+  params: {
+    privateDnsZoneName: 'privatelink.blob.core.windows.net'
+  }
+}
+
 // Module to link the private DNS zone to the HubVNET
 module linkPrivateDnsZoneHub './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneHub'
+  dependsOn: [
+    privateDnsZoneModule
+  ]
   params: {
-    privateDnsZoneName: 'privatelink.${environment().suffixes.storage}'
+    privateDnsZoneName: 'privatelink.blob.core.windows.net'
     vnetName: 'HubVNET'
   }
 }
@@ -110,8 +128,11 @@ module linkPrivateDnsZoneHub './StorageAccount/LinkPrivateDNSZone.bicep' = {
 // Module to link the private DNS zone to VNET1
 module linkPrivateDnsZoneVnet1 './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneVnet1'
+  dependsOn: [
+    privateDnsZoneModule
+  ]
   params: {
-    privateDnsZoneName: 'privatelink.${environment().suffixes.storage}'
+    privateDnsZoneName: 'privatelink.blob.core.windows.net'
     vnetName: 'VNET1'
   }
 }
@@ -119,8 +140,11 @@ module linkPrivateDnsZoneVnet1 './StorageAccount/LinkPrivateDNSZone.bicep' = {
 // Module to link the private DNS zone to VNET2
 module linkPrivateDnsZoneVnet2 './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneVnet2'
+  dependsOn: [
+    privateDnsZoneModule
+  ]
   params: {
-    privateDnsZoneName: 'privatelink.${environment().suffixes.storage}'
+    privateDnsZoneName: 'privatelink.blob.core.windows.net'
     vnetName: 'VNET2'
   }
 }

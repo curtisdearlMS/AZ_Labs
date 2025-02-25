@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "5751206482715142074"
+      "templateHash": "15122448063756391907"
     }
   },
   "parameters": {
@@ -1758,7 +1758,7 @@
         "mode": "Incremental",
         "parameters": {
           "storageAccountName": {
-            "value": "troubleshooting"
+            "value": "[uniqueString(resourceGroup().id, 'storageAccount')]"
           },
           "location": {
             "value": "[resourceGroup().location]"
@@ -1857,6 +1857,45 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
+      "name": "privateDnsZoneModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "privateDnsZoneName": {
+            "value": "privatelink.blob.core.windows.net"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "8820743686392312798"
+            }
+          },
+          "parameters": {
+            "privateDnsZoneName": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2024-06-01",
+              "name": "[parameters('privateDnsZoneName')]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
       "name": "linkPrivateDnsZoneHub",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1865,7 +1904,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "[format('privatelink.{0}', environment().suffixes.storage)]"
+            "value": "privatelink.blob.core.windows.net"
           },
           "vnetName": {
             "value": "HubVNET"
@@ -1904,7 +1943,10 @@
             }
           ]
         }
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'privateDnsZoneModule')]"
+      ]
     },
     {
       "type": "Microsoft.Resources/deployments",
@@ -1917,7 +1959,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "[format('privatelink.{0}', environment().suffixes.storage)]"
+            "value": "privatelink.blob.core.windows.net"
           },
           "vnetName": {
             "value": "VNET1"
@@ -1956,7 +1998,10 @@
             }
           ]
         }
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'privateDnsZoneModule')]"
+      ]
     },
     {
       "type": "Microsoft.Resources/deployments",
@@ -1969,7 +2014,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "[format('privatelink.{0}', environment().suffixes.storage)]"
+            "value": "privatelink.blob.core.windows.net"
           },
           "vnetName": {
             "value": "VNET2"
@@ -2008,7 +2053,10 @@
             }
           ]
         }
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'privateDnsZoneModule')]"
+      ]
     }
   ]
 }

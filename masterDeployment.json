@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15969051104083904988"
+      "templateHash": "3720360166715340425"
     }
   },
   "parameters": {
@@ -20,6 +20,9 @@
     "adminPassword": {
       "type": "securestring"
     }
+  },
+  "variables": {
+    "storageAccountName": "[uniqueString(resourceGroup().id, 'storageAccount')]"
   },
   "resources": [
     {
@@ -1696,7 +1699,7 @@
         "mode": "Incremental",
         "parameters": {
           "storageAccountName": {
-            "value": "troubleshooting"
+            "value": "[variables('storageAccountName')]"
           },
           "location": {
             "value": "[resourceGroup().location]"
@@ -1758,7 +1761,7 @@
         "mode": "Incremental",
         "parameters": {
           "storageAccountName": {
-            "value": "[uniqueString(resourceGroup().id, 'storageAccount')]"
+            "value": "[variables('storageAccountName')]"
           },
           "location": {
             "value": "[resourceGroup().location]"

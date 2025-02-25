@@ -3,6 +3,8 @@ param adminUsername string = 'bob'
 @secure()
 param adminPassword string
 
+var storageAccountName = uniqueString(resourceGroup().id, 'storageAccount')
+
 // Module to deploy HubVNET
 module hubVnet './HubVNET/HubVNET.bicep' = {
   name: 'hubVnetDeployment'
@@ -88,7 +90,7 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
 module storageAccountModule './StorageAccount/StorageAccount.bicep' = {
   name: 'storageAccountModule'
   params: {
-    storageAccountName: 'troubleshooting'
+    storageAccountName: storageAccountName
     location: resourceGroup().location
   }
 }
@@ -97,7 +99,7 @@ module storageAccountModule './StorageAccount/StorageAccount.bicep' = {
 module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoints.bicep' = {
   name: 'privateEndpointModule'
   params: {
-    storageAccountName: uniqueString(resourceGroup().id, 'storageAccount')
+    storageAccountName: storageAccountName
     location: resourceGroup().location
     vnetName: 'HubVNET'
     subnetName: 'AzureFirewallSubnet'

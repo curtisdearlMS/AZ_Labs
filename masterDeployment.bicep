@@ -162,43 +162,43 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
   }
 }
 
-// resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = if (deployVnetGwAndAzFw) {
-//   name: 'vpnGwPublicIP'
-//   location: resourceGroup().location
-//   sku: {
-//     name: 'Standard'
-//     tier: 'Regional'
-//   }
-//   properties: {
-//     publicIPAllocationMethod: 'Static'
-//   }
-// }
+resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
+  name: 'vpnGwPublicIP'
+  location: resourceGroup().location
+  sku: {
+    name: 'Standard'
+    tier: 'Regional'
+  }
+  properties: {
+    publicIPAllocationMethod: 'Static'
+  }
+}
 
-// resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = if (deployVnetGwAndAzFw) {
-//   name: 'myVpnGateway'
-//   location: resourceGroup().location
-//   dependsOn: [
-//     azureFirewall
-//   ]
-//   properties: {
-//     ipConfigurations: [
-//       {
-//         name: 'vnetGatewayConfig'
-//         properties: {
-//           subnet: {
-//             id: '${hubVnet.outputs.vnetId}/subnets/GatewaySubnet'
-//           }
-//           publicIPAddress: {
-//             id: publicIpVpnGw.id
-//           }
-//         }
-//       }
-//     ]
-//     gatewayType: 'Vpn'
-//     vpnType: 'RouteBased'
-//     sku: {
-//       name: 'vpngw1'
-//       tier: 'vpngw1'
-//     }
-//   }
-// }
+resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
+  name: 'myVpnGateway'
+  location: resourceGroup().location
+  dependsOn: [
+    azureFirewall
+  ]
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'vnetGatewayConfig'
+        properties: {
+          subnet: {
+            id: '${hubVnet.outputs.vnetId}/subnets/GatewaySubnet'
+          }
+          publicIPAddress: {
+            id: publicIpVpnGw.id
+          }
+        }
+      }
+    ]
+    gatewayType: 'Vpn'
+    vpnType: 'RouteBased'
+    sku: {
+      name: 'vpngw1'
+      tier: 'vpngw1'
+    }
+  }
+}

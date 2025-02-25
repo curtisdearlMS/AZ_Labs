@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14293055860775443572"
+      "templateHash": "5751206482715142074"
     }
   },
   "parameters": {
@@ -60,6 +60,51 @@
         "[resourceId('Microsoft.Network/publicIPAddresses', 'fwPublicIP')]",
         "[resourceId('Microsoft.Resources/deployments', 'vnet1VmsDeployment')]",
         "[resourceId('Microsoft.Resources/deployments', 'vnet2VmsDeployment')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-09-01",
+      "name": "vpnGwPublicIP",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Regional"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworkGateways",
+      "apiVersion": "2023-09-01",
+      "name": "myVpnGateway",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "vnetGatewayConfig",
+            "properties": {
+              "subnet": {
+                "id": "[format('{0}/subnets/GatewaySubnet', reference(resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment'), '2022-09-01').outputs.vnetId.value)]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]"
+              }
+            }
+          }
+        ],
+        "gatewayType": "Vpn",
+        "vpnType": "RouteBased",
+        "sku": {
+          "name": "vpngw1",
+          "tier": "vpngw1"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/azureFirewalls', 'myAzureFirewall')]",
+        "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]"
       ]
     },
     {
@@ -310,6 +355,50 @@
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpFirewallName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/publicIPAddresses",
+              "apiVersion": "2023-09-01",
+              "name": "[parameters('publicIpVpnGwName')]",
+              "location": "[resourceGroup().location]",
+              "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+              },
+              "properties": {
+                "publicIPAllocationMethod": "Static"
+              }
+            },
+            {
+              "type": "Microsoft.Network/virtualNetworkGateways",
+              "apiVersion": "2023-09-01",
+              "name": "[parameters('vpnGatewayName')]",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "ipConfigurations": [
+                  {
+                    "name": "vnetGatewayConfig",
+                    "properties": {
+                      "subnet": {
+                        "id": "[format('{0}/subnets/GatewaySubnet', resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')))]"
+                      },
+                      "publicIPAddress": {
+                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpVpnGwName'))]"
+                      }
+                    }
+                  }
+                ],
+                "gatewayType": "Vpn",
+                "vpnType": "RouteBased",
+                "sku": {
+                  "name": "[parameters('vpnGatewaySku')]",
+                  "tier": "[parameters('vpnGatewaySku')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpVpnGwName'))]",
                 "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
               ]
             }
@@ -1776,7 +1865,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "privatelink.blob.core.windows.net"
+            "value": "[format('privatelink.{0}', environment().suffixes.storage)]"
           },
           "vnetName": {
             "value": "HubVNET"
@@ -1789,7 +1878,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "17536105512933060925"
+              "templateHash": "10057820406364604155"
             }
           },
           "parameters": {
@@ -1803,7 +1892,7 @@
           "resources": [
             {
               "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-              "apiVersion": "2021-05-01",
+              "apiVersion": "2024-06-01",
               "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-{1}-link', parameters('privateDnsZoneName'), parameters('vnetName')))]",
               "location": "global",
               "properties": {
@@ -1828,7 +1917,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "privatelink.blob.core.windows.net"
+            "value": "[format('privatelink.{0}', environment().suffixes.storage)]"
           },
           "vnetName": {
             "value": "VNET1"
@@ -1841,7 +1930,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "17536105512933060925"
+              "templateHash": "10057820406364604155"
             }
           },
           "parameters": {
@@ -1855,7 +1944,7 @@
           "resources": [
             {
               "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-              "apiVersion": "2021-05-01",
+              "apiVersion": "2024-06-01",
               "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-{1}-link', parameters('privateDnsZoneName'), parameters('vnetName')))]",
               "location": "global",
               "properties": {
@@ -1880,7 +1969,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "privatelink.blob.core.windows.net"
+            "value": "[format('privatelink.{0}', environment().suffixes.storage)]"
           },
           "vnetName": {
             "value": "VNET2"
@@ -1893,7 +1982,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "17536105512933060925"
+              "templateHash": "10057820406364604155"
             }
           },
           "parameters": {
@@ -1907,7 +1996,7 @@
           "resources": [
             {
               "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-              "apiVersion": "2021-05-01",
+              "apiVersion": "2024-06-01",
               "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-{1}-link', parameters('privateDnsZoneName'), parameters('vnetName')))]",
               "location": "global",
               "properties": {

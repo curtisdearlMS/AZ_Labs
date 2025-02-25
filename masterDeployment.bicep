@@ -109,7 +109,7 @@ module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoints.bi
 module privateDnsZoneModule './StorageAccount/PrivateDNSZone.bicep' = {
   name: 'privateDnsZoneModule'
   params: {
-    privateDnsZoneName: 'privatelink.blob.core.windows.net'
+    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
   }
 }
 
@@ -120,7 +120,7 @@ module linkPrivateDnsZoneHub './StorageAccount/LinkPrivateDNSZone.bicep' = {
     privateDnsZoneModule
   ]
   params: {
-    privateDnsZoneName: 'privatelink.blob.core.windows.net'
+    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
     vnetName: 'HubVNET'
   }
 }
@@ -132,7 +132,7 @@ module linkPrivateDnsZoneVnet1 './StorageAccount/LinkPrivateDNSZone.bicep' = {
     privateDnsZoneModule
   ]
   params: {
-    privateDnsZoneName: 'privatelink.blob.core.windows.net'
+    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
     vnetName: 'VNET1'
   }
 }
@@ -144,7 +144,7 @@ module linkPrivateDnsZoneVnet2 './StorageAccount/LinkPrivateDNSZone.bicep' = {
     privateDnsZoneModule
   ]
   params: {
-    privateDnsZoneName: 'privatelink.blob.core.windows.net'
+    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
     vnetName: 'VNET2'
   }
 }

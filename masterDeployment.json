@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15122448063756391907"
+      "templateHash": "15969051104083904988"
     }
   },
   "parameters": {
@@ -1865,7 +1865,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "privatelink.blob.core.windows.net"
+            "value": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
           }
         },
         "template": {
@@ -1904,7 +1904,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "privatelink.blob.core.windows.net"
+            "value": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
           },
           "vnetName": {
             "value": "HubVNET"
@@ -1959,7 +1959,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "privatelink.blob.core.windows.net"
+            "value": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
           },
           "vnetName": {
             "value": "VNET1"
@@ -2014,7 +2014,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "privatelink.blob.core.windows.net"
+            "value": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
           },
           "vnetName": {
             "value": "VNET2"

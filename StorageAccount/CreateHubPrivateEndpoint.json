@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "9075488640407787118"
+      "templateHash": "8497417287018777623"
     }
   },
   "parameters": {
@@ -199,7 +199,7 @@
         "mode": "Incremental",
         "parameters": {
           "privateDnsZoneName": {
-            "value": "privatelink.blob.core.windows.net"
+            "value": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
           },
           "vnetName": {
             "value": "[parameters('hubVnetName')]"
@@ -212,7 +212,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "8224307485151663615"
+              "templateHash": "10057820406364604155"
             }
           },
           "parameters": {
@@ -226,7 +226,7 @@
           "resources": [
             {
               "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-              "apiVersion": "2024-05-01",
+              "apiVersion": "2024-06-01",
               "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-{1}-link', parameters('privateDnsZoneName'), parameters('vnetName')))]",
               "location": "global",
               "properties": {

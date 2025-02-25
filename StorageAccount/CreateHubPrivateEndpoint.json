@@ -1,0 +1,244 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.33.93.31351",
+      "templateHash": "9075488640407787118"
+    }
+  },
+  "parameters": {
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "troubleshooting"
+    },
+    "hubVnetName": {
+      "type": "string"
+    },
+    "hubSubnetName": {
+      "type": "string"
+    },
+    "privateEndpointName": {
+      "type": "string",
+      "defaultValue": "[format('{0}-hub-pe', parameters('storageAccountName'))]"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "storageAccountModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageAccountName": {
+            "value": "[parameters('storageAccountName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "16329021624997551344"
+            }
+          },
+          "parameters": {
+            "storageAccountName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            },
+            "skuName": {
+              "type": "string",
+              "defaultValue": "Standard_LRS"
+            },
+            "kind": {
+              "type": "string",
+              "defaultValue": "StorageV2"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2021-04-01",
+              "name": "[parameters('storageAccountName')]",
+              "location": "[parameters('location')]",
+              "sku": {
+                "name": "[parameters('skuName')]"
+              },
+              "kind": "[parameters('kind')]",
+              "properties": {
+                "accessTier": "Hot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "privateEndpointModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageAccountName": {
+            "value": "[parameters('storageAccountName')]"
+          },
+          "vnetName": {
+            "value": "[parameters('hubVnetName')]"
+          },
+          "subnetName": {
+            "value": "[parameters('hubSubnetName')]"
+          },
+          "privateEndpointName": {
+            "value": "[parameters('privateEndpointName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "11293776113108864151"
+            }
+          },
+          "parameters": {
+            "storageAccountName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]"
+            },
+            "vnetName": {
+              "type": "string"
+            },
+            "subnetName": {
+              "type": "string"
+            },
+            "privateEndpointName": {
+              "type": "string",
+              "defaultValue": "[format('{0}-pe', parameters('storageAccountName'))]"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2021-02-01",
+              "name": "[parameters('privateEndpointName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "subnet": {
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+                },
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[format('{0}-plsc', parameters('storageAccountName'))]",
+                    "properties": {
+                      "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+                      "groupIds": [
+                        "blob"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2020-06-01",
+              "name": "[format('privatelink.blob.{0}', environment().suffixes.storage)]",
+              "location": "global"
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2021-02-01",
+              "name": "[format('{0}/{1}', parameters('privateEndpointName'), format('{0}-pdzg', parameters('privateEndpointName')))]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "blobZoneConfig",
+                    "properties": {
+                      "privateDnsZoneId": "[resourceId('Microsoft.Network/privateDnsZones', format('privatelink.blob.{0}', environment().suffixes.storage))]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', format('privatelink.blob.{0}', environment().suffixes.storage))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpointName'))]"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "linkPrivateDnsZoneModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "privateDnsZoneName": {
+            "value": "privatelink.blob.core.windows.net"
+          },
+          "vnetName": {
+            "value": "[parameters('hubVnetName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "8224307485151663615"
+            }
+          },
+          "parameters": {
+            "privateDnsZoneName": {
+              "type": "string"
+            },
+            "vnetName": {
+              "type": "string"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+              "apiVersion": "2024-05-01",
+              "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-{1}-link', parameters('privateDnsZoneName'), parameters('vnetName')))]",
+              "location": "global",
+              "properties": {
+                "virtualNetwork": {
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+                },
+                "registrationEnabled": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

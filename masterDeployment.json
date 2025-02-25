@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3528401816299967753"
+      "templateHash": "17654416739695899269"
     }
   },
   "parameters": {
@@ -63,7 +63,9 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]",
-        "[resourceId('Microsoft.Network/publicIPAddresses', 'fwPublicIP')]"
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'fwPublicIP')]",
+        "[resourceId('Microsoft.Resources/deployments', 'vnet1VmsDeployment')]",
+        "[resourceId('Microsoft.Resources/deployments', 'vnet2VmsDeployment')]"
       ]
     },
     {
@@ -108,6 +110,7 @@
         }
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Network/azureFirewalls', 'myAzureFirewall')]",
         "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]",
         "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]"
       ]
@@ -1289,7 +1292,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'vnet1Deployment')]"
+        "[resourceId('Microsoft.Resources/deployments', 'vnet1Deployment')]",
+        "[resourceId('Microsoft.Resources/deployments', 'vnet1PeeringDeployment')]"
       ]
     },
     {
@@ -1744,7 +1748,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'vnet2Deployment')]"
+        "[resourceId('Microsoft.Resources/deployments', 'vnet2Deployment')]",
+        "[resourceId('Microsoft.Resources/deployments', 'vnet2PeeringDeployment')]"
       ]
     }
   ]

@@ -51,6 +51,7 @@ module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
   name: 'vnet1VmsDeployment'
   dependsOn: [
     vnet1
+    vnet1Peering
   ]
   params: {
     vnetName: 'VNET1'
@@ -65,6 +66,7 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
   name: 'vnet2VmsDeployment'
   dependsOn: [
     vnet2
+    vnet2Peering
   ]
   params: {
     vnetName: 'VNET2'
@@ -91,6 +93,10 @@ resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = if 
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = if (deployVnetGwAndAzFw) {
   name: 'myAzureFirewall'
   location: resourceGroup().location
+  dependsOn: [
+    vnet1Vms
+    vnet2Vms
+  ]
   properties: {
     ipConfigurations: [
       {
@@ -123,6 +129,9 @@ resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = if (de
 resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = if (deployVnetGwAndAzFw) {
   name: 'myVpnGateway'
   location: resourceGroup().location
+  dependsOn: [
+    azureFirewall
+  ]
   properties: {
     ipConfigurations: [
       {

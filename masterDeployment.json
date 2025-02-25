@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "16290871814686502084"
+      "templateHash": "1642780260360447054"
     }
   },
   "parameters": {
@@ -19,9 +19,99 @@
     },
     "adminPassword": {
       "type": "securestring"
+    },
+    "deployVnetGwAndAzFw": {
+      "type": "bool",
+      "defaultValue": false
     }
   },
   "resources": [
+    {
+      "condition": "[parameters('deployVnetGwAndAzFw')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-09-01",
+      "name": "fwPublicIP",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Regional"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "condition": "[parameters('deployVnetGwAndAzFw')]",
+      "type": "Microsoft.Network/azureFirewalls",
+      "apiVersion": "2023-09-01",
+      "name": "myAzureFirewall",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "firewallIPConfig",
+            "properties": {
+              "subnet": {
+                "id": "[format('{0}/subnets/AzureFirewallSubnet', reference(resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment'), '2022-09-01').outputs.vnetId.value)]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'fwPublicIP')]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'fwPublicIP')]"
+      ]
+    },
+    {
+      "condition": "[parameters('deployVnetGwAndAzFw')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-09-01",
+      "name": "vpnGwPublicIP",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Regional"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "condition": "[parameters('deployVnetGwAndAzFw')]",
+      "type": "Microsoft.Network/virtualNetworkGateways",
+      "apiVersion": "2023-09-01",
+      "name": "myVpnGateway",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "vnetGatewayConfig",
+            "properties": {
+              "subnet": {
+                "id": "[format('{0}/subnets/GatewaySubnet', reference(resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment'), '2022-09-01').outputs.vnetId.value)]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]"
+              }
+            }
+          }
+        ],
+        "gatewayType": "Vpn",
+        "vpnType": "RouteBased",
+        "sku": {
+          "name": "vpngw1",
+          "tier": "vpngw1"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]"
+      ]
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -43,7 +133,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "7171851209795164540"
+              "templateHash": "5448267556879197842"
             }
           },
           "parameters": {
@@ -317,7 +407,13 @@
                 "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "vnetId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+            }
+          }
         }
       }
     },
@@ -481,13 +577,13 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "2137536911409116111"
+              "templateHash": "18090243336972609858"
             }
           },
           "parameters": {
             "hubVnetName": {
               "type": "string",
-              "defaultValue": "Hub_VNET_172_12_0_0_16"
+              "defaultValue": "Hub_VNET_10_28_0_0_16"
             },
             "vnet1Name": {
               "type": "string",
@@ -691,13 +787,13 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "8243700272278552321"
+              "templateHash": "17499824619072479312"
             }
           },
           "parameters": {
             "hubVnetName": {
               "type": "string",
-              "defaultValue": "Hub_VNET_172_12_0_0_16"
+              "defaultValue": "Hub_VNET_10_28_0_0_16"
             },
             "vnet2Name": {
               "type": "string",
@@ -774,7 +870,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "5766573014915507060"
+              "templateHash": "16624997264857341769"
             }
           },
           "parameters": {
@@ -813,7 +909,7 @@
                     "value": "[resourceGroup().location]"
                   },
                   "vm_Name": {
-                    "value": "vm1"
+                    "value": "[format('{0}-vm1', parameters('vnetName'))]"
                   },
                   "vmSize": {
                     "value": "[parameters('vmSize')]"
@@ -825,7 +921,7 @@
                     "value": "[parameters('adminPassword')]"
                   },
                   "nic_Name": {
-                    "value": "vm1NIC"
+                    "value": "[format('{0}-vm1NIC', parameters('vnetName'))]"
                   },
                   "accelNet": {
                     "value": false
@@ -1008,7 +1104,7 @@
                     "value": "[resourceGroup().location]"
                   },
                   "vm_Name": {
-                    "value": "vm2"
+                    "value": "[format('{0}-vm2', parameters('vnetName'))]"
                   },
                   "vmSize": {
                     "value": "[parameters('vmSize')]"
@@ -1020,7 +1116,7 @@
                     "value": "[parameters('adminPassword')]"
                   },
                   "nic_Name": {
-                    "value": "vm2NIC"
+                    "value": "[format('{0}-vm2NIC', parameters('vnetName'))]"
                   },
                   "accelNet": {
                     "value": false
@@ -1229,7 +1325,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "17765521977019423316"
+              "templateHash": "4796897920811480973"
             }
           },
           "parameters": {
@@ -1268,7 +1364,7 @@
                     "value": "[resourceGroup().location]"
                   },
                   "vm_Name": {
-                    "value": "vm1"
+                    "value": "[format('{0}-vm1', parameters('vnetName'))]"
                   },
                   "vmSize": {
                     "value": "[parameters('vmSize')]"
@@ -1280,7 +1376,7 @@
                     "value": "[parameters('adminPassword')]"
                   },
                   "nic_Name": {
-                    "value": "vm1NIC"
+                    "value": "[format('{0}-vm1NIC', parameters('vnetName'))]"
                   },
                   "accelNet": {
                     "value": false
@@ -1463,7 +1559,7 @@
                     "value": "[resourceGroup().location]"
                   },
                   "vm_Name": {
-                    "value": "vm2"
+                    "value": "[format('{0}-vm2', parameters('vnetName'))]"
                   },
                   "vmSize": {
                     "value": "[parameters('vmSize')]"
@@ -1475,7 +1571,7 @@
                     "value": "[parameters('adminPassword')]"
                   },
                   "nic_Name": {
-                    "value": "vm2NIC"
+                    "value": "[format('{0}-vm2NIC', parameters('vnetName'))]"
                   },
                   "accelNet": {
                     "value": false

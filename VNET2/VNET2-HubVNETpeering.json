@@ -5,13 +5,13 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "8243700272278552321"
+      "templateHash": "17499824619072479312"
     }
   },
   "parameters": {
     "hubVnetName": {
       "type": "string",
-      "defaultValue": "Hub_VNET_172_12_0_0_16"
+      "defaultValue": "Hub_VNET_10_28_0_0_16"
     },
     "vnet2Name": {
       "type": "string",

@@ -219,3 +219,5 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
     }
   }
 }
+
+output vnetId string = vnet.id

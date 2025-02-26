@@ -128,6 +128,22 @@ module privateDnsZoneModule './StorageAccount/PrivateDNSZone.bicep' = {
   }
 }
 
+// Module to add the Private Endpoint Record to the Private DNS Zone
+module privateDnsZoneRecordModule './StorageAccount/PrivateDNSZoneRecord.bicep' = {
+  name: 'privateDnsZoneRecordModule'
+  dependsOn: [
+    privateDnsZoneModule
+    privateEndpointModule
+  ]
+  params: {
+    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
+    privateEndpointName: resolvedPrivateEndpointName
+    privateDnsZoneResourceGroup: resourceGroup().name
+    privateEndpointResourceGroup: resourceGroup().name
+  }
+}
+
+
 // Module to link the private DNS zone to the HubVNET
 module linkPrivateDnsZoneHub './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneHub'

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "2665413105397682056"
+      "templateHash": "17757849849265861253"
     }
   },
   "parameters": {
@@ -90,14 +90,10 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "9946734734726297094"
+              "templateHash": "17831973168895318954"
             }
           },
           "parameters": {
-            "vpnGatewaySku": {
-              "type": "string",
-              "defaultValue": "vpngw1"
-            },
             "vnetName": {
               "type": "string",
               "defaultValue": "HubVNET"
@@ -106,17 +102,9 @@
               "type": "string",
               "defaultValue": "myAzureFirewall"
             },
-            "vpnGatewayName": {
-              "type": "string",
-              "defaultValue": "myVpnGateway"
-            },
             "publicIpFirewallName": {
               "type": "string",
               "defaultValue": "fwPublicIP"
-            },
-            "publicIpVpnGwName": {
-              "type": "string",
-              "defaultValue": "vpnGwPublicIP"
             }
           },
           "resources": [
@@ -317,50 +305,6 @@
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpFirewallName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
-              ]
-            },
-            {
-              "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-09-01",
-              "name": "[parameters('publicIpVpnGwName')]",
-              "location": "[resourceGroup().location]",
-              "sku": {
-                "name": "Standard",
-                "tier": "Regional"
-              },
-              "properties": {
-                "publicIPAllocationMethod": "Static"
-              }
-            },
-            {
-              "type": "Microsoft.Network/virtualNetworkGateways",
-              "apiVersion": "2023-09-01",
-              "name": "[parameters('vpnGatewayName')]",
-              "location": "[resourceGroup().location]",
-              "properties": {
-                "ipConfigurations": [
-                  {
-                    "name": "vnetGatewayConfig",
-                    "properties": {
-                      "subnet": {
-                        "id": "[format('{0}/subnets/GatewaySubnet', resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')))]"
-                      },
-                      "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpVpnGwName'))]"
-                      }
-                    }
-                  }
-                ],
-                "gatewayType": "Vpn",
-                "vpnType": "RouteBased",
-                "sku": {
-                  "name": "[parameters('vpnGatewaySku')]",
-                  "tier": "[parameters('vpnGatewaySku')]"
-                }
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpVpnGwName'))]",
                 "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
               ]
             }

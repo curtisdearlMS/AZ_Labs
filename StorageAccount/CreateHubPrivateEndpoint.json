@@ -5,20 +5,19 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3147485621600494888"
+      "templateHash": "11966026391069888569"
     }
   },
   "parameters": {
     "hubVnetName": {
-      "type": "string"
-    },
-    "privateEndpointName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "hubVNET"
     }
   },
   "variables": {
-    "storageAccountName": "[uniqueString(resourceGroup().id, 'storageAccount')]",
-    "resolvedPrivateEndpointName": "[if(empty(parameters('privateEndpointName')), format('{0}-hub-pe', variables('storageAccountName')), parameters('privateEndpointName'))]"
+    "storageAccountName": "[toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))]",
+    "privateEndpointName": "[format('{0}-hub-pe', variables('storageAccountName'))]",
+    "resolvedPrivateEndpointName": "[if(empty(variables('privateEndpointName')), format('{0}-hub-pe', variables('storageAccountName')), variables('privateEndpointName'))]"
   },
   "resources": [
     {

@@ -1,6 +1,6 @@
-var storageAccountName = uniqueString(resourceGroup().id, 'storageAccount')
-param hubVnetName string
-param privateEndpointName string
+param hubVnetName string ='hubVNET'
+var storageAccountName = toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))
+var privateEndpointName = '${storageAccountName}-hub-pe'
 var resolvedPrivateEndpointName = empty(privateEndpointName) ? '${storageAccountName}-hub-pe' : privateEndpointName
 
 // Module to create the storage account

@@ -1,7 +1,7 @@
 param publicIpVpnGwName string = 'vpnGwPublicIP'
 param vpnGatewayName string = 'myVpnGateway'
 param vpnGatewaySku string = 'vpngw1'
-param hubVnetId string
+param hubVnetId string = 'hubVNET'
 
 resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpVpnGwName

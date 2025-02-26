@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14479502817870864434"
+      "templateHash": "5266415493050719869"
     }
   },
   "parameters": {
@@ -26,12 +26,34 @@
     {
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2020-11-01",
+      "name": "[format('{0}/hubToVnet1Peering', parameters('hubVnetName'))]",
+      "properties": {
+        "remoteVirtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
+        },
+        "allowGatewayTransit": true
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "apiVersion": "2020-11-01",
+      "name": "[format('{0}/hubToVnet2Peering', parameters('hubVnetName'))]",
+      "properties": {
+        "remoteVirtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet2Name'))]"
+        },
+        "allowGatewayTransit": true
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "apiVersion": "2020-11-01",
       "name": "[format('{0}/vnet1ToHubPeering', parameters('vnet1Name'))]",
       "properties": {
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
         },
-        "allowGatewayTransit": true
+        "useRemoteGateways": true
       }
     },
     {
@@ -42,7 +64,7 @@
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
         },
-        "allowGatewayTransit": true
+        "useRemoteGateways": true
       }
     }
   ]

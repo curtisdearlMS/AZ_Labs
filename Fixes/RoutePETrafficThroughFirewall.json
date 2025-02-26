@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "11539674870403324834"
+      "templateHash": "16289402229351631991"
     }
   },
   "parameters": {
@@ -36,21 +36,11 @@
   },
   "resources": [
     {
-      "type": "Microsoft.Network/routeTables",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2023-05-01",
-      "name": "[format('{0}-{1}-rt', parameters('hubVnetName'), parameters('hubPeSubnetName'))]",
+      "name": "[format('{0}/{1}', parameters('hubVnetName'), parameters('hubPeSubnetName'))]",
       "properties": {
-        "disableBgpRoutePropagation": false,
-        "routes": [
-          {
-            "name": "RouteToFirewall",
-            "properties": {
-              "addressPrefix": "0.0.0.0/0",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, 'yourResourceGroupName'), 'Microsoft.Network/azureFirewalls', 'yourFirewallName'), '2023-05-01').ipConfigurations[0].properties.privateIPAddress]"
-            }
-          }
-        ]
+        "privateEndpointNetworkPolicies": "Enabled"
       }
     },
     {

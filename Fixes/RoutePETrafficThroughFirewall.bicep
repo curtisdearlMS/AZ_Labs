@@ -19,24 +19,13 @@ resource hubPeSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' exis
   name: hubPeSubnetName
   parent: hubVnet
 }
-
-resource hubPeSubnetRouteTable 'Microsoft.Network/routeTables@2023-05-01' = {
-  name: '${hubVnetName}-${hubPeSubnetName}-rt'
+resource hubPeSubnetUpdate 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' = {
+  name: hubPeSubnetName
+  parent: hubVnet
   properties: {
-    disableBgpRoutePropagation: false
-    routes: [
-      {
-        name: 'RouteToFirewall'
-        properties: {
-          addressPrefix: '0.0.0.0/0'
-          nextHopType: 'VirtualAppliance'
-          nextHopIpAddress: firewallPrivateIp
-        }
-      }
-    ]
+    privateEndpointNetworkPolicies: 'Enabled'
   }
 }
-
 resource vnet1VmSubnetRouteTable 'Microsoft.Network/routeTables@2023-05-01' = {
   name: '${vnet1Name}-${vnet1VmSubnetName}-rt'
   properties: {

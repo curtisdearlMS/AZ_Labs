@@ -102,6 +102,7 @@ module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoint.bic
   name: 'privateEndpointModule'
   dependsOn: [
     hubVnet
+    storageAccountModule
   ]
   params: {
     storageAccountName: storageAccountName

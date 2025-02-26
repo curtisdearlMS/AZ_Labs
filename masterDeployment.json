@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "13821783844443545264"
+      "templateHash": "7523258351066521133"
     }
   },
   "parameters": {
@@ -1758,7 +1758,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]"
+        "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]",
+        "[resourceId('Microsoft.Resources/deployments', 'storageAccountModule')]"
       ]
     },
     {

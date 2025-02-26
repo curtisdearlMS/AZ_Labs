@@ -32,7 +32,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   location: location
   properties: {
     subnet: {
-      id: resourceId('${vnetResourceGroupName}', 'Microsoft.Network/virtualNetworks/subnets', '${hubVnetName}', 'default')
+      id: resourceId('${vnetResourceGroupName}', 'Microsoft.Network/virtualNetworks/subnets', '${hubVnetName}', 'PrivateEndpointSubnet')
     }
     privateLinkServiceConnections: [
       {

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14995263678092077015"
+      "templateHash": "11780194178233618065"
     }
   },
   "parameters": {
@@ -25,6 +25,7 @@
     },
     "vnetResourceGroupName": {
       "type": "string",
+      "defaultValue": "[resourceGroup().name]",
       "metadata": {
         "description": "Name of the resource group containing the virtual networks"
       }
@@ -73,7 +74,7 @@
       "location": "[parameters('location')]",
       "properties": {
         "subnet": {
-          "id": "[resourceId(format('{0}', parameters('vnetResourceGroupName')), 'Microsoft.Network/virtualNetworks/subnets', format('{0}', parameters('hubVnetName')), 'default')]"
+          "id": "[resourceId(format('{0}', parameters('vnetResourceGroupName')), 'Microsoft.Network/virtualNetworks/subnets', format('{0}', parameters('hubVnetName')), 'PrivateEndpointSubnet')]"
         },
         "privateLinkServiceConnections": [
           {

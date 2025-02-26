@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 param vnetResourceGroupName string
 
 @description('Names of the virtual networks')
-param hubVnetName string = 'hub-vnet'
+param hubVnetName string = 'hubvnet'
 param vnet1Name string = 'vnet1'
 param vnet2Name string = 'vnet2'
 

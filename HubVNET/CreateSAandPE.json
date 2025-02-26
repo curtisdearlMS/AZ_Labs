@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "2851434058706282732"
+      "templateHash": "14995263678092077015"
     }
   },
   "parameters": {
@@ -31,7 +31,7 @@
     },
     "hubVnetName": {
       "type": "string",
-      "defaultValue": "hub-vnet",
+      "defaultValue": "hubvnet",
       "metadata": {
         "description": "Names of the virtual networks"
       }

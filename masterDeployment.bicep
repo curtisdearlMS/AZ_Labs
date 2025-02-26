@@ -3,7 +3,7 @@ param adminUsername string = 'bob'
 @secure()
 param adminPassword string
 
-var storageAccountName = uniqueString(resourceGroup().id, 'storageAccount')
+var storageAccountName = toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))
 
 // Module to deploy HubVNET
 module hubVnet './HubVNET/HubVNET.bicep' = {
@@ -103,6 +103,7 @@ module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoint.bic
   ]
   params: {
     storageAccountName: storageAccountName
+    location: resourceGroup().location
     vnetName: 'HubVNET'
     subnetName: 'PrivateEndpointSubnet'
     privateEndpointName: 'troubleshooting-hub-pe'

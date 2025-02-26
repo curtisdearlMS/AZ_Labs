@@ -19,7 +19,7 @@ module privateEndpointModule 'StorageAccountPrivateEndpoint.bicep' = {
     storageAccountName: storageAccountName
     vnetName: hubVnetName
     privateEndpointName: resolvedPrivateEndpointName
-    subnetName: 'default'
+    subnetName: 'PrivateEndpointSubnet'
   }
   dependsOn: [
     storageAccountModule
@@ -46,5 +46,6 @@ module linkPrivateDnsZoneModule 'LinkPrivateDNSZone.bicep' = {
   dependsOn: [
     storageAccountModule
     privateEndpointModule
+    privateDnsZoneModule
   ]
 }

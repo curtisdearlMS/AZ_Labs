@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "6321334979233637745"
+      "templateHash": "4644068824028648312"
     }
   },
   "parameters": {
@@ -1767,7 +1767,7 @@
             "value": "HubVNET"
           },
           "subnetName": {
-            "value": "AzureFirewallSubnet"
+            "value": "PrivateEndpointSubnet"
           },
           "privateEndpointName": {
             "value": "troubleshooting-hub-pe"

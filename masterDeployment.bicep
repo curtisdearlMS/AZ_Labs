@@ -92,7 +92,6 @@ module storageAccountModule './StorageAccount/StorageAccount.bicep' = {
   params: {
     kind: 'StorageV2'
     skuName: 'Standard_LRS'
-
   }
 }
 
@@ -102,7 +101,7 @@ module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoint.bic
   params: {
     storageAccountName: storageAccountName
     vnetName: 'HubVNET'
-    subnetName: 'AzureFirewallSubnet'
+    subnetName: 'PrivateEndpointSubnet'
     privateEndpointName: 'troubleshooting-hub-pe'
   }
 }

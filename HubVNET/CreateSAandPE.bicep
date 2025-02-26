@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 param vnetResourceGroupName string = resourceGroup().name
 
 @description('Name of the private DNS zone')
-param privateDnsZoneName string = 'privatelink.${environment().suffixes.storage}'
+param privateDnsZoneName string = 'privatelink.blob.${environment().suffixes.storage}'
 
 // Module to create the storage account
 module storageAccountModule '../Modules/StorageAccount.bicep' = {

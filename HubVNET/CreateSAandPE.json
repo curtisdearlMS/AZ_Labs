@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "6590070727321700185"
+      "templateHash": "5662328202310148423"
     }
   },
   "parameters": {
@@ -32,7 +32,7 @@
     },
     "privateDnsZoneName": {
       "type": "string",
-      "defaultValue": "[format('privatelink.{0}', environment().suffixes.storage)]",
+      "defaultValue": "[format('privatelink.blob.{0}', environment().suffixes.storage)]",
       "metadata": {
         "description": "Name of the private DNS zone"
       }

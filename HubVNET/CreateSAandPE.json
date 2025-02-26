@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "11379367955187223192"
+      "templateHash": "2851434058706282732"
     }
   },
   "parameters": {
@@ -31,19 +31,22 @@
     },
     "hubVnetName": {
       "type": "string",
+      "defaultValue": "hub-vnet",
       "metadata": {
         "description": "Names of the virtual networks"
       }
     },
     "vnet1Name": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "vnet1"
     },
     "vnet2Name": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "vnet2"
     },
     "privateDnsZoneName": {
       "type": "string",
-      "defaultValue": "privatelink.blob.core.windows.net",
+      "defaultValue": "[format('privatelink.{0}', environment().suffixes.storage)]",
       "metadata": {
         "description": "Name of the private DNS zone"
       }
@@ -70,7 +73,7 @@
       "location": "[parameters('location')]",
       "properties": {
         "subnet": {
-          "id": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Network/virtualNetworks/{2}/subnets/default', subscription().subscriptionId, parameters('vnetResourceGroupName'), parameters('hubVnetName'))]"
+          "id": "[resourceId(format('{0}', parameters('vnetResourceGroupName')), 'Microsoft.Network/virtualNetworks/subnets', format('{0}', parameters('hubVnetName')), 'default')]"
         },
         "privateLinkServiceConnections": [
           {
@@ -96,7 +99,7 @@
     },
     {
       "type": "Microsoft.Network/privateDnsZoneGroups",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-01-01",
       "name": "[format('{0}-pdz-group', parameters('storageAccountName'))]",
       "location": "[parameters('location')]",
       "properties": {
@@ -117,35 +120,44 @@
     {
       "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
       "apiVersion": "2018-09-01",
-      "name": "[format('{0}/{1}-link', parameters('privateDnsZoneName'), parameters('hubVnetName'))]",
+      "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-link', parameters('hubVnetName')))]",
       "properties": {
         "virtualNetwork": {
           "id": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Network/virtualNetworks/{2}', subscription().subscriptionId, parameters('vnetResourceGroupName'), parameters('hubVnetName'))]"
         },
         "registrationEnabled": false
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneName'))]"
+      ]
     },
     {
       "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
       "apiVersion": "2018-09-01",
-      "name": "[format('{0}/{1}-link', parameters('privateDnsZoneName'), parameters('vnet1Name'))]",
+      "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-link', parameters('vnet1Name')))]",
       "properties": {
         "virtualNetwork": {
           "id": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Network/virtualNetworks/{2}', subscription().subscriptionId, parameters('vnetResourceGroupName'), parameters('vnet1Name'))]"
         },
         "registrationEnabled": false
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneName'))]"
+      ]
     },
     {
       "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
       "apiVersion": "2018-09-01",
-      "name": "[format('{0}/{1}-link', parameters('privateDnsZoneName'), parameters('vnet2Name'))]",
+      "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-link', parameters('vnet2Name')))]",
       "properties": {
         "virtualNetwork": {
           "id": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Network/virtualNetworks/{2}', subscription().subscriptionId, parameters('vnetResourceGroupName'), parameters('vnet2Name'))]"
         },
         "registrationEnabled": false
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneName'))]"
+      ]
     }
   ]
 }

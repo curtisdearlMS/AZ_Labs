@@ -1,3 +1,0 @@
-Get-AzNetworkSecurityGroup -Name "VNET2-nsgVMSubnet" -ResourceGroupName "TEST-BICEP" | Add-AzNetworkSecurityRuleConfig -Name "CORPNET-SSH-RDP" -Access "Allow" -Protocol "TCP" -Direction "Inbound" -Priority "150" -SourceAddressPrefix "CorpNetSaw" -SourcePortRange "*" -DestinationPortRange "22" -DestinationAddressPrefix "*" | Set-AzNetworkSecurityGroup
-Get-AzNetworkSecurityGroup -Name "VNET2-nsgVMSubnet" -ResourceGroupName "TEST-BICEP" | Add-AzNetworkSecurityRuleConfig -Name "CORPNET-SSH-RDP" -Access "Allow" -Protocol "TCP" -Direction "Inbound" -Priority "160" -SourceAddressPrefix "CorpnetPublic" -SourcePortRange "*" -DestinationPortRange "22" -DestinationAddressPrefix "*" | Set-AzNetworkSecurityGroup
- 

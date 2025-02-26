@@ -1,7 +1,7 @@
 param vmSize string = 'Standard_D2s_v6' 
 param adminUsername string = 'bob'
 @secure()
-param adminPassword string
+param adminPassword string = 'moonCAKE!'
 var storageAccountName = toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))
 var privateEndpointName = '${storageAccountName}-hub-pe'
 var resolvedPrivateEndpointName = empty(privateEndpointName) ? '${storageAccountName}-hub-pe' : privateEndpointName
@@ -88,100 +88,21 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
   }
 }
 
-// Module to create the storage account
-module storageAccountModule './StorageAccount/StorageAccount.bicep' = {
-  name: 'storageAccountModule'
-  params: {
-    kind: 'StorageV2'
-    skuName: 'Standard_LRS'
-  }
-}
-
-// Module to create the private endpoint for the storage account
-module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoint.bicep' = {
-  name: 'privateEndpointModule'
+// Deploy the Storage Account, Private Endpoint, and Private DNS zone, Create A record for PE, Link to all 3 VNETs
+module createSAandPE './HubVNET/CreateSAandPE.bicep' = {
+  name: 'createSAandPEDeployment'
   dependsOn: [
+    vnet1
+    vnet2
     hubVnet
-    storageAccountModule
   ]
   params: {
     storageAccountName: storageAccountName
-    location: resourceGroup().location
-    vnetName: 'HubVNET'
-    subnetName: 'PrivateEndpointSubnet'
-    privateEndpointName: resolvedPrivateEndpointName
-  }
-}
-
-// Module to create the private DNS zone for the private endpoint
-module privateDnsZoneModule './StorageAccount/PrivateDNSZone.bicep' = {
-  name: 'privateDnsZoneModule'
-  dependsOn: [
-    hubVnet
-    vnet1
-    vnet2
-    privateEndpointModule
-    storageAccountModule
-  ]
-  params: {
-    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
-  }
-}
-
-// Module to add the Private Endpoint Record to the Private DNS Zone
-module privateDnsZoneRecordModule './StorageAccount/PrivateDNSZoneRecord.bicep' = {
-  name: 'privateDnsZoneRecordModule'
-  dependsOn: [
-    privateDnsZoneModule
-    privateEndpointModule
-  ]
-  params: {
-    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
-    privateEndpointName: resolvedPrivateEndpointName
-    privateDnsZoneResourceGroup: resourceGroup().name
-    privateEndpointResourceGroup: resourceGroup().name
-  }
-}
-
-
-// Module to link the private DNS zone to the HubVNET
-module linkPrivateDnsZoneHub './StorageAccount/LinkPrivateDNSZone.bicep' = {
-  name: 'linkPrivateDnsZoneHub'
-  dependsOn: [
-    hubVnet
-    privateDnsZoneModule
-  ]
-  params: {
-    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
-    vnetName: 'HubVNET'
-  }
-}
-
-// Module to link the private DNS zone to VNET1
-module linkPrivateDnsZoneVnet1 './StorageAccount/LinkPrivateDNSZone.bicep' = {
-  name: 'linkPrivateDnsZoneVnet1'
-  dependsOn: [
-    vnet1
-    privateDnsZoneModule
-    privateEndpointModule
-  ]
-  params: {
-    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
-    vnetName: 'VNET1'
-  }
-}
-
-// Module to link the private DNS zone to VNET2
-module linkPrivateDnsZoneVnet2 './StorageAccount/LinkPrivateDNSZone.bicep' = {
-  name: 'linkPrivateDnsZoneVnet2'
-  dependsOn: [
-    vnet2
-    privateDnsZoneModule
-    privateEndpointModule
-  ]
-  params: {
-    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
-    vnetName: 'VNET2'
+    privateDnsZoneName: resolvedPrivateEndpointName
+    hubVnetName: 'HubVNET'
+    vnet1Name: 'VNET1'
+    vnet2Name: 'VNET2'
+    vnetResourceGroupName: resourceGroup().name
   }
 }
 

@@ -8,12 +8,12 @@ param location string = resourceGroup().location
 param vnetResourceGroupName string
 
 @description('Names of the virtual networks')
-param hubVnetName string
-param vnet1Name string
-param vnet2Name string
+param hubVnetName string = 'hub-vnet'
+param vnet1Name string = 'vnet1'
+param vnet2Name string = 'vnet2'
 
 @description('Name of the private DNS zone')
-param privateDnsZoneName string = 'privatelink.blob.core.windows.net'
+param privateDnsZoneName string = 'privatelink.${environment().suffixes.storage}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
   name: storageAccountName
@@ -32,7 +32,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   location: location
   properties: {
     subnet: {
-      id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${hubVnetName}/subnets/default'
+      id: resourceId('${vnetResourceGroupName}', 'Microsoft.Network/virtualNetworks/subnets', '${hubVnetName}', 'default')
     }
     privateLinkServiceConnections: [
       {
@@ -53,7 +53,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
   location: 'global'
 }
 
-resource privateDnsZoneGroup 'Microsoft.Network/privateDnsZoneGroups@2021-05-01' = {
+resource privateDnsZoneGroup 'Microsoft.Network/privateDnsZoneGroups@2021-01-01' = {
   name: '${storageAccountName}-pdz-group'
   location: location
   properties: {
@@ -72,7 +72,8 @@ resource privateDnsZoneGroup 'Microsoft.Network/privateDnsZoneGroups@2021-05-01'
 }
 
 resource hubVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  name: '${privateDnsZoneName}/${hubVnetName}-link'
+  parent: privateDnsZone
+  name: '${hubVnetName}-link'
   properties: {
     virtualNetwork: {
       id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${hubVnetName}'
@@ -82,7 +83,8 @@ resource hubVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018
 }
 
 resource vnet1Link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  name: '${privateDnsZoneName}/${vnet1Name}-link'
+  parent: privateDnsZone
+  name: '${vnet1Name}-link'
   properties: {
     virtualNetwork: {
       id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${vnet1Name}'
@@ -92,7 +94,8 @@ resource vnet1Link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-0
 }
 
 resource vnet2Link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  name: '${privateDnsZoneName}/${vnet2Name}-link'
+  parent: privateDnsZone
+  name: '${vnet2Name}-link'
   properties: {
     virtualNetwork: {
       id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${vnet2Name}'

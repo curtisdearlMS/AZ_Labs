@@ -25,8 +25,13 @@ module privateEndpointModule 'StorageAccountPrivateEndpoint.bicep' = {
     storageAccountModule
   ]
 }
-// Module to create the private DNS zone for the private endpoint
-module privateDnsZoneModule 'PrivateDNSZone.bicep' = {
+// Check if the private DNS zone already exists
+resource existingPrivateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing = {
+  name: 'privatelink.blob.${environment().suffixes.storage}'
+}
+
+// Module to create the private DNS zone for the private endpoint if it does not already exist
+module privateDnsZoneModule 'PrivateDNSZone.bicep' = if (empty(existingPrivateDnsZone)) {
   name: 'privateDnsZoneModule'
   params: {
     privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
@@ -36,6 +41,21 @@ module privateDnsZoneModule 'PrivateDNSZone.bicep' = {
     privateEndpointModule
   ]
 }
+
+//Module to add Private Endpoint to the Private DNS Zone
+module privateModule 'PrivateDNSZoneLink.bicep' = {
+  name: 'privateDnsZoneLinkModule'
+  params: {
+    privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
+    vnetName: hubVnetName
+  }
+  dependsOn: [
+    storageAccountModule
+    privateEndpointModule
+    privateDnsZoneModule
+  ]
+}
+
 // Module to link the private DNS zone to the VNET
 module linkPrivateDnsZoneModule 'LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneModule'

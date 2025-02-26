@@ -38,22 +38,3 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-02-01' = {
   }
 }
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.blob.${environment().suffixes.storage}'
-  location: 'global'
-}
-
-resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-02-01' = {
-  name: '${privateEndpointName}-pdzg'
-  parent: privateEndpoint
-  properties: {
-    privateDnsZoneConfigs: [
-      {
-        name: 'blobZoneConfig'
-        properties: {
-          privateDnsZoneId: privateDnsZone.id
-        }
-      }
-    ]
-  }
-}

@@ -5,7 +5,7 @@ param storageAccountName string = uniqueString(resourceGroup().id, 'storageAccou
 param location string = resourceGroup().location
 
 @description('Name of the resource group containing the virtual networks')
-param vnetResourceGroupName string
+param vnetResourceGroupName string = resourceGroup().name
 
 @description('Names of the virtual networks')
 param hubVnetName string = 'hubvnet'

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15282842857490387919"
+      "templateHash": "12673227456552359577"
     }
   },
   "parameters": {
@@ -227,7 +227,7 @@
           },
           "virtualNetwork_IDs": {
             "value": [
-              "[format('{0}/providers/Microsoft.Network/virtualNetworks/hubvnet', parameters('vnetResourceGroupName'))]",
+              "[format('{0}/providers/Microsoft.Network/virtualNetworks/hubVNET', parameters('vnetResourceGroupName'))]",
               "[format('{0}/providers/Microsoft.Network/virtualNetworks/vnet1', parameters('vnetResourceGroupName'))]",
               "[format('{0}/providers/Microsoft.Network/virtualNetworks/vnet2', parameters('vnetResourceGroupName'))]"
             ]
@@ -242,7 +242,7 @@
             "value": "[parameters('location')]"
           },
           "privateEndpoint_SubnetID": {
-            "value": "[format('{0}/providers/Microsoft.Network/virtualNetworks/hubVnet/subnets/PrivateEndpointSubnet', parameters('vnetResourceGroupName'))]"
+            "value": "/Microsoft.Network/virtualNetworks/hubVNET/subnets/PrivateEndpointSubnet"
           },
           "privateLinkServiceId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storageAccountModule'), '2022-09-01').outputs.storageAccount_ID.value]"
@@ -430,7 +430,11 @@
             }
           }
         }
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'privateEndpointModule')]",
+        "[resourceId('Microsoft.Resources/deployments', 'storageAccountModule')]"
+      ]
     },
     {
       "type": "Microsoft.Resources/deployments",

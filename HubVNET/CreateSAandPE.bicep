@@ -25,16 +25,19 @@ module privateEndpointModule '../Modules/PrivateEndpoint.bicep' = {
   params: {
     privateEndpoint_Name: storageAccountName
     virtualNetwork_IDs : [
-      '${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/hubvnet'
+      '${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/hubVNET'
       '${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/vnet1'
       '${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/vnet2'
     ]
     groupID: 'blob'
     privateDNSZone_Name: privateDnsZoneName
     location: location
-    privateEndpoint_SubnetID: '${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/hubVnet/subnets/PrivateEndpointSubnet'
+    privateEndpoint_SubnetID: '/Microsoft.Network/virtualNetworks/hubVNET/subnets/PrivateEndpointSubnet'
     privateLinkServiceId: storageAccountModule.outputs.storageAccount_ID
   }
+  dependsOn: [
+    storageAccountModule
+  ]
 }
 
 module privateendpointNetworkInterface '../Modules/PrivateEndpointNetworkInterface.bicep' = {
@@ -42,6 +45,10 @@ module privateendpointNetworkInterface '../Modules/PrivateEndpointNetworkInterfa
   params: {
     existing_PrivateEndpoint_NetworkInterface_Name: storageAccountName
   }
+  dependsOn: [
+    privateEndpointModule
+    storageAccountModule
+  ]
 }
 
 module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
@@ -52,4 +59,7 @@ module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
     ipv4Address: privateendpointNetworkInterface.outputs.privateEndpoint_IPAddress
     ttlInSeconds: 3600
   }
+  dependsOn: [
+    privateendpointNetworkInterface
+  ]
 }

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "11780194178233618065"
+      "templateHash": "3157289920411635792"
     }
   },
   "parameters": {
@@ -71,7 +71,6 @@
       "type": "Microsoft.Network/privateEndpoints",
       "apiVersion": "2021-05-01",
       "name": "[format('{0}-pe', parameters('storageAccountName'))]",
-      "location": "[parameters('location')]",
       "properties": {
         "subnet": {
           "id": "[resourceId(format('{0}', parameters('vnetResourceGroupName')), 'Microsoft.Network/virtualNetworks/subnets', format('{0}', parameters('hubVnetName')), 'PrivateEndpointSubnet')]"
@@ -100,9 +99,8 @@
     },
     {
       "type": "Microsoft.Network/privateDnsZoneGroups",
-      "apiVersion": "2021-01-01",
+      "apiVersion": "2024-05-01",
       "name": "[format('{0}-pdz-group', parameters('storageAccountName'))]",
-      "location": "[parameters('location')]",
       "properties": {
         "privateDnsZoneConfigs": [
           {

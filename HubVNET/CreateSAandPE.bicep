@@ -15,91 +15,57 @@ param vnet2Name string = 'vnet2'
 @description('Name of the private DNS zone')
 param privateDnsZoneName string = 'privatelink.${environment().suffixes.storage}'
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
-  name: storageAccountName
-  location: location
-  sku: {
-    name: 'Standard_LRS'
-  }
-  kind: 'StorageV2'
-  properties: {
-    accessTier: 'Hot'
+// Module to create the storage account
+module storageAccountModule './Modules/storageAccount.bicep' = {
+  name: 'storageAccountModule'
+  params: {
+    storageAccountName: storageAccountName
+    location: location
   }
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
-  name: '${storageAccountName}-pe'
-  location: location
-  properties: {
-    subnet: {
-      id: resourceId('${vnetResourceGroupName}', 'Microsoft.Network/virtualNetworks/subnets', '${hubVnetName}', 'PrivateEndpointSubnet')
-    }
-    privateLinkServiceConnections: [
-      {
-        name: '${storageAccountName}-pe-connection'
-        properties: {
-          privateLinkServiceId: storageAccount.id
-          groupIds: [
-            'blob'
-          ]
-        }
-      }
-    ]
+// Module to create the private endpoint
+module privateEndpointModule './Modules/privateEndpoint.bicep' = {
+  name: 'privateEndpointModule'
+  params: {
+    storageAccountName: storageAccountName
+    vnetResourceGroupName: vnetResourceGroupName
+    hubVnetName: hubVnetName
   }
 }
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
-  name: privateDnsZoneName
-  location: 'global'
-}
-
-resource privateDnsZoneGroup 'Microsoft.Network/privateDnsZoneGroups@2021-01-01' = {
-  name: '${storageAccountName}-pdz-group'
-  location: location
-  properties: {
-    privateDnsZoneConfigs: [
-      {
-        name: privateDnsZoneName
-        properties: {
-          privateDnsZoneId: privateDnsZone.id
-        }
-      }
-    ]
-  }
-  dependsOn: [
-    privateEndpoint
-  ]
-}
-
-resource hubVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  parent: privateDnsZone
-  name: '${hubVnetName}-link'
-  properties: {
-    virtualNetwork: {
-      id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${hubVnetName}'
-    }
-    registrationEnabled: false
+// Module to create the private DNS zone
+module privateDnsZoneModule './Modules/privateDnsZone.bicep' = {
+  name: 'privateDnsZoneModule'
+  params: {
+    privateDnsZoneName: privateDnsZoneName
   }
 }
 
-resource vnet1Link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  parent: privateDnsZone
-  name: '${vnet1Name}-link'
-  properties: {
-    virtualNetwork: {
-      id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${vnet1Name}'
-    }
-    registrationEnabled: false
+// Module to create the virtual network links
+module hubVnetLinkModule './Modules/virtualNetworkLink.bicep' = {
+  name: 'hubVnetLinkModule'
+  params: {
+    privateDnsZoneName: privateDnsZoneName
+    vnetResourceGroupName: vnetResourceGroupName
+    vnetName: hubVnetName
   }
 }
 
-resource vnet2Link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  parent: privateDnsZone
-  name: '${vnet2Name}-link'
-  properties: {
-    virtualNetwork: {
-      id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/${vnet2Name}'
-    }
-    registrationEnabled: false
+module vnet1LinkModule './Modules/virtualNetworkLink.bicep' = {
+  name: 'vnet1LinkModule'
+  params: {
+    privateDnsZoneName: privateDnsZoneName
+    vnetResourceGroupName: vnetResourceGroupName
+    vnetName: vnet1Name
+  }
+}
+
+module vnet2LinkModule './Modules/virtualNetworkLink.bicep' = {
+  name: 'vnet2LinkModule'
+  params: {
+    privateDnsZoneName: privateDnsZoneName
+    vnetResourceGroupName: vnetResourceGroupName
+    vnetName: vnet2Name
   }
 }

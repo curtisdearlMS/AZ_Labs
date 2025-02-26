@@ -98,6 +98,9 @@ module storageAccountModule './StorageAccount/StorageAccount.bicep' = {
 // Module to create the private endpoint for the storage account
 module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoint.bicep' = {
   name: 'privateEndpointModule'
+  dependsOn: [
+    hubVnet
+  ]
   params: {
     storageAccountName: storageAccountName
     vnetName: 'HubVNET'
@@ -118,6 +121,7 @@ module privateDnsZoneModule './StorageAccount/PrivateDNSZone.bicep' = {
 module linkPrivateDnsZoneHub './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneHub'
   dependsOn: [
+    hubVnet
     privateDnsZoneModule
   ]
   params: {

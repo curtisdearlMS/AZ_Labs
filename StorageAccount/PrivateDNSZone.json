@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "8820743686392312798"
+      "templateHash": "11826872964513532767"
     }
   },
   "parameters": {
@@ -17,7 +17,8 @@
     {
       "type": "Microsoft.Network/privateDnsZones",
       "apiVersion": "2024-06-01",
-      "name": "[parameters('privateDnsZoneName')]"
+      "name": "[parameters('privateDnsZoneName')]",
+      "location": "[resourceGroup().location]"
     }
   ]
 }

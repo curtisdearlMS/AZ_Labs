@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.33.93.31351",
+      "templateHash": "13332758239180984452"
+    }
+  },
+  "parameters": {
+    "hubVnetName": {
+      "type": "string"
+    },
+    "vnet1Name": {
+      "type": "string"
+    },
+    "vnet2Name": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "apiVersion": "2020-11-01",
+      "name": "[format('{0}/vnet1ToHubPeering', parameters('vnet1Name'))]",
+      "properties": {
+        "remoteVirtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
+        },
+        "allowGatewayTransit": true
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "apiVersion": "2020-11-01",
+      "name": "[format('{0}/vnet2ToHubPeering', parameters('vnet2Name'))]",
+      "properties": {
+        "remoteVirtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
+        },
+        "allowGatewayTransit": true
+      }
+    }
+  ]
+}

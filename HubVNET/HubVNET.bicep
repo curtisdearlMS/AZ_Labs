@@ -1,9 +1,6 @@
-param vpnGatewaySku string = 'vpngw1'
 param vnetName string = 'HubVNET'
 param firewallName string = 'myAzureFirewall'
-param vpnGatewayName string = 'myVpnGateway'
 param publicIpFirewallName string = 'fwPublicIP'
-param publicIpVpnGwName string = 'vpnGwPublicIP'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: vnetName
@@ -179,44 +176,6 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
         }
       }
     ]
-  }
-}
-
-resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
-  name: publicIpVpnGwName
-  location: resourceGroup().location
-  sku: {
-    name: 'Standard'
-    tier: 'Regional'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Static'
-  }
-}
-
-resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
-  name: vpnGatewayName
-  location: resourceGroup().location
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'vnetGatewayConfig'
-        properties: {
-          subnet: {
-            id: '${vnet.id}/subnets/GatewaySubnet'
-          }
-          publicIPAddress: {
-            id: publicIpVpnGw.id
-          }
-        }
-      }
-    ]
-    gatewayType: 'Vpn'
-    vpnType: 'RouteBased'
-    sku: {
-      name: vpnGatewaySku
-      tier: vpnGatewaySku
-    }
   }
 }
 

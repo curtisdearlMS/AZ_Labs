@@ -145,6 +145,7 @@ module linkPrivateDnsZoneHub './StorageAccount/LinkPrivateDNSZone.bicep' = {
 module linkPrivateDnsZoneVnet1 './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneVnet1'
   dependsOn: [
+    vnet1
     privateDnsZoneModule
     privateEndpointModule
   ]
@@ -158,6 +159,7 @@ module linkPrivateDnsZoneVnet1 './StorageAccount/LinkPrivateDNSZone.bicep' = {
 module linkPrivateDnsZoneVnet2 './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneVnet2'
   dependsOn: [
+    vnet2
     privateDnsZoneModule
     privateEndpointModule
   ]

@@ -1,7 +1,7 @@
 param publicIpVpnGwName string = 'vpnGwPublicIP'
 param vpnGatewayName string = 'myVpnGateway'
 param vpnGatewaySku string = 'vpngw1'
-param hubVnetId string = 'hubVNET'
+param hubVnetId string
 
 resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpVpnGwName
@@ -24,7 +24,7 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
         name: 'vnetGatewayConfig'
         properties: {
           subnet: {
-            id: resourceId('${hubVnetId}', 'subnets', 'GatewaySubnet')
+            id: '${hubVnetId}/subnets/GatewaySubnet'
           }
           publicIPAddress: {
             id: publicIpVpnGw.id

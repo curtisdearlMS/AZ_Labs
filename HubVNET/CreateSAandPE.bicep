@@ -32,7 +32,7 @@ module privateEndpointModule '../Modules/PrivateEndpoint.bicep' = {
     groupID: 'blob'
     privateDNSZone_Name: privateDnsZoneName
     location: location
-    privateEndpoint_SubnetID: resourceId(vnetresourceGroupName, 'Microsoft.Network/virtualNetworks/subnets', 'hubVNET', 'PrivateEndpointSubnet')
+    privateEndpoint_SubnetID: resourceId(vnetResourceGroupName, 'Microsoft.Network/virtualNetworks/subnets', 'hubVNET', 'PrivateEndpointSubnet')
     privateLinkServiceId: storageAccountModule.outputs.storageAccount_ID
   }
 }

@@ -32,12 +32,9 @@ module privateEndpointModule '../Modules/PrivateEndpoint.bicep' = {
     groupID: 'blob'
     privateDNSZone_Name: privateDnsZoneName
     location: location
-    privateEndpoint_SubnetID: '/Microsoft.Network/virtualNetworks/hubVNET/subnets/PrivateEndpointSubnet'
+    privateEndpoint_SubnetID: resourceId(vnetresourceGroupName, 'Microsoft.Network/virtualNetworks/subnets', 'hubVNET', 'PrivateEndpointSubnet')
     privateLinkServiceId: storageAccountModule.outputs.storageAccount_ID
   }
-  dependsOn: [
-    storageAccountModule
-  ]
 }
 
 module privateendpointNetworkInterface '../Modules/PrivateEndpointNetworkInterface.bicep' = {
@@ -59,7 +56,4 @@ module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
     ipv4Address: privateendpointNetworkInterface.outputs.privateEndpoint_IPAddress
     ttlInSeconds: 3600
   }
-  dependsOn: [
-    privateendpointNetworkInterface
-  ]
 }

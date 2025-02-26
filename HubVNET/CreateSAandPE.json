@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "12673227456552359577"
+      "templateHash": "17587669814129687928"
     }
   },
   "parameters": {
@@ -242,7 +242,7 @@
             "value": "[parameters('location')]"
           },
           "privateEndpoint_SubnetID": {
-            "value": "/Microsoft.Network/virtualNetworks/hubVNET/subnets/PrivateEndpointSubnet"
+            "value": "/providers/Microsoft.Network/virtualNetworks/hubVNET/subnets/PrivateEndpointSubnet"
           },
           "privateLinkServiceId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'storageAccountModule'), '2022-09-01').outputs.storageAccount_ID.value]"

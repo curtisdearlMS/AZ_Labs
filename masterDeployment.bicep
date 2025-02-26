@@ -116,6 +116,13 @@ module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoint.bic
 // Module to create the private DNS zone for the private endpoint
 module privateDnsZoneModule './StorageAccount/PrivateDNSZone.bicep' = {
   name: 'privateDnsZoneModule'
+  dependsOn: [
+    hubVnet
+    vnet1
+    vnet2
+    privateEndpointModule
+    storageAccountModule
+  ]
   params: {
     privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
   }
@@ -139,6 +146,7 @@ module linkPrivateDnsZoneVnet1 './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneVnet1'
   dependsOn: [
     privateDnsZoneModule
+    privateEndpointModule
   ]
   params: {
     privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'
@@ -151,6 +159,7 @@ module linkPrivateDnsZoneVnet2 './StorageAccount/LinkPrivateDNSZone.bicep' = {
   name: 'linkPrivateDnsZoneVnet2'
   dependsOn: [
     privateDnsZoneModule
+    privateEndpointModule
   ]
   params: {
     privateDnsZoneName: 'privatelink.blob.${environment().suffixes.storage}'

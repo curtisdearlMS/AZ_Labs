@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "718325241133575918"
+      "templateHash": "2665413105397682056"
     }
   },
   "parameters": {
@@ -19,9 +19,13 @@
     },
     "adminPassword": {
       "type": "securestring"
+    },
+    "privateEndpointName": {
+      "type": "string"
     }
   },
   "variables": {
+    "resolvedPrivateEndpointName": "[if(empty(parameters('privateEndpointName')), format('{0}-hub-pe', variables('storageAccountName')), parameters('privateEndpointName'))]",
     "storageAccountName": "[toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))]"
   },
   "resources": [
@@ -1728,7 +1732,7 @@
             "value": "PrivateEndpointSubnet"
           },
           "privateEndpointName": {
-            "value": "troubleshooting-hub-pe"
+            "value": "[variables('resolvedPrivateEndpointName')]"
           }
         },
         "template": {

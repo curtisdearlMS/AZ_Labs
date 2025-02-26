@@ -2,7 +2,8 @@ param vmSize string = 'Standard_D2s_v6'
 param adminUsername string = 'bob'
 @secure()
 param adminPassword string
-
+param privateEndpointName string
+var resolvedPrivateEndpointName = empty(privateEndpointName) ? '${storageAccountName}-hub-pe' : privateEndpointName
 var storageAccountName = toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))
 
 // Module to deploy HubVNET
@@ -106,7 +107,7 @@ module privateEndpointModule './StorageAccount/StorageAccountPrivateEndpoint.bic
     location: resourceGroup().location
     vnetName: 'HubVNET'
     subnetName: 'PrivateEndpointSubnet'
-    privateEndpointName: 'troubleshooting-hub-pe'
+    privateEndpointName: resolvedPrivateEndpointName
   }
 }
 

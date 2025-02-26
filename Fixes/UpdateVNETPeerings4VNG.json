@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "5266415493050719869"
+      "templateHash": "15140793593090642809"
     }
   },
   "parameters": {
@@ -24,9 +24,10 @@
   },
   "resources": [
     {
+      "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2020-11-01",
-      "name": "[format('{0}/hubToVnet1Peering', parameters('hubVnetName'))]",
+      "name": "[format('{0}/{1}', parameters('hubVnetName'), 'hubToVnet1Peering')]",
       "properties": {
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
@@ -35,9 +36,10 @@
       }
     },
     {
+      "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2020-11-01",
-      "name": "[format('{0}/hubToVnet2Peering', parameters('hubVnetName'))]",
+      "name": "[format('{0}/{1}', parameters('hubVnetName'), 'hubToVnet2Peering')]",
       "properties": {
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet2Name'))]"
@@ -46,6 +48,7 @@
       }
     },
     {
+      "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2020-11-01",
       "name": "[format('{0}/vnet1ToHubPeering', parameters('vnet1Name'))]",
@@ -57,6 +60,7 @@
       }
     },
     {
+      "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2020-11-01",
       "name": "[format('{0}/vnet2ToHubPeering', parameters('vnet2Name'))]",

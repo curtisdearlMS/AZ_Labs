@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "17167966225542623260"
+      "templateHash": "11703570129010751009"
     }
   },
   "parameters": {
@@ -54,7 +54,7 @@
             "name": "vnetGatewayConfig",
             "properties": {
               "subnet": {
-                "id": "[format('{0}/subnets/GatewaySubnet', variables('hubVnetId'))]"
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('hubVnetId'), 'GatewaySubnet')]"
               },
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpVpnGwName'))]"

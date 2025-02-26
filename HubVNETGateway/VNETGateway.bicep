@@ -26,7 +26,7 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2023-09-01' = {
         name: 'vnetGatewayConfig'
         properties: {
           subnet: {
-            id: '${hubVnetId}/subnets/GatewaySubnet'
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets', hubVnetId, 'GatewaySubnet')
           }
           publicIPAddress: {
             id: publicIpVpnGw.id

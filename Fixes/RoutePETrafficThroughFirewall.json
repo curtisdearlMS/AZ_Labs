@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "12695138883837394452"
+      "templateHash": "7666813728888254086"
     }
   },
   "parameters": {
@@ -16,6 +16,10 @@
     "peSubnetName": {
       "type": "string",
       "defaultValue": "PrivateEndpointSubnet"
+    },
+    "peSubnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "peSubnet.properties.addressPrefix"
     }
   },
   "resources": [
@@ -24,7 +28,7 @@
       "apiVersion": "2021-02-01",
       "name": "[format('{0}/{1}', parameters('hubVnetName'), parameters('peSubnetName'))]",
       "properties": {
-        "addressPrefix": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('hubVnetName'), parameters('peSubnetName')), '2021-02-01').addressPrefix]",
+        "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
         "privateEndpointNetworkPolicies": "Enabled"
       }
     }

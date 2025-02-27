@@ -1,5 +1,6 @@
 param hubVnetName string = 'hubvnet'
 param peSubnetName string = 'PrivateEndpointSubnet'
+param peSubnetAddressPrefix string = 'peSubnet.properties.addressPrefix'
 
 resource hubVnet 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
   name: hubVnetName
@@ -14,7 +15,7 @@ resource peSubnetPolicy 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' =
   parent: hubVnet
   name: peSubnetName
   properties: {
-    addressPrefix: peSubnet.properties.addressPrefix
+    addressPrefix: peSubnetAddressPrefix
     privateEndpointNetworkPolicies: 'Enabled'
   }
 }

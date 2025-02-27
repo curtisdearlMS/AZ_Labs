@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "12670789887933388817"
+      "templateHash": "11950399118019305877"
     }
   },
   "parameters": {
@@ -23,46 +23,6 @@
     }
   },
   "resources": [
-    {
-      "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2023-09-01",
-      "name": "fwPublicIP",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "Standard",
-        "tier": "Regional"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "Static"
-      }
-    },
-    {
-      "type": "Microsoft.Network/azureFirewalls",
-      "apiVersion": "2023-09-01",
-      "name": "myAzureFirewall",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "firewallIPConfig",
-            "properties": {
-              "subnet": {
-                "id": "[format('{0}/subnets/AzureFirewallSubnet', reference(resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment'), '2022-09-01').outputs.vnetId.value)]"
-              },
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'fwPublicIP')]"
-              }
-            }
-          }
-        ]
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'hubVnetDeployment')]",
-        "[resourceId('Microsoft.Network/publicIPAddresses', 'fwPublicIP')]",
-        "[resourceId('Microsoft.Resources/deployments', 'vnet1VmsDeployment')]",
-        "[resourceId('Microsoft.Resources/deployments', 'vnet2VmsDeployment')]"
-      ]
-    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -84,21 +44,13 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "17831973168895318954"
+              "templateHash": "14950056880745834234"
             }
           },
           "parameters": {
             "vnetName": {
               "type": "string",
               "defaultValue": "HubVNET"
-            },
-            "firewallName": {
-              "type": "string",
-              "defaultValue": "myAzureFirewall"
-            },
-            "publicIpFirewallName": {
-              "type": "string",
-              "defaultValue": "fwPublicIP"
             }
           },
           "resources": [
@@ -263,44 +215,6 @@
                   }
                 ]
               }
-            },
-            {
-              "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2023-09-01",
-              "name": "[parameters('publicIpFirewallName')]",
-              "location": "[resourceGroup().location]",
-              "sku": {
-                "name": "Standard",
-                "tier": "Regional"
-              },
-              "properties": {
-                "publicIPAllocationMethod": "Static"
-              }
-            },
-            {
-              "type": "Microsoft.Network/azureFirewalls",
-              "apiVersion": "2023-09-01",
-              "name": "[parameters('firewallName')]",
-              "location": "[resourceGroup().location]",
-              "properties": {
-                "ipConfigurations": [
-                  {
-                    "name": "firewallIPConfig",
-                    "properties": {
-                      "subnet": {
-                        "id": "[format('{0}/subnets/AzureFirewallSubnet', resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')))]"
-                      },
-                      "publicIPAddress": {
-                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpFirewallName'))]"
-                      }
-                    }
-                  }
-                ]
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpFirewallName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
-              ]
             }
           ],
           "outputs": {

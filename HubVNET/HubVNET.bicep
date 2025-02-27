@@ -1,6 +1,4 @@
 param vnetName string = 'HubVNET'
-param firewallName string = 'myAzureFirewall'
-param publicIpFirewallName string = 'fwPublicIP'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: vnetName
@@ -141,38 +139,6 @@ resource rtVirtualMachineSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
           addressPrefix: '0.0.0.0/0'
           nextHopType: 'VirtualAppliance'
           nextHopIpAddress: '10.28.15.4' // Azure Firewall private IP
-        }
-      }
-    ]
-  }
-}
-
-resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
-  name: publicIpFirewallName
-  location: resourceGroup().location
-  sku: {
-    name: 'Standard'
-    tier: 'Regional'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Static'
-  }
-}
-
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
-  name: firewallName
-  location: resourceGroup().location
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'firewallIPConfig'
-        properties: {
-          subnet: {
-            id: '${vnet.id}/subnets/AzureFirewallSubnet'
-          }
-          publicIPAddress: {
-            id: publicIpFirewall.id
-          }
         }
       }
     ]

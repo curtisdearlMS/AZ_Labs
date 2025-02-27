@@ -2,8 +2,6 @@ param vmSize string = 'Standard_D2s_v6'
 param adminUsername string = 'bob'
 //@secure()
 param adminPassword string = 'moonCAKE!'
-// var storageAccountName = toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))
-// var privateEndpointName = '${storageAccountName}-hub-pe'
 
 // Module to deploy HubVNET
 module hubVnet './HubVNET/HubVNET.bicep' = {
@@ -94,41 +92,4 @@ module createSAandPE './HubVNET/CreateSAandPE.bicep' = {
     vnet2
     hubVnet
   ]
-}
-
-// Deploy Azure Firewall Public IP
-resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
-  name: 'fwPublicIP'
-  location: resourceGroup().location
-  sku: {
-    name: 'Standard'
-    tier: 'Regional'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Static'
-  }
-}
-// Deploy the Azure firewall
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
-  name: 'myAzureFirewall'
-  location: resourceGroup().location
-  dependsOn: [
-    vnet1Vms
-    vnet2Vms
-  ]
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'firewallIPConfig'
-        properties: {
-          subnet: {
-            id: '${hubVnet.outputs.vnetId}/subnets/AzureFirewallSubnet'
-          }
-          publicIPAddress: {
-            id: publicIpFirewall.id
-          }
-        }
-      }
-    ]
-  }
 }

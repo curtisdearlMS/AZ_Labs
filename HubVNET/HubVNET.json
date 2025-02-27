@@ -5,21 +5,13 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "17831973168895318954"
+      "templateHash": "14950056880745834234"
     }
   },
   "parameters": {
     "vnetName": {
       "type": "string",
       "defaultValue": "HubVNET"
-    },
-    "firewallName": {
-      "type": "string",
-      "defaultValue": "myAzureFirewall"
-    },
-    "publicIpFirewallName": {
-      "type": "string",
-      "defaultValue": "fwPublicIP"
     }
   },
   "resources": [
@@ -184,44 +176,6 @@
           }
         ]
       }
-    },
-    {
-      "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2023-09-01",
-      "name": "[parameters('publicIpFirewallName')]",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "Standard",
-        "tier": "Regional"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "Static"
-      }
-    },
-    {
-      "type": "Microsoft.Network/azureFirewalls",
-      "apiVersion": "2023-09-01",
-      "name": "[parameters('firewallName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "firewallIPConfig",
-            "properties": {
-              "subnet": {
-                "id": "[format('{0}/subnets/AzureFirewallSubnet', resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')))]"
-              },
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpFirewallName'))]"
-              }
-            }
-          }
-        ]
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpFirewallName'))]",
-        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
-      ]
     }
   ],
   "outputs": {

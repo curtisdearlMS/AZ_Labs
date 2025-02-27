@@ -81,5 +81,14 @@ resource virtualNetworkLink_File 'Microsoft.Network/privateDnsZones/virtualNetwo
 }
 ]
 
-output privateEndpoint_PrivateIPAddress string = privateEndpoint.properties.networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress 
+var StorageAccountPrivateEndpointNICName = '${privateEndpoint_Name}-nic'
+
+resource PrivateEndpointNIC 'Microsoft.Network/networkInterfaces@2023-09-01' existing = {
+  name: StorageAccountPrivateEndpointNICName
+  dependsOn: [
+    privateEndpoint
+  ]
+}
+
+output privateEndpoint_PrivateIPAddress string = PrivateEndpointNIC.properties.ipConfigurations[0].properties.privateIPAddress  
 output privateEndpoint_NetworkInterface_Name string = privateEndpoint.properties.customNetworkInterfaceName

@@ -20,6 +20,6 @@ If you want to directly access the VMs this will allow traffic inbound on port 2
 
 This will override the system created /32 route and send private endpoint traffic through the Azure Firewall
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2Frefs%2Fheads%2Fmain%2FFixes%2FRoutePETrafficThroughFirewall.json">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FRoutePETrafficThroughFirewall.json">
     <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
 </a>

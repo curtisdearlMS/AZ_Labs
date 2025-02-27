@@ -25,9 +25,9 @@ module privateEndpointModule '../Modules/PrivateEndpoint.bicep' = {
   params: {
     privateEndpoint_Name: storageAccountName
     virtualNetwork_IDs : [
-      '${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/hubVNET'
-      '${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/vnet1'
-      '${vnetResourceGroupName}/providers/Microsoft.Network/virtualNetworks/vnet2'
+      resourceId(vnetResourceGroupName, 'Microsoft.Network/virtualNetworks', 'hubVNET')
+      resourceId(vnetResourceGroupName, 'Microsoft.Network/virtualNetworks', 'vnet1')
+      resourceId(vnetResourceGroupName, 'Microsoft.Network/virtualNetworks', 'vnet2')
     ]
     groupID: 'blob'
     privateDNSZone_Name: privateDnsZoneName

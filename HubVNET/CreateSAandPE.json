@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15427135374442510902"
+      "templateHash": "14820440151805808860"
     }
   },
   "parameters": {
@@ -255,7 +255,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "13113107308304550871"
+              "templateHash": "438405376275602375"
             }
           },
           "parameters": {
@@ -379,6 +379,10 @@
             }
           ],
           "outputs": {
+            "privateEndpoint_PrivateIPAddress": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').ipConfigurations[0].properties.privateIPAddress]"
+            },
             "privateEndpoint_NetworkInterface_Name": {
               "type": "string",
               "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').customNetworkInterfaceName]"
@@ -387,52 +391,6 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'storageAccountModule')]"
-      ]
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "privateendpointNetworkInterface",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "existing_PrivateEndpoint_NetworkInterface_Name": {
-            "value": "[parameters('storageAccountName')]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.33.93.31351",
-              "templateHash": "17576454578915815649"
-            }
-          },
-          "parameters": {
-            "existing_PrivateEndpoint_NetworkInterface_Name": {
-              "type": "string",
-              "metadata": {
-                "description": "Name of the Private Endpoint's Network Interface"
-              }
-            }
-          },
-          "resources": [],
-          "outputs": {
-            "privateEndpoint_IPAddress": {
-              "type": "string",
-              "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('existing_PrivateEndpoint_NetworkInterface_Name')), '2023-05-01').ipConfigurations[0].properties.privateIPAddress]"
-            }
-          }
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'privateEndpointModule')]",
         "[resourceId('Microsoft.Resources/deployments', 'storageAccountModule')]"
       ]
     },
@@ -453,7 +411,7 @@
             "value": "[parameters('storageAccountName')]"
           },
           "ipv4Address": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'privateendpointNetworkInterface'), '2022-09-01').outputs.privateEndpoint_IPAddress.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'privateEndpointModule'), '2022-09-01').outputs.privateEndpoint_PrivateIPAddress.value]"
           },
           "ttlInSeconds": {
             "value": 3600
@@ -514,7 +472,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'privateendpointNetworkInterface')]"
+        "[resourceId('Microsoft.Resources/deployments', 'privateEndpointModule')]"
       ]
     }
   ]

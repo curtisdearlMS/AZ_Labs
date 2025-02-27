@@ -1,4 +1,3 @@
-param location string = resourceGroup().location
 param hubVnetName string = 'hubvnet'
 param peSubnetName string = 'PrivateEndpointSubnet'
 

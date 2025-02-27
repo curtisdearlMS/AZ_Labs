@@ -37,26 +37,12 @@ module privateEndpointModule '../Modules/PrivateEndpoint.bicep' = {
   }
 }
 
-module privateendpointNetworkInterface '../Modules/PrivateEndpointNetworkInterface.bicep' = {
-  name: 'privateendpointNetworkInterface'
-  params: {
-    existing_PrivateEndpoint_NetworkInterface_Name: storageAccountName
-  }
-  dependsOn: [
-    privateEndpointModule
-    storageAccountModule
-  ]
-}
-
 module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
   name: 'PrivateDNSZoneArecord'
   params: {
     PrivateDNSZone_Name: privateDnsZoneName
     ARecord_name: storageAccountName
-    ipv4Address: privateendpointNetworkInterface.outputs.privateEndpoint_IPAddress
+    ipv4Address: privateEndpointModule.outputs.privateEndpoint_PrivateIPAddress
     ttlInSeconds: 3600
   }
-  dependsOn: [
-    privateendpointNetworkInterface
-  ]
 }

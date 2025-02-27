@@ -1,4 +1,3 @@
-param hubVnetName string = 'hubvnet'
 param peSubnetName string = 'PrivateEndpointSubnet'
 param peSubnetAddressPrefix string = '10.28.2.0/24' // why is this hardcoded and not a referernce 
 param firewallIp string = '10.28.15.4'
@@ -7,6 +6,7 @@ param vmSubnetName string = 'VMSubnet'
 resource hubVnet 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
   name: 'hubvnet'
 }
+
 resource vnet1 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
   name: 'vnet1'
 }
@@ -23,15 +23,8 @@ resource peSubnetPolicy 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' =
     privateEndpointNetworkPolicies: 'Enabled'
   }
 }
-
-
-// resource vmSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
-//   parent: hubVnet
-//   name: vmSubnetName
-// }
-
-resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
-  name: 'vmSubnetRouteTable'
+resource routeTableVnet1 'Microsoft.Network/routeTables@2021-02-01' = {
+  name: '${vnet1.name}-rtVMSubnet'
   location: resourceGroup().location
   properties: {
     routes: [
@@ -47,22 +40,19 @@ resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
   }
 }
 
-resource subnetRouteTableAssociation1 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' = {
-  parent: vnet1
-  name: vmSubnetName
+resource routeTableVnet2 'Microsoft.Network/routeTables@2021-02-01' = {
+  name: '${vnet2.name}-rtVMSubnet'
+  location: resourceGroup().location
   properties: {
-    routeTable: {
-      id: routeTable.id
-    }
-  }
-}
-
-resource subnetRouteTableAssociation2 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' = {
-  parent: vnet2
-  name: vmSubnetName
-  properties: {
-    routeTable: {
-      id: routeTable.id
-    }
+    routes: [
+      {
+        name: 'routeToPESubnet'
+        properties: {
+          addressPrefix: peSubnetAddressPrefix
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: firewallIp
+        }
+      }
+    ]
   }
 }

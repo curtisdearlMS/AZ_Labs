@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "9852193461989182197"
+      "templateHash": "12670789887933388817"
     }
   },
   "parameters": {
@@ -1601,7 +1601,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "3324713599805712214"
+              "templateHash": "7656707999137396253"
             }
           },
           "parameters": {
@@ -1787,7 +1787,7 @@
             {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2022-09-01",
-              "name": "privateEndpointModule",
+              "name": "StorageAccountPrivateEndpoint",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -1827,7 +1827,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.33.93.31351",
-                      "templateHash": "11842777224489975594"
+                      "templateHash": "5201951492970753313"
                     }
                   },
                   "parameters": {
@@ -1948,12 +1948,54 @@
                         "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDNSZone_Name'))]",
                         "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name'))]"
                       ]
+                    },
+                    {
+                      "type": "Microsoft.Resources/deployments",
+                      "apiVersion": "2022-09-01",
+                      "name": "nested",
+                      "properties": {
+                        "expressionEvaluationOptions": {
+                          "scope": "inner"
+                        },
+                        "mode": "Incremental",
+                        "parameters": {
+                          "nicName": {
+                            "value": "[last(split(reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').networkInterfaces[0].id, '/'))]"
+                          }
+                        },
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "metadata": {
+                            "_generator": {
+                              "name": "bicep",
+                              "version": "0.33.93.31351",
+                              "templateHash": "10488407676886372010"
+                            }
+                          },
+                          "parameters": {
+                            "nicName": {
+                              "type": "string"
+                            }
+                          },
+                          "resources": [],
+                          "outputs": {
+                            "ip": {
+                              "type": "string",
+                              "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', parameters('nicName')), '2021-08-01').ipConfigurations[0].properties.privateIPAddress]"
+                            }
+                          }
+                        }
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name'))]"
+                      ]
                     }
                   ],
                   "outputs": {
-                    "privateEndpoint_PrivateIPAddress": {
+                    "privateEndpointPrivateIPAddress": {
                       "type": "string",
-                      "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress]"
+                      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'nested'), '2022-09-01').outputs.ip.value]"
                     }
                   }
                 }
@@ -1979,7 +2021,7 @@
                     "value": "[parameters('storageAccountName')]"
                   },
                   "ipv4Address": {
-                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'privateEndpointModule'), '2022-09-01').outputs.privateEndpoint_PrivateIPAddress.value]"
+                    "value": "[reference(resourceId('Microsoft.Resources/deployments', 'StorageAccountPrivateEndpoint'), '2022-09-01').outputs.privateEndpointPrivateIPAddress.value]"
                   },
                   "ttlInSeconds": {
                     "value": 3600
@@ -2040,7 +2082,7 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'privateEndpointModule')]"
+                "[resourceId('Microsoft.Resources/deployments', 'StorageAccountPrivateEndpoint')]"
               ]
             }
           ]

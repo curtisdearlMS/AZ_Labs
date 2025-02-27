@@ -56,4 +56,7 @@ module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
     ipv4Address: privateendpointNetworkInterface.outputs.privateEndpoint_IPAddress
     ttlInSeconds: 3600
   }
+  dependsOn: [
+    privateendpointNetworkInterface
+  ]
 }

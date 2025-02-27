@@ -1,6 +1,6 @@
 param vmSize string = 'Standard_D2s_v6' 
 param adminUsername string = 'bob'
-@secure()
+//@secure()
 param adminPassword string = 'moonCAKE!'
 // var storageAccountName = toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))
 // var privateEndpointName = '${storageAccountName}-hub-pe'

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "9160649603148820706"
+      "templateHash": "11389302636644134005"
     }
   },
   "parameters": {
@@ -18,7 +18,7 @@
       "defaultValue": "bob"
     },
     "adminPassword": {
-      "type": "securestring",
+      "type": "string",
       "defaultValue": "moonCAKE!"
     }
   },

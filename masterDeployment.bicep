@@ -96,7 +96,7 @@ module createSAandPE './HubVNET/CreateSAandPE.bicep' = {
   ]
 }
 
-// Deploy VNET Gateway and Azure Firewall only if you have time for the creation
+// Deploy Azure Firewall Public IP
 resource publicIpFirewall 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: 'fwPublicIP'
   location: resourceGroup().location

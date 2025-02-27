@@ -17,10 +17,10 @@ resource peSubnetPolicy 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' =
 param firewallIp string = '10.28.15.4'
 param vmSubnetName string = 'VMSubnet'
 
-resource vmSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
-  parent: hubVnet
-  name: vmSubnetName
-}
+// resource vmSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
+//   parent: hubVnet
+//   name: vmSubnetName
+// }
 
 resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
   name: 'vmSubnetRouteTable'

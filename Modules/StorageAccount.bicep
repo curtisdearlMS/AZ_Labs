@@ -20,9 +20,9 @@ var blobEndpointNoHTTPS = substring(blobEndpoint, 7, 8)
 var blobFQDN = take(blobEndpointNoHTTPS, length(blobEndpointNoHTTPS) - 1)
 
 
-// Grabs the FQDN of the Blob but removes the extra that we don't need
-// Original value https://{storageAccount_Name}.blob.core.windows.net/
-// Output {storageAccount_Name}.blob.core.windows.net
+// Grabs the FQDN of the file endpoint but removes the extra that we don't need
+// Original value https://{storageAccount_Name}.file.core.windows.net/
+// Output {storageAccount_Name}.file.core.windows.net
 var fileEndpoint = storageAccount.properties.primaryEndpoints.file
 var fileEndpointNoHTTPS = substring(fileEndpoint, 7, 8)
 var fileFQDN = take(fileEndpointNoHTTPS, length(fileEndpointNoHTTPS) - 1)
@@ -95,19 +95,19 @@ resource storageAccount_BlobServices 'Microsoft.Storage/storageAccounts/blobServ
   }
 }
 
-resource storageAccount_File 'Microsoft.Storage/storageAccounts/fileServices@2023-01-01' = {
-  parent: storageAccount
-  name: 'default'
-}
+// resource storageAccount_File 'Microsoft.Storage/storageAccounts/fileServices@2023-01-01' = {
+//   parent: storageAccount
+//   name: 'default'
+// }
 
-resource storageAccount_File_FileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = {
-  parent: storageAccount_File
-  name: 'defaultfileshare'
-  properties: {
-    accessTier: 'Hot'
-    shareQuota: 1024
-  }
-}
+// resource storageAccount_File_FileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2023-01-01' = {
+//   parent: storageAccount_File
+//   name: 'defaultfileshare'
+//   properties: {
+//     accessTier: 'Hot'
+//     shareQuota: 1024
+//   }
+// }
 
 output storageaccount_Blob_FQDN string = blobFQDN
 output storageaccount_File_FQDN string = fileFQDN
@@ -117,7 +117,7 @@ output storageAccount_ID string = storageAccount.id
 
 output storageAccount_BlobServices_Name string = storageAccount_BlobServices.name
 
-output storageAccountFileShare_Name string = storageAccount_File_FileShare.name
+//output storageAccountFileShare_Name string = storageAccount_File_FileShare.name
 
 #disable-next-line outputs-should-not-contain-secrets // disabling this warning since this deployment is for testing only
 output storageAccount_key0 string = storageAccount.listKeys().keys[0].value

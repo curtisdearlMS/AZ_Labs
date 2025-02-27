@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "10641652731879514168"
+      "templateHash": "4407574254327330625"
     }
   },
   "parameters": {
@@ -20,6 +20,14 @@
     "peSubnetAddressPrefix": {
       "type": "string",
       "defaultValue": "10.28.2.0/24"
+    },
+    "firewallIp": {
+      "type": "string",
+      "defaultValue": "10.28.15.4"
+    },
+    "vmSubnetName": {
+      "type": "string",
+      "defaultValue": "VMSubnet"
     }
   },
   "resources": [
@@ -31,6 +39,37 @@
         "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
         "privateEndpointNetworkPolicies": "Enabled"
       }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2021-02-01",
+      "name": "vmSubnetRouteTable",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "routes": [
+          {
+            "name": "routeToPESubnet",
+            "properties": {
+              "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[parameters('firewallIp')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2021-02-01",
+      "name": "[format('{0}/{1}', parameters('hubVnetName'), parameters('vmSubnetName'))]",
+      "properties": {
+        "routeTable": {
+          "id": "[resourceId('Microsoft.Network/routeTables', 'vmSubnetRouteTable')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/routeTables', 'vmSubnetRouteTable')]"
+      ]
     }
   ]
 }

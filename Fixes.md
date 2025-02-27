@@ -28,4 +28,4 @@ This will override the system created /32 route and send private endpoint traffi
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.
 
-- **Deploy to Azure:** [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Fixes/resetToDefault.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Fixes/resetToDefault.json)

@@ -25,39 +25,39 @@ resource hubPeSubnetUpdate 'Microsoft.Network/virtualNetworks/subnets@2023-05-01
   properties: {
     privateEndpointNetworkPolicies: 'Enabled'
   }
-}
-resource vnet1VmSubnetRouteTable 'Microsoft.Network/routeTables@2023-05-01' = {
-  name: '${vnet1Name}-${vnet1VmSubnetName}-rt'
-  properties: {
-    disableBgpRoutePropagation: false
-    routes: [
-      {
-        name: 'RouteToHubPeSubnet'
-        properties: {
-          addressPrefix: hubPeSubnet.properties.addressPrefix
-          nextHopType: 'VirtualAppliance'
-          nextHopIpAddress: firewallPrivateIp
-        }
-      }
-    ]
-  }
-}
+// }
+// resource vnet1VmSubnetRouteTable 'Microsoft.Network/routeTables@2023-05-01' = {
+//   name: '${vnet1Name}-${vnet1VmSubnetName}-rt'
+//   properties: {
+//     disableBgpRoutePropagation: false
+//     routes: [
+//       {
+//         name: 'RouteToHubPeSubnet'
+//         properties: {
+//           addressPrefix: hubPeSubnet.properties.addressPrefix
+//           nextHopType: 'VirtualAppliance'
+//           nextHopIpAddress: firewallPrivateIp
+//         }
+//       }
+//     ]
+//   }
+// }
 
-resource vnet2VmSubnetRouteTable 'Microsoft.Network/routeTables@2023-05-01' = {
-  name: '${vnet2Name}-${vnet2VmSubnetName}-rt'
-  properties: {
-    disableBgpRoutePropagation: false
-    routes: [
-      {
-        name: 'RouteToHubPeSubnet'
-        properties: {
-          addressPrefix: hubPeSubnet.properties.addressPrefix
-          nextHopType: 'VirtualAppliance'
-          nextHopIpAddress: firewallPrivateIp
-        }
-      }
-    ]
-  }
-}
+// resource vnet2VmSubnetRouteTable 'Microsoft.Network/routeTables@2023-05-01' = {
+//   name: '${vnet2Name}-${vnet2VmSubnetName}-rt'
+//   properties: {
+//     disableBgpRoutePropagation: false
+//     routes: [
+//       {
+//         name: 'RouteToHubPeSubnet'
+//         properties: {
+//           addressPrefix: hubPeSubnet.properties.addressPrefix
+//           nextHopType: 'VirtualAppliance'
+//           nextHopIpAddress: firewallPrivateIp
+//         }
+//       }
+//     ]
+//   }
+// }
 
 

@@ -41,7 +41,8 @@
       "name": "[format('{0}/{1}', parameters('hubVnetName'), parameters('hubPeSubnetName'))]",
       "properties": {
         "privateEndpointNetworkPolicies": "Enabled"
-      }
+      },
+      "computeType": "Standard"
     },
     {
       "type": "Microsoft.Network/routeTables",

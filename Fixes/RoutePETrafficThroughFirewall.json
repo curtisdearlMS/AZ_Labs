@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "4407574254327330625"
+      "templateHash": "15940800057184725271"
     }
   },
   "parameters": {
@@ -34,7 +34,7 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2021-02-01",
-      "name": "[format('{0}/{1}', parameters('hubVnetName'), parameters('peSubnetName'))]",
+      "name": "[format('{0}/{1}', 'hubvnet', parameters('peSubnetName'))]",
       "properties": {
         "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
         "privateEndpointNetworkPolicies": "Enabled"
@@ -61,7 +61,20 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2021-02-01",
-      "name": "[format('{0}/{1}', parameters('hubVnetName'), parameters('vmSubnetName'))]",
+      "name": "[format('{0}/{1}', 'vnet1', parameters('vmSubnetName'))]",
+      "properties": {
+        "routeTable": {
+          "id": "[resourceId('Microsoft.Network/routeTables', 'vmSubnetRouteTable')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/routeTables', 'vmSubnetRouteTable')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2021-02-01",
+      "name": "[format('{0}/{1}', 'vnet2', parameters('vmSubnetName'))]",
       "properties": {
         "routeTable": {
           "id": "[resourceId('Microsoft.Network/routeTables', 'vmSubnetRouteTable')]"

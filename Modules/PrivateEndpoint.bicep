@@ -81,15 +81,11 @@ resource virtualNetworkLink_File 'Microsoft.Network/privateDnsZones/virtualNetwo
 }
 ]
 
-// Retrieve the network interface ID from the private endpoint
-var privateEndpointNIC = privateEndpoint.properties.networkInterfaces[0].id
-
-// Retrieve the private IP address from the network interface
-resource networkInterface 'Microsoft.Network/networkInterfaces@2023-05-01' existing = {
-  id: privateEndpointNIC
+module networkInterface 'nested.bicep' = {
+  name: 'nested'
+  params: {
+    nicName: last(split(privateEndpoint.properties.networkInterfaces[0].id, '/'))
+  }
 }
 
-var privateEndpointPIP = networkInterface.properties.ipConfigurations[0].properties.privateIPAddress
-
-// Output the private IP address
-output privateEndpointPrivateIPAddress string = privateEndpointPIP
+output privateEndpointPrivateIPAddress string = networkInterface.outputs.ip

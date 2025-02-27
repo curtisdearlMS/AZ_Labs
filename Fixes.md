@@ -23,3 +23,9 @@ This will override the system created /32 route and send private endpoint traffi
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FRoutePETrafficThroughFirewall.json">
     <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
 </a>
+
+
+## Reset to Default Configuration
+Description: This template resets the network configuration to a standard starting point.
+
+- **Deploy to Azure:** [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Fixes/resetToDefault.json)

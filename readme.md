@@ -13,3 +13,7 @@ For those who prefer to deploy parts individually, please refer to the [individu
 ### Fixes
 
 To make predeterminined changes to the Route Tables, Network Security Groups, and the VNET Peerings, please refer to the [Fixes](./Fixes.md).
+
+### Simulate Network Problems
+
+To intentionally break the network and observe changes in connection behavior, please refer to the [Problems](./Problems.md) page.

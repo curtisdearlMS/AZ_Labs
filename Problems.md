@@ -17,19 +17,19 @@ This document provides basic networking scenarios that can be demonstrated using
 ## Scenario 1: Misconfigured Route Table
 Description: This scenario demonstrates the impact of a misconfigured route table.
 
-**Deploy to Azure:** [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/misconfiguredRouteTable.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/misconfiguredRouteTable.json)
 
 ## Scenario 2: Incorrect NSG Rules
 Description: This scenario demonstrates the impact of incorrect NSG rules.
 
-**Deploy to Azure:** [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/incorrectNSGRules.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/incorrectNSGRules.json)
 
 ## Scenario 3: Faulty VNet Peering
 Description: This scenario demonstrates the impact of faulty VNet peering.
 
-**Deploy to Azure:** [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/faultyVNetPeering.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/faultyVNetPeering.json)
 
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.
 
-**Deploy to Azure:** [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Fixes/resetToDefault.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Fixes/resetToDefault.json)

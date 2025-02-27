@@ -23,6 +23,7 @@ resource peSubnetPolicy 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' =
     privateEndpointNetworkPolicies: 'Enabled'
   }
 }
+
 resource routeTableVnet1 'Microsoft.Network/routeTables@2021-02-01' = {
   name: '${vnet1.name}-rtVMSubnet'
   location: resourceGroup().location
@@ -34,6 +35,21 @@ resource routeTableVnet1 'Microsoft.Network/routeTables@2021-02-01' = {
           addressPrefix: peSubnetAddressPrefix
           nextHopType: 'VirtualAppliance'
           nextHopIpAddress: firewallIp
+        }
+      }
+      {
+        name: 'defaultRoute'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: '10.28.15.4' // Azure Firewall private IP
+        }
+      }
+      {
+        name: 'vnet2Route'
+        properties: {
+          addressPrefix: '10.2.0.0/16'
+          nextHopType: 'VirtualNetworkGateway'
         }
       }
     ]
@@ -51,6 +67,21 @@ resource routeTableVnet2 'Microsoft.Network/routeTables@2021-02-01' = {
           addressPrefix: peSubnetAddressPrefix
           nextHopType: 'VirtualAppliance'
           nextHopIpAddress: firewallIp
+        }
+      }
+      {
+        name: 'defaultRoute'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: '10.28.15.4' // Azure Firewall private IP
+        }
+      }
+      {
+        name: 'vnet1Route'
+        properties: {
+          addressPrefix: '10.1.0.0/16'
+          nextHopType: 'VirtualNetworkGateway'
         }
       }
     ]

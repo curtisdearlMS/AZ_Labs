@@ -81,5 +81,4 @@ resource virtualNetworkLink_File 'Microsoft.Network/privateDnsZones/virtualNetwo
 }
 ]
 
-output privateEndpoint_PrivateIPAddress string = privateEndpoint.properties.ipConfigurations[0].properties.privateIPAddress  
-//output privateEndpoint_NetworkInterface_Name string = privateEndpoint.properties.customNetworkInterfaceName
+output privateEndpoint_PrivateIPAddress string = privateEndpoint.properties.networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress

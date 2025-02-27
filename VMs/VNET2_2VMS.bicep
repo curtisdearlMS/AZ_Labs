@@ -14,7 +14,7 @@ resource vmSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existin
   parent: vnet
 }
 
-module vm1 './linuxnettestvm.bicep' = {
+module vm1 '../Modules/linuxnettestvm.bicep' = {
   name: 'vm1Deployment'
   params: {
     location: resourceGroup().location
@@ -28,7 +28,7 @@ module vm1 './linuxnettestvm.bicep' = {
   }
 }
 
-module vm2 './linuxnettestvm.bicep' = {
+module vm2 '../Modules/linuxnettestvm.bicep' = {
   name: 'vm2Deployment'
   params: {
     location: resourceGroup().location

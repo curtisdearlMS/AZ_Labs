@@ -14,6 +14,7 @@ resource peSubnetPolicy 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' =
   parent: hubVnet
   name: peSubnetName
   properties: {
+    addressPrefix: peSubnet.properties.addressPrefix
     privateEndpointNetworkPolicies: 'Enabled'
   }
 }

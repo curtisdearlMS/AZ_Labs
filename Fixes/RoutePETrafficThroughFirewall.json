@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "1379114494854212118"
+      "templateHash": "12695138883837394452"
     }
   },
   "parameters": {
@@ -24,6 +24,7 @@
       "apiVersion": "2021-02-01",
       "name": "[format('{0}/{1}', parameters('hubVnetName'), parameters('peSubnetName'))]",
       "properties": {
+        "addressPrefix": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('hubVnetName'), parameters('peSubnetName')), '2021-02-01').addressPrefix]",
         "privateEndpointNetworkPolicies": "Enabled"
       }
     }

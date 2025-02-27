@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "8137120129078494818"
+      "templateHash": "3200872664175630417"
     }
   },
   "parameters": {
@@ -231,7 +231,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "11842777224489975594"
+              "templateHash": "968493045397161698"
             }
           },
           "parameters": {
@@ -355,9 +355,9 @@
             }
           ],
           "outputs": {
-            "privateEndpoint_PrivateIPAddress": {
+            "privateEndpointPrivateIPAddress": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').networkInterfaces[0].ipConfigurations[0].properties.privateIPAddress]"
             }
           }
         }
@@ -383,7 +383,7 @@
             "value": "[parameters('storageAccountName')]"
           },
           "ipv4Address": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'StorageAccountPrivateEndpoint'), '2022-09-01').outputs.privateEndpoint_PrivateIPAddress.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'StorageAccountPrivateEndpoint'), '2022-09-01').outputs.privateEndpointPrivateIPAddress.value]"
           },
           "ttlInSeconds": {
             "value": 3600

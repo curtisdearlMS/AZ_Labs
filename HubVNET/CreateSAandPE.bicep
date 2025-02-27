@@ -42,7 +42,7 @@ module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
   params: {
     PrivateDNSZone_Name: privateDnsZoneName
     ARecord_name: storageAccountName
-    ipv4Address: privateEndpointModule.outputs.privateEndpoint_PrivateIPAddress
+    ipv4Address: privateEndpointModule.outputs.privateEndpointPrivateIPAddress
     ttlInSeconds: 3600
   }
 }

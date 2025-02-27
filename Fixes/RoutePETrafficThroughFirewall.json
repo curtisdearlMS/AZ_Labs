@@ -5,26 +5,18 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "2440374124662653885"
+      "templateHash": "15482541081346344434"
     }
   },
   "parameters": {
     "peSubnetName": {
       "type": "string",
       "defaultValue": "PrivateEndpointSubnet"
-    },
-    "peSubnetAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.28.2.0/24"
-    },
-    "firewallIp": {
-      "type": "string",
-      "defaultValue": "10.28.15.4"
-    },
-    "vmSubnetName": {
-      "type": "string",
-      "defaultValue": "VMSubnet"
     }
+  },
+  "variables": {
+    "peSubnetAddressPrefix": "10.28.2.0/24",
+    "firewallIp": "10.28.15.4"
   },
   "resources": [
     {
@@ -32,7 +24,7 @@
       "apiVersion": "2021-02-01",
       "name": "[format('{0}/{1}', 'hubvnet', parameters('peSubnetName'))]",
       "properties": {
-        "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
+        "addressPrefix": "[variables('peSubnetAddressPrefix')]",
         "privateEndpointNetworkPolicies": "Enabled"
       }
     },
@@ -46,9 +38,9 @@
           {
             "name": "routeToPESubnet",
             "properties": {
-              "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
+              "addressPrefix": "[variables('peSubnetAddressPrefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[parameters('firewallIp')]"
+              "nextHopIpAddress": "[variables('firewallIp')]"
             }
           },
           {
@@ -79,9 +71,9 @@
           {
             "name": "routeToPESubnet",
             "properties": {
-              "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
+              "addressPrefix": "[variables('peSubnetAddressPrefix')]",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[parameters('firewallIp')]"
+              "nextHopIpAddress": "[variables('firewallIp')]"
             }
           },
           {

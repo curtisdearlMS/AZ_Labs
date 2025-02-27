@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14820440151805808860"
+      "templateHash": "6459177148615434607"
     }
   },
   "parameters": {
@@ -63,7 +63,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "4471359606368286254"
+              "templateHash": "11058662543867258853"
             }
           },
           "parameters": {
@@ -157,26 +157,6 @@
               "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccount_Name'))]"
               ]
-            },
-            {
-              "type": "Microsoft.Storage/storageAccounts/fileServices",
-              "apiVersion": "2023-01-01",
-              "name": "[format('{0}/{1}', parameters('storageAccount_Name'), 'default')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccount_Name'))]"
-              ]
-            },
-            {
-              "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
-              "apiVersion": "2023-01-01",
-              "name": "[format('{0}/{1}/{2}', parameters('storageAccount_Name'), 'default', 'defaultfileshare')]",
-              "properties": {
-                "accessTier": "Hot",
-                "shareQuota": 1024
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccount_Name'), 'default')]"
-              ]
             }
           ],
           "outputs": {
@@ -199,10 +179,6 @@
             "storageAccount_BlobServices_Name": {
               "type": "string",
               "value": "default"
-            },
-            "storageAccountFileShare_Name": {
-              "type": "string",
-              "value": "defaultfileshare"
             },
             "storageAccount_key0": {
               "type": "string",
@@ -255,7 +231,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "438405376275602375"
+              "templateHash": "7631409045681934887"
             }
           },
           "parameters": {
@@ -381,7 +357,7 @@
           "outputs": {
             "privateEndpoint_PrivateIPAddress": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').ipConfigurations[0].properties.privateIPAddress]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress]"
             },
             "privateEndpoint_NetworkInterface_Name": {
               "type": "string",

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "18437155225340264360"
+      "templateHash": "6459177148615434607"
     }
   },
   "parameters": {
@@ -231,7 +231,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "15658524061311503331"
+              "templateHash": "7631409045681934887"
             }
           },
           "parameters": {
@@ -280,8 +280,7 @@
             }
           },
           "variables": {
-            "resource_Name": "[last(split(parameters('privateLinkServiceId'), '/'))]",
-            "StorageAccountPrivateEndpointNICName": "[format('{0}-nic', parameters('privateEndpoint_Name'))]"
+            "resource_Name": "[last(split(parameters('privateLinkServiceId'), '/'))]"
           },
           "resources": [
             {
@@ -358,7 +357,7 @@
           "outputs": {
             "privateEndpoint_PrivateIPAddress": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', variables('StorageAccountPrivateEndpointNICName')), '2023-09-01').ipConfigurations[0].properties.privateIPAddress]"
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoint_Name')), '2023-05-01').networkInterfaces[0].properties.ipConfigurations[0].properties.privateIPAddress]"
             },
             "privateEndpoint_NetworkInterface_Name": {
               "type": "string",

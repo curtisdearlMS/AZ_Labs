@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "16289402229351631991"
+      "templateHash": "8595892010395436759"
     }
   },
   "parameters": {
@@ -16,22 +16,6 @@
     "hubPeSubnetName": {
       "type": "string",
       "defaultValue": "PrivateEndpointSubnet"
-    },
-    "vnet1Name": {
-      "type": "string",
-      "defaultValue": "VNET1"
-    },
-    "vnet1VmSubnetName": {
-      "type": "string",
-      "defaultValue": "VMSubnet"
-    },
-    "vnet2Name": {
-      "type": "string",
-      "defaultValue": "VNET2"
-    },
-    "vnet2VmSubnetName": {
-      "type": "string",
-      "defaultValue": "VMSubnet"
     }
   },
   "resources": [
@@ -41,43 +25,6 @@
       "name": "[format('{0}/{1}', parameters('hubVnetName'), parameters('hubPeSubnetName'))]",
       "properties": {
         "privateEndpointNetworkPolicies": "Enabled"
-      },
-      "computeType": "Standard"
-    },
-    {
-      "type": "Microsoft.Network/routeTables",
-      "apiVersion": "2023-05-01",
-      "name": "[format('{0}-{1}-rt', parameters('vnet1Name'), parameters('vnet1VmSubnetName'))]",
-      "properties": {
-        "disableBgpRoutePropagation": false,
-        "routes": [
-          {
-            "name": "RouteToHubPeSubnet",
-            "properties": {
-              "addressPrefix": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('hubVnetName'), parameters('hubPeSubnetName')), '2023-05-01').addressPrefix]",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, 'yourResourceGroupName'), 'Microsoft.Network/azureFirewalls', 'yourFirewallName'), '2023-05-01').ipConfigurations[0].properties.privateIPAddress]"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.Network/routeTables",
-      "apiVersion": "2023-05-01",
-      "name": "[format('{0}-{1}-rt', parameters('vnet2Name'), parameters('vnet2VmSubnetName'))]",
-      "properties": {
-        "disableBgpRoutePropagation": false,
-        "routes": [
-          {
-            "name": "RouteToHubPeSubnet",
-            "properties": {
-              "addressPrefix": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('hubVnetName'), parameters('hubPeSubnetName')), '2023-05-01').addressPrefix]",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, 'yourResourceGroupName'), 'Microsoft.Network/azureFirewalls', 'yourFirewallName'), '2023-05-01').ipConfigurations[0].properties.privateIPAddress]"
-            }
-          }
-        ]
       }
     }
   ]

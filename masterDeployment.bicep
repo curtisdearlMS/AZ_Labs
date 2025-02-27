@@ -2,10 +2,8 @@ param vmSize string = 'Standard_D2s_v6'
 param adminUsername string = 'bob'
 @secure()
 param adminPassword string = 'moonCAKE!'
-var storageAccountName = toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))
-var privateEndpointName = '${storageAccountName}-hub-pe'
-var resolvedPrivateEndpointName = empty(privateEndpointName) ? '${storageAccountName}-hub-pe' : privateEndpointName
-
+// var storageAccountName = toLower(substring(uniqueString(resourceGroup().id, 'storageAccount'), 0, 13))
+// var privateEndpointName = '${storageAccountName}-hub-pe'
 
 // Module to deploy HubVNET
 module hubVnet './HubVNET/HubVNET.bicep' = {
@@ -96,14 +94,6 @@ module createSAandPE './HubVNET/CreateSAandPE.bicep' = {
     vnet2
     hubVnet
   ]
-  params: {
-    storageAccountName: storageAccountName
-    privateDnsZoneName: resolvedPrivateEndpointName
-    hubVnetName: 'HubVNET'
-    vnet1Name: 'VNET1'
-    vnet2Name: 'VNET2'
-    vnetResourceGroupName: resourceGroup().name
-  }
 }
 
 // Deploy VNET Gateway and Azure Firewall only if you have time for the creation

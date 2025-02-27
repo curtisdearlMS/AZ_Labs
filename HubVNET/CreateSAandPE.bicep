@@ -21,7 +21,7 @@ module storageAccountModule '../Modules/StorageAccount.bicep' = {
 
 // Module to create the private endpoint
 module privateEndpointModule '../Modules/PrivateEndpoint.bicep' = {
-  name: 'privateEndpointModule'
+  name: 'StorageAccountPrivateEndpoint'
   params: {
     privateEndpoint_Name: storageAccountName
     virtualNetwork_IDs : [

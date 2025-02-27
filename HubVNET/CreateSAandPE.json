@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3324713599805712214"
+      "templateHash": "8137120129078494818"
     }
   },
   "parameters": {
@@ -191,7 +191,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "privateEndpointModule",
+      "name": "StorageAccountPrivateEndpoint",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -383,7 +383,7 @@
             "value": "[parameters('storageAccountName')]"
           },
           "ipv4Address": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'privateEndpointModule'), '2022-09-01').outputs.privateEndpoint_PrivateIPAddress.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'StorageAccountPrivateEndpoint'), '2022-09-01').outputs.privateEndpoint_PrivateIPAddress.value]"
           },
           "ttlInSeconds": {
             "value": 3600
@@ -444,7 +444,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'privateEndpointModule')]"
+        "[resourceId('Microsoft.Resources/deployments', 'StorageAccountPrivateEndpoint')]"
       ]
     }
   ]

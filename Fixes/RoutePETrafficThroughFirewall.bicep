@@ -1,67 +1,20 @@
-param hubVnetName string = 'HubVNET'
-param hubPeSubnetName string = 'PrivateEndpointSubnet'
-//param vnet1Name string = 'VNET1'
-//param vnet1VmSubnetName string = 'VMSubnet'
-//param vnet2Name string = 'VNET2'
-//param vnet2VmSubnetName string = 'VMSubnet'
-// resource firewall 'Microsoft.Network/azureFirewalls@2023-05-01' existing = {
-//   name: 'yourFirewallName'
-//   scope: resourceGroup('yourResourceGroupName')
-// }
+param location string = resourceGroup().location
+param hubVnetName string = 'hubvnet'
+param peSubnetName string = 'PrivateEndpointSubnet'
 
-//var firewallPrivateIp = firewall.properties.ipConfigurations[0].properties.privateIPAddress
-
-resource hubVnet 'Microsoft.Network/virtualNetworks@2023-05-01' existing = {
+resource hubVnet 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
   name: hubVnetName
 }
 
-resource Subnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' = {
-  name: hubPeSubnetName
+resource peSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
   parent: hubVnet
+  name: peSubnetName
+}
+
+resource peSubnetPolicy 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' = {
+  parent: hubVnet
+  name: peSubnetName
   properties: {
     privateEndpointNetworkPolicies: 'Enabled'
   }
 }
-
-// resource hubPeSubnetUpdate 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' = {
-//   name: hubPeSubnetName==
-//   parent: hubPeSubnet
-//   properties: {
-//     privateEndpointNetworkPolicies: 'Enabled'
-//   }
-// }
-// resource vnet1VmSubnetRouteTable 'Microsoft.Network/routeTables@2023-05-01' = {
-//   name: '${vnet1Name}-${vnet1VmSubnetName}-rt'
-//   properties: {
-//     disableBgpRoutePropagation: false
-//     routes: [
-//       {
-//         name: 'RouteToHubPeSubnet'
-//         properties: {
-//           addressPrefix: hubPeSubnet.properties.addressPrefix
-//           nextHopType: 'VirtualAppliance'
-//           nextHopIpAddress: firewallPrivateIp
-//         }
-//       }
-//     ]
-//   }
-// }
-
-// resource vnet2VmSubnetRouteTable 'Microsoft.Network/routeTables@2023-05-01' = {
-//   name: '${vnet2Name}-${vnet2VmSubnetName}-rt'
-//   properties: {
-//     disableBgpRoutePropagation: false
-//     routes: [
-//       {
-//         name: 'RouteToHubPeSubnet'
-//         properties: {
-//           addressPrefix: hubPeSubnet.properties.addressPrefix
-//           nextHopType: 'VirtualAppliance'
-//           nextHopIpAddress: firewallPrivateIp
-//         }
-//       }
-//     ]
-//   }
-// }
-
-

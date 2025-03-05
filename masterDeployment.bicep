@@ -1,7 +1,7 @@
 param vmSize string = 'Standard_D2s_v6' 
 param adminUsername string = 'bob'
-//@secure()
-param adminPassword string = 'moonCAKE!'
+@secure()
+param adminPassword string = newGuid()
 
 // Module to deploy HubVNET
 module hubVnet './HubVNET/HubVNET.bicep' = {

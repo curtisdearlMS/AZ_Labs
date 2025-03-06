@@ -18,6 +18,7 @@ This document provides basic networking scenarios that can be demonstrated using
 Description: This scenario demonstrates the impact of a misconfigured route table.
 
 This will deploy a route table to VNET 1 that will break traffic. 
+Why can the VM's in VNET 1 VM Subnet still reach the hub VNET Storage Account Private Endpoint? What other changes would break that communication?
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2Fmisconfiguredroutetable.json)
 

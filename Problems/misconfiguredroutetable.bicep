@@ -4,12 +4,6 @@ resource vnet1 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
   scope: resourceGroup()
 }
 
-// Reference the existing VNET2
-resource vnet2 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
-  name: 'vnet2'
-  scope: resourceGroup()
-}
-
 resource rtVMSubnet1 'Microsoft.Network/routeTables@2023-09-01' = {
   name: '${vnet1.name}-rtVMSubnet'
   location: resourceGroup().location

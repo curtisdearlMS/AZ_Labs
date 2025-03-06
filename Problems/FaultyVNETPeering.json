@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "4997222326572991361"
+      "templateHash": "13154096457894972490"
     }
   },
   "resources": [
@@ -35,6 +35,24 @@
         "allowForwardedTraffic": true,
         "allowGatewayTransit": false,
         "useRemoteGateways": false
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2023-09-01",
+      "name": "[format('{0}-rtVMSubnet', 'vnet1')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "routes": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "2023-09-01",
+      "name": "[format('{0}-rtVMSubnet', 'vnet2')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "routes": []
       }
     }
   ]

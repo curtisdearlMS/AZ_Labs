@@ -38,3 +38,19 @@ resource vnet2TOvnet1 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
   }
 }
 
+resource rtVMSubnet1 'Microsoft.Network/routeTables@2023-09-01' = {
+  name: '${vnet1.name}-rtVMSubnet'
+  location: resourceGroup().location
+  properties: {
+    routes: []
+  }
+}
+
+resource rtVMSubnet2 'Microsoft.Network/routeTables@2023-09-01' = {
+  name: '${vnet2.name}-rtVMSubnet'
+  location: resourceGroup().location
+  properties: {
+    routes: []
+  }
+}
+

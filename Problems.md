@@ -22,14 +22,25 @@ Description: This scenario demonstrates the impact of a misconfigured route tabl
 ## Scenario 2: Incorrect NSG Rules
 Description: This scenario demonstrates the impact of incorrect NSG rules.
 
+This will deploy an NSG rule into the VNET 1 VM subnet NSG.
+This 1 rule will blocked VM2 in VNET 1 from communicating with the storage account Private IP address.
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNSGBlockingPE.json)
 
 ## Scenario 3: Faulty VNet Peering
 Description: This scenario demonstrates the impact of faulty VNet peering.
 
+This will deploy a VNET peering between VNET1 and VNET2. 
+
+This will remove the routes in the route tables that are designed for transitive VNET routing via the VNET Gateway and/or the Azure Fireall. If the VNET Gateway or the Azure Fireall are not deployed AND the routes for transitive routing were not added the VMs in VNET 1 and VNET 2 will not be able to communicate each other. 
+
+The VMs should be able to reach each other once VNET 1 is peered to VNET 2, however there is a problem with the VNET peering. Check the VNET peerings to find the problem, correct the misconfiguration and test. 
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FFaultyVNETPeering.json)
 
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.
+
+This removes all NSG rules, restores routes for transitive routing on the VM subnet route tables, and removes the VNET1 - VNET2 peering. 
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Fixes/resetToDefault.json)

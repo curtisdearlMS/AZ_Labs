@@ -11,7 +11,7 @@ resource vnet2 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
 }
 
 resource vnet1TOvnet2 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-09-01' = {
-  name: 'vnet1ToHubPeering'
+  name: 'VNET1toVNET2'
   parent: vnet1
   properties: {
     remoteVirtualNetwork: {
@@ -25,7 +25,7 @@ resource vnet1TOvnet2 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
 }
 
 resource vnet2TOvnet1 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-09-01' = {
-  name: 'vnet2ToHubPeering'
+  name: 'VNET2ToVNET1'
   parent: vnet2
   properties: {
     remoteVirtualNetwork: {

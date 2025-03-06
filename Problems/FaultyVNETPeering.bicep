@@ -1,39 +1,40 @@
-param resourceGroupName string
-
 // Reference the existing VNET1
 resource vnet1 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
   name: 'vnet1'
-  scope: resourceGroup(resourceGroupName)
+  scope: resourceGroup()
 }
 
 // Reference the existing VNET2
 resource vnet2 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
   name: 'vnet2'
-  scope: resourceGroup(resourceGroupName)
+  scope: resourceGroup()
 }
 
-// Create the peering from VNET1 to VNET2
-module vnetPeeringModule1 '../Modules/VNETPeering.bicep' = {
-  name: 'vnetPeeringDeployment1'
-  params: {
-    vnet1Id: vnet1.id
-    vnet2Id: vnet2.id
-    AVNA: true
-    AFT: false
-    AGT: false
-    URG: false
+resource vnet1TOvnet2 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-09-01' = {
+  name: 'vnet1ToHubPeering'
+  parent: vnet1
+  properties: {
+    remoteVirtualNetwork: {
+      id: vnet1.id
+    }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: false
+    useRemoteGateways: false
   }
 }
 
-// Create the peering from VNET2 to VNET1
-module vnetPeeringModule2 '../Modules/VNETPeering.bicep' = {
-  name: 'vnetPeeringDeployment2'
-  params: {
-    vnet1Id: vnet2.id
-    vnet2Id: vnet1.id
-    AVNA: false
-    AFT: false
-    AGT: false
-    URG: false
+resource vnet2TOvnet1 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2023-09-01' = {
+  name: 'vnet2ToHubPeering'
+  parent: vnet2
+  properties: {
+    remoteVirtualNetwork: {
+      id: vnet2.id
+    }
+    allowVirtualNetworkAccess: false
+    allowForwardedTraffic: true
+    allowGatewayTransit: false
+    useRemoteGateways: false
   }
 }
+

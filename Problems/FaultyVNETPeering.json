@@ -5,177 +5,36 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14150959327887454459"
-    }
-  },
-  "parameters": {
-    "resourceGroupName": {
-      "type": "string"
+      "templateHash": "14571400352983738209"
     }
   },
   "resources": [
     {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "vnetPeeringDeployment1",
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "apiVersion": "2023-09-01",
+      "name": "[format('{0}/{1}', 'vnet1', 'vnet1ToHubPeering')]",
       "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
+        "remoteVirtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', 'vnet1')]"
         },
-        "mode": "Incremental",
-        "parameters": {
-          "vnet1Id": {
-            "value": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Network/virtualNetworks', 'vnet1')]"
-          },
-          "vnet2Id": {
-            "value": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Network/virtualNetworks', 'vnet2')]"
-          },
-          "AVNA": {
-            "value": true
-          },
-          "AFT": {
-            "value": false
-          },
-          "AGT": {
-            "value": false
-          },
-          "URG": {
-            "value": false
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.33.93.31351",
-              "templateHash": "6395538957573392207"
-            }
-          },
-          "parameters": {
-            "vnet1Id": {
-              "type": "string"
-            },
-            "vnet2Id": {
-              "type": "string"
-            },
-            "AVNA": {
-              "type": "bool",
-              "defaultValue": false
-            },
-            "AFT": {
-              "type": "bool",
-              "defaultValue": false
-            },
-            "AGT": {
-              "type": "bool",
-              "defaultValue": false
-            },
-            "URG": {
-              "type": "bool",
-              "defaultValue": false
-            }
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2021-02-01",
-              "name": "[format('{0}-to-{1}', parameters('vnet1Id'), parameters('vnet2Id'))]",
-              "properties": {
-                "remoteVirtualNetwork": {
-                  "id": "[parameters('vnet2Id')]"
-                },
-                "allowVirtualNetworkAccess": "[parameters('AVNA')]",
-                "allowForwardedTraffic": "[parameters('AFT')]",
-                "allowGatewayTransit": "[parameters('AGT')]",
-                "useRemoteGateways": "[parameters('URG')]"
-              }
-            }
-          ]
-        }
+        "allowVirtualNetworkAccess": true,
+        "allowForwardedTraffic": true,
+        "allowGatewayTransit": false,
+        "useRemoteGateways": false
       }
     },
     {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "vnetPeeringDeployment2",
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "apiVersion": "2023-09-01",
+      "name": "[format('{0}/{1}', 'vnet2', 'vnet2ToHubPeering')]",
       "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
+        "remoteVirtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', 'vnet2')]"
         },
-        "mode": "Incremental",
-        "parameters": {
-          "vnet1Id": {
-            "value": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Network/virtualNetworks', 'vnet2')]"
-          },
-          "vnet2Id": {
-            "value": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Network/virtualNetworks', 'vnet1')]"
-          },
-          "AVNA": {
-            "value": false
-          },
-          "AFT": {
-            "value": false
-          },
-          "AGT": {
-            "value": false
-          },
-          "URG": {
-            "value": false
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.33.93.31351",
-              "templateHash": "6395538957573392207"
-            }
-          },
-          "parameters": {
-            "vnet1Id": {
-              "type": "string"
-            },
-            "vnet2Id": {
-              "type": "string"
-            },
-            "AVNA": {
-              "type": "bool",
-              "defaultValue": false
-            },
-            "AFT": {
-              "type": "bool",
-              "defaultValue": false
-            },
-            "AGT": {
-              "type": "bool",
-              "defaultValue": false
-            },
-            "URG": {
-              "type": "bool",
-              "defaultValue": false
-            }
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2021-02-01",
-              "name": "[format('{0}-to-{1}', parameters('vnet1Id'), parameters('vnet2Id'))]",
-              "properties": {
-                "remoteVirtualNetwork": {
-                  "id": "[parameters('vnet2Id')]"
-                },
-                "allowVirtualNetworkAccess": "[parameters('AVNA')]",
-                "allowForwardedTraffic": "[parameters('AFT')]",
-                "allowGatewayTransit": "[parameters('AGT')]",
-                "useRemoteGateways": "[parameters('URG')]"
-              }
-            }
-          ]
-        }
+        "allowVirtualNetworkAccess": false,
+        "allowForwardedTraffic": true,
+        "allowGatewayTransit": false,
+        "useRemoteGateways": false
       }
     }
   ]

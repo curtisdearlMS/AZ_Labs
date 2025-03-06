@@ -22,7 +22,9 @@ Description: This scenario demonstrates the impact of a misconfigured route tabl
 ## Scenario 2: Incorrect NSG Rules
 Description: This scenario demonstrates the impact of incorrect NSG rules.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/incorrectNSGRules.json)
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/Problems/NSGBlockingPE.json">
+    <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
+</a>
 
 ## Scenario 3: Faulty VNet Peering
 Description: This scenario demonstrates the impact of faulty VNet peering.

@@ -5,16 +5,13 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "7803534104170135143"
+      "templateHash": "12665958134743753699"
     }
   },
   "parameters": {
-    "resourceGroupName": {
-      "type": "string"
-    },
-    "nsgName": {
+    "vnetName": {
       "type": "string",
-      "defaultValue": "vnet1-nsgVMSubnet"
+      "defaultValue": "VNET1"
     },
     "priority": {
       "type": "int",
@@ -51,141 +48,26 @@
   },
   "resources": [
     {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "nsgRuleModule",
-      "resourceGroup": "[parameters('resourceGroupName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-09-01",
+      "name": "[format('{0}-nsgVMSubnet', parameters('vnetName'))]",
+      "location": "[resourceGroup().location]",
       "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "ruleName": {
-            "value": "blockPE"
-          },
-          "priority": {
-            "value": "[parameters('priority')]"
-          },
-          "direction": {
-            "value": "[parameters('direction')]"
-          },
-          "access": {
-            "value": "[parameters('access')]"
-          },
-          "protocol": {
-            "value": "[parameters('protocol')]"
-          },
-          "sourcePortRange": {
-            "value": "[parameters('sourcePortRange')]"
-          },
-          "destinationPortRange": {
-            "value": "[parameters('destinationPortRange')]"
-          },
-          "sourceAddressPrefix": {
-            "value": "[parameters('sourceAddressPrefix')]"
-          },
-          "destinationAddressPrefix": {
-            "value": "[parameters('destinationAddressPrefix')]"
+        "securityRules": [
+          {
+            "name": "blockPE",
+            "properties": {
+              "priority": "[parameters('priority')]",
+              "direction": "[parameters('direction')]",
+              "access": "[parameters('access')]",
+              "protocol": "[parameters('protocol')]",
+              "sourcePortRange": "[parameters('sourcePortRange')]",
+              "destinationPortRange": "[parameters('destinationPortRange')]",
+              "sourceAddressPrefix": "[parameters('sourceAddressPrefix')]",
+              "destinationAddressPrefix": "[parameters('destinationAddressPrefix')]"
+            }
           }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.33.93.31351",
-              "templateHash": "7167914496605463092"
-            }
-          },
-          "parameters": {
-            "ruleName": {
-              "type": "string"
-            },
-            "priority": {
-              "type": "int"
-            },
-            "direction": {
-              "type": "string",
-              "defaultValue": "Inbound",
-              "allowedValues": [
-                "Inbound",
-                "Outbound"
-              ]
-            },
-            "access": {
-              "type": "string",
-              "defaultValue": "Allow",
-              "allowedValues": [
-                "Allow",
-                "Deny"
-              ]
-            },
-            "protocol": {
-              "type": "string",
-              "defaultValue": "*",
-              "allowedValues": [
-                "Tcp",
-                "Udp",
-                "*"
-              ]
-            },
-            "sourcePortRange": {
-              "type": "string",
-              "defaultValue": "*",
-              "allowedValues": [
-                "*",
-                "80",
-                "443"
-              ]
-            },
-            "destinationPortRange": {
-              "type": "string",
-              "defaultValue": "*",
-              "allowedValues": [
-                "*",
-                "80",
-                "443"
-              ]
-            },
-            "sourceAddressPrefix": {
-              "type": "string",
-              "defaultValue": "*",
-              "allowedValues": [
-                "*",
-                "10.0.0.0/8",
-                "192.168.0.0/16"
-              ]
-            },
-            "destinationAddressPrefix": {
-              "type": "string",
-              "defaultValue": "*",
-              "allowedValues": [
-                "*",
-                "10.0.0.0/8",
-                "192.168.0.0/16"
-              ]
-            }
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-              "apiVersion": "2021-02-01",
-              "name": "[parameters('ruleName')]",
-              "properties": {
-                "priority": "[parameters('priority')]",
-                "direction": "[parameters('direction')]",
-                "access": "[parameters('access')]",
-                "protocol": "[parameters('protocol')]",
-                "sourcePortRange": "[parameters('sourcePortRange')]",
-                "destinationPortRange": "[parameters('destinationPortRange')]",
-                "sourceAddressPrefix": "[parameters('sourceAddressPrefix')]",
-                "destinationAddressPrefix": "[parameters('destinationAddressPrefix')]"
-              }
-            }
-          ]
-        }
+        ]
       }
     }
   ]

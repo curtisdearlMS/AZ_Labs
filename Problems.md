@@ -22,16 +22,12 @@ Description: This scenario demonstrates the impact of a misconfigured route tabl
 ## Scenario 2: Incorrect NSG Rules
 Description: This scenario demonstrates the impact of incorrect NSG rules.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/Problems/NSGBlockingPE.json">
-    <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
-</a>
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNSGBlockingPE.json)
 
 ## Scenario 3: Faulty VNet Peering
 Description: This scenario demonstrates the impact of faulty VNet peering.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/MicrosoftAzureAaron/NET_TrainingLabs/main/Problems/FaultyVNETPeering.json">
-    <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
-</a>
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FFaultyVNETPeering.json)
 
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.

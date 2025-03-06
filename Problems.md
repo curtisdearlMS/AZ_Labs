@@ -23,7 +23,8 @@ Description: This scenario demonstrates the impact of a misconfigured route tabl
 Description: This scenario demonstrates the impact of incorrect NSG rules.
 
 This will deploy an NSG rule into the VNET 1 VM subnet NSG.
-This 1 rule will blocked VM2 in VNET 1 from communicating with the storage account Private IP address.
+
+This 1 rule will blocked VM2 in VNET 1 from communicating with the storage account Private IP address in the Hub VNET. Do connection tests from VM1 and VM2 to the Private Endpoint.
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNSGBlockingPE.json)
 
@@ -32,9 +33,11 @@ Description: This scenario demonstrates the impact of faulty VNet peering.
 
 This will deploy a VNET peering between VNET1 and VNET2. 
 
-This will remove the routes in the route tables that are designed for transitive VNET routing via the VNET Gateway and/or the Azure Fireall. If the VNET Gateway or the Azure Fireall are not deployed AND the routes for transitive routing were not added the VMs in VNET 1 and VNET 2 will not be able to communicate each other. 
+This will remove the routes in the route tables that are designed for transitive VNET routing via the VNET Gateway and/or the Azure Fireall. If the VNET Gateway or the Azure Fireall are not deployed AND the routes for transitive routing were not added the VMs in VNET 1 and VNET 2 will not be able to communicate each other with out directly peering the VNETs to each other. 
 
-The VMs should be able to reach each other once VNET 1 is peered to VNET 2, however there is a problem with the VNET peering. Check the VNET peerings to find the problem, correct the misconfiguration and test. 
+This should deploy the VNET 1 to VNET 2 peering and the VMs should be able to reach each other once VNET 1 is peered to VNET 2, however there is a problem with the VNET peering. 
+
+Check the VNET peerings to find the problem, correct the misconfiguration and test. 
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FFaultyVNETPeering.json)
 

@@ -17,7 +17,9 @@ This document provides basic networking scenarios that can be demonstrated using
 ## Scenario 1: Misconfigured Route Table
 Description: This scenario demonstrates the impact of a misconfigured route table.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/misconfiguredRouteTable.json)
+This will deploy a route table to VNET 1 that will break traffic. 
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2Fmiconfiguredroutetable.json)
 
 ## Scenario 2: Incorrect NSG Rules
 Description: This scenario demonstrates the impact of incorrect NSG rules.

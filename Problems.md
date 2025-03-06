@@ -27,7 +27,7 @@ Description: This scenario demonstrates the impact of incorrect NSG rules.
 ## Scenario 3: Faulty VNet Peering
 Description: This scenario demonstrates the impact of faulty VNet peering.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2Fproblems%2FfaultyVNetPeering.json">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2Fproblems%2FfaultyVNETPeering.json">
     <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
 </a>
 

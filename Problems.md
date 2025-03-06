@@ -46,4 +46,4 @@ Description: This template resets the network configuration to a standard starti
 
 This removes all NSG rules, restores routes for transitive routing on the VM subnet route tables, and removes the VNET1 - VNET2 peering. 
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Fixes/resetToDefault.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FFullReset.json)

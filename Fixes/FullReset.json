@@ -1,0 +1,296 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.33.93.31351",
+      "templateHash": "8574222946189416391"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "resetPeerings",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {},
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "13165559615711808094"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "vnet1PeeringDeployment",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "hubVnetName": {
+                    "value": "HubVNET"
+                  },
+                  "vnet1Name": {
+                    "value": "VNET1"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.33.93.31351",
+                      "templateHash": "14621975082855749956"
+                    }
+                  },
+                  "parameters": {
+                    "hubVnetName": {
+                      "type": "string",
+                      "defaultValue": "HubVNET"
+                    },
+                    "vnet1Name": {
+                      "type": "string",
+                      "defaultValue": "VNET1"
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+                      "apiVersion": "2023-09-01",
+                      "name": "[format('{0}/{1}', parameters('hubVnetName'), 'hubToVnet1Peering')]",
+                      "properties": {
+                        "remoteVirtualNetwork": {
+                          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
+                        },
+                        "allowVirtualNetworkAccess": true,
+                        "allowForwardedTraffic": true,
+                        "allowGatewayTransit": false,
+                        "useRemoteGateways": false
+                      }
+                    },
+                    {
+                      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+                      "apiVersion": "2023-09-01",
+                      "name": "[format('{0}/{1}', parameters('vnet1Name'), 'vnet1ToHubPeering')]",
+                      "properties": {
+                        "remoteVirtualNetwork": {
+                          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
+                        },
+                        "allowVirtualNetworkAccess": true,
+                        "allowForwardedTraffic": true,
+                        "allowGatewayTransit": false,
+                        "useRemoteGateways": false
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2022-09-01",
+              "name": "vnet2PeeringDeployment",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "hubVnetName": {
+                    "value": "HubVNET"
+                  },
+                  "vnet2Name": {
+                    "value": "VNET2"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.33.93.31351",
+                      "templateHash": "18264314212318686912"
+                    }
+                  },
+                  "parameters": {
+                    "hubVnetName": {
+                      "type": "string",
+                      "defaultValue": "HubVNET"
+                    },
+                    "vnet2Name": {
+                      "type": "string",
+                      "defaultValue": "VNET2"
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+                      "apiVersion": "2023-09-01",
+                      "name": "[format('{0}/{1}', parameters('hubVnetName'), 'hubToVnet2Peering')]",
+                      "properties": {
+                        "remoteVirtualNetwork": {
+                          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet2Name'))]"
+                        },
+                        "allowVirtualNetworkAccess": true,
+                        "allowForwardedTraffic": true,
+                        "allowGatewayTransit": false,
+                        "useRemoteGateways": false
+                      }
+                    },
+                    {
+                      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+                      "apiVersion": "2023-09-01",
+                      "name": "[format('{0}/{1}', parameters('vnet2Name'), 'vnet2ToHubPeering')]",
+                      "properties": {
+                        "remoteVirtualNetwork": {
+                          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('hubVnetName'))]"
+                        },
+                        "allowVirtualNetworkAccess": true,
+                        "allowForwardedTraffic": true,
+                        "allowGatewayTransit": false,
+                        "useRemoteGateways": false
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "resetNSGs",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {},
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "9617215390927005458"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/networkSecurityGroups",
+              "apiVersion": "2023-09-01",
+              "name": "VNET1-nsgVMSubnet",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "securityRules": []
+              }
+            },
+            {
+              "type": "Microsoft.Network/networkSecurityGroups",
+              "apiVersion": "2023-09-01",
+              "name": "VNET2-nsgVMSubnet",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "securityRules": []
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "resetRouteTables",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {},
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "5611116293212295748"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/routeTables",
+              "apiVersion": "2023-09-01",
+              "name": "[format('{0}-rtVMSubnet', 'vnet1')]",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "routes": [
+                  {
+                    "name": "defaultRoute",
+                    "properties": {
+                      "addressPrefix": "0.0.0.0/0",
+                      "nextHopType": "VirtualAppliance",
+                      "nextHopIpAddress": "10.28.15.4"
+                    }
+                  },
+                  {
+                    "name": "vnet2Route",
+                    "properties": {
+                      "addressPrefix": "10.2.0.0/16",
+                      "nextHopType": "VirtualNetworkGateway"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Network/routeTables",
+              "apiVersion": "2023-09-01",
+              "name": "[format('{0}-rtVMSubnet', 'vnet2')]",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "routes": [
+                  {
+                    "name": "defaultRoute",
+                    "properties": {
+                      "addressPrefix": "0.0.0.0/0",
+                      "nextHopType": "VirtualAppliance",
+                      "nextHopIpAddress": "10.28.15.4"
+                    }
+                  },
+                  {
+                    "name": "vnet1Route",
+                    "properties": {
+                      "addressPrefix": "10.1.0.0/16",
+                      "nextHopType": "VirtualNetworkGateway"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,5 +1,4 @@
-param resourceGroupName string = 'your-resource-group-name'
-param nsgName string = 'vnet1-nsgVMSubnet'
+param vnetName string = 'VNET1'
 param priority int = 1000
 param direction string = 'Outbound'
 param access string = 'Deny'
@@ -9,26 +8,26 @@ param destinationPortRange string = '*'
 param sourceAddressPrefix string = '10.1.2.5' // IP address of VM 2
 param destinationAddressPrefix string = '10.28.2.5' // IP address of Storage private endpoint
 
-resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = {
-  name: nsgName
-  scope: resourceGroup(resourceGroupName)
-}
-
-module nsgRule './Modules/nsgRule.bicep' = {
-  name: 'nsgRuleModule'
-  path: 'Modules/nsgRule.bicep'
-  parent: nsg
-  scope: resourceGroup(resourceGroupName)
-  params: {
-    nsgName: nsgName
-    ruleName: 'blockPE${uniqueString(resourceGroup().id, nsgName, priority)[0:5]}'
-    priority: priority
-    direction: direction
-    access: access
-    protocol: protocol
-    sourcePortRange: sourcePortRange
-    destinationPortRange: destinationPortRange
-    sourceAddressPrefix: sourceAddressPrefix
-    destinationAddressPrefix: destinationAddressPrefix
+// Create a network security group (NSG) for the VM subnet, 
+//this will block VM2 from accessing the hub vnet PE for the storage account
+resource nsgVMSubnet 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+  name: '${vnetName}-nsgVMSubnet'
+  location: resourceGroup().location
+  properties: {
+    securityRules: [
+      {
+        name: 'blockPE'
+        properties: {
+          priority: priority
+          direction: direction
+          access: access
+          protocol: protocol
+          sourcePortRange: sourcePortRange
+          destinationPortRange: destinationPortRange
+          sourceAddressPrefix: sourceAddressPrefix
+          destinationAddressPrefix: destinationAddressPrefix
+        }
+      }
+    ]
   }
 }

@@ -5,8 +5,27 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "1938494866978600684"
+      "templateHash": "9617215390927005458"
     }
   },
-  "resources": []
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-09-01",
+      "name": "VNET1-nsgVMSubnet",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": []
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-09-01",
+      "name": "VNET2-nsgVMSubnet",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": []
+      }
+    }
+  ]
 }

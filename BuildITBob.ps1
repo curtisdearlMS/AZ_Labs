@@ -1,8 +1,10 @@
 # Define the directory containing the Bicep files
 $bicepDirectory = "C:\Users\aarosanders\Desktop\Training Labs\"
 
+
 # Get all Bicep files in the directory and subdirectories, excluding the /Modules folder
 $bicepFiles = Get-ChildItem -Path $bicepDirectory -Filter *.bicep -Recurse | Where-Object { $_.FullName -notmatch '\\Modules\\' }
+
 
 # Loop through each Bicep file and compile it to JSON
 foreach ($bicepFile in $bicepFiles) {

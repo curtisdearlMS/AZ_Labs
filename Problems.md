@@ -47,6 +47,6 @@ Check the VNET peerings to find the problem, correct the misconfiguration and te
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.
 
-This removes all NSG rules, restores routes for transitive routing on the VM subnet route tables, and removes the VNET1 - VNET2 peering. 
+This removes all NSG rules, restores routes for transitive routing on the VM subnet route tables, and (should, but doesnt currently) removes the VNET1 - VNET2 peering. 
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FFullReset.json)

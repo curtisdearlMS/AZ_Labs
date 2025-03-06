@@ -15,7 +15,7 @@ resource vnet1TOvnet2 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
   parent: vnet1
   properties: {
     remoteVirtualNetwork: {
-      id: vnet1.id
+      id: vnet2.id
     }
     allowVirtualNetworkAccess: true
     allowForwardedTraffic: true
@@ -29,7 +29,7 @@ resource vnet2TOvnet1 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
   parent: vnet2
   properties: {
     remoteVirtualNetwork: {
-      id: vnet2.id
+      id: vnet1.id
     }
     allowVirtualNetworkAccess: false
     allowForwardedTraffic: true

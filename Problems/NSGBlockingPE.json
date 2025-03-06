@@ -1,0 +1,70 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.33.93.31351",
+      "templateHash": "12910511908748282914"
+    }
+  },
+  "parameters": {
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "your-resource-group-name"
+    },
+    "nsgName": {
+      "type": "string",
+      "defaultValue": "vnet1-nsgVMSubnet"
+    },
+    "priority": {
+      "type": "int",
+      "defaultValue": 1000
+    },
+    "direction": {
+      "type": "string",
+      "defaultValue": "Outbound"
+    },
+    "access": {
+      "type": "string",
+      "defaultValue": "Deny"
+    },
+    "protocol": {
+      "type": "string",
+      "defaultValue": "*"
+    },
+    "sourcePortRange": {
+      "type": "string",
+      "defaultValue": "*"
+    },
+    "destinationPortRange": {
+      "type": "string",
+      "defaultValue": "*"
+    },
+    "sourceAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.1.2.5"
+    },
+    "destinationAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.28.2.5"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+      "apiVersion": "2021-02-01",
+      "name": "[format('{0}/block-storage-private-endpoint', parameters('nsgName'))]",
+      "properties": {
+        "priority": "[parameters('priority')]",
+        "direction": "[parameters('direction')]",
+        "access": "[parameters('access')]",
+        "protocol": "[parameters('protocol')]",
+        "sourcePortRange": "[parameters('sourcePortRange')]",
+        "destinationPortRange": "[parameters('destinationPortRange')]",
+        "sourceAddressPrefix": "[parameters('sourceAddressPrefix')]",
+        "destinationAddressPrefix": "[parameters('destinationAddressPrefix')]"
+      }
+    }
+  ]
+}

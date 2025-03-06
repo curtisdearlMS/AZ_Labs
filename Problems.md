@@ -27,7 +27,9 @@ Description: This scenario demonstrates the impact of incorrect NSG rules.
 ## Scenario 3: Faulty VNet Peering
 Description: This scenario demonstrates the impact of faulty VNet peering.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/Problems/faultyVNetPeering.json)
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2Fproblems%2FfaultyVNetPeering.json">
+    <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
+</a>
 
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.

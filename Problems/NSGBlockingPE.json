@@ -5,66 +5,39 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "12665958134743753699"
+      "templateHash": "17788994031622143507"
     }
   },
-  "parameters": {
-    "vnetName": {
-      "type": "string",
-      "defaultValue": "VNET1"
-    },
-    "priority": {
-      "type": "int",
-      "defaultValue": 1000
-    },
-    "direction": {
-      "type": "string",
-      "defaultValue": "Outbound"
-    },
-    "access": {
-      "type": "string",
-      "defaultValue": "Deny"
-    },
-    "protocol": {
-      "type": "string",
-      "defaultValue": "*"
-    },
-    "sourcePortRange": {
-      "type": "string",
-      "defaultValue": "*"
-    },
-    "destinationPortRange": {
-      "type": "string",
-      "defaultValue": "*"
-    },
-    "sourceAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.1.2.5"
-    },
-    "destinationAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.28.2.5"
-    }
+  "variables": {
+    "vnetName": "VNET1",
+    "priority": 1000,
+    "direction": "Outbound",
+    "access": "Deny",
+    "protocol": "*",
+    "sourcePortRange": "*",
+    "destinationPortRange": "*",
+    "sourceAddressPrefix": "10.1.2.5",
+    "destinationAddressPrefix": "10.28.2.5"
   },
   "resources": [
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2023-09-01",
-      "name": "[format('{0}-nsgVMSubnet', parameters('vnetName'))]",
+      "name": "[format('{0}-nsgVMSubnet', variables('vnetName'))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
           {
             "name": "blockPE",
             "properties": {
-              "priority": "[parameters('priority')]",
-              "direction": "[parameters('direction')]",
-              "access": "[parameters('access')]",
-              "protocol": "[parameters('protocol')]",
-              "sourcePortRange": "[parameters('sourcePortRange')]",
-              "destinationPortRange": "[parameters('destinationPortRange')]",
-              "sourceAddressPrefix": "[parameters('sourceAddressPrefix')]",
-              "destinationAddressPrefix": "[parameters('destinationAddressPrefix')]"
+              "priority": "[variables('priority')]",
+              "direction": "[variables('direction')]",
+              "access": "[variables('access')]",
+              "protocol": "[variables('protocol')]",
+              "sourcePortRange": "[variables('sourcePortRange')]",
+              "destinationPortRange": "[variables('destinationPortRange')]",
+              "sourceAddressPrefix": "[variables('sourceAddressPrefix')]",
+              "destinationAddressPrefix": "[variables('destinationAddressPrefix')]"
             }
           }
         ]

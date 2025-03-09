@@ -22,7 +22,7 @@
   "resources": [
     {
       "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2023-09-01",
+      "apiVersion": "2017-06-01",
       "name": "[format('{0}-nsgVMSubnet', variables('vnetName'))]",
       "location": "[resourceGroup().location]",
       "properties": {

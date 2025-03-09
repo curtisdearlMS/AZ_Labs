@@ -1,5 +1,5 @@
-param vnetName string = 'VNET2'
-param vmSubnetName string = 'VMSubnet'
+var vnetName  = 'VNET2'
+var vmSubnetName  = 'VMSubnet'
 param adminUsername string = 'bob'
 @secure()
 param adminPassword string

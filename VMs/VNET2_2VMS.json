@@ -5,18 +5,10 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "2459917107023190284"
+      "templateHash": "15057174613462613256"
     }
   },
   "parameters": {
-    "vnetName": {
-      "type": "string",
-      "defaultValue": "VNET2"
-    },
-    "vmSubnetName": {
-      "type": "string",
-      "defaultValue": "VMSubnet"
-    },
     "adminUsername": {
       "type": "string",
       "defaultValue": "bob"
@@ -28,6 +20,10 @@
       "type": "string",
       "defaultValue": "Standard_D2s_v6"
     }
+  },
+  "variables": {
+    "vnetName": "VNET2",
+    "vmSubnetName": "VMSubnet"
   },
   "resources": [
     {
@@ -44,7 +40,7 @@
             "value": "[resourceGroup().location]"
           },
           "vm_Name": {
-            "value": "[format('{0}-vm1', parameters('vnetName'))]"
+            "value": "[format('{0}-vm1', variables('vnetName'))]"
           },
           "vmSize": {
             "value": "[parameters('vmSize')]"
@@ -56,13 +52,13 @@
             "value": "[parameters('adminPassword')]"
           },
           "nic_Name": {
-            "value": "[format('{0}-vm1NIC', parameters('vnetName'))]"
+            "value": "[format('{0}-vm1NIC', variables('vnetName'))]"
           },
           "accelNet": {
             "value": false
           },
           "subnetID": {
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('vmSubnetName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
           }
         },
         "template": {
@@ -224,7 +220,7 @@
             "value": "[resourceGroup().location]"
           },
           "vm_Name": {
-            "value": "[format('{0}-vm2', parameters('vnetName'))]"
+            "value": "[format('{0}-vm2', variables('vnetName'))]"
           },
           "vmSize": {
             "value": "[parameters('vmSize')]"
@@ -236,13 +232,13 @@
             "value": "[parameters('adminPassword')]"
           },
           "nic_Name": {
-            "value": "[format('{0}-vm2NIC', parameters('vnetName'))]"
+            "value": "[format('{0}-vm2NIC', variables('vnetName'))]"
           },
           "accelNet": {
             "value": false
           },
           "subnetID": {
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('vmSubnetName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
           }
         },
         "template": {

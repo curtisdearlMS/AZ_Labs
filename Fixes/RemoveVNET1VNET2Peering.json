@@ -11,7 +11,7 @@
   "resources": [
     {
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2022-02-01",
       "name": "[format('{0}/{1}', 'VNET1', 'VNET1toVNET2')]",
       "properties": {
         "remoteVirtualNetwork": {
@@ -25,7 +25,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2022-02-01",
       "name": "[format('{0}/{1}', 'VNET2', 'VNET2toVNET1')]",
       "properties": {
         "remoteVirtualNetwork": {

@@ -8,25 +8,30 @@ resource vnet2 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
 }
 
 // Define the existing peering resources
-resource vnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' existing = {
+resource vnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
   name: 'VNET1toVNET2'
   parent: vnet1
+  properties: {
+    remoteVirtualNetwork: {
+      id: vnet2.id
+    }
+    allowVirtualNetworkAccess: false
+    allowForwardedTraffic: false
+    allowGatewayTransit: false
+    useRemoteGateways: false
+  }
 }
 
-resource vnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' existing = {
+resource vnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
   name: 'VNET2toVNET1'
   parent: vnet2
-}
-
-// Delete the peering resources
-resource deletevnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: vnet1Peering.name
-  parent: vnet1
-  properties: {} // Empty properties to indicate deletion
-}
-
-resource deletevnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: vnet2Peering.name
-  parent: vnet2
-  properties: {} // Empty properties to indicate deletion
+  properties: {
+    remoteVirtualNetwork: {
+      id: vnet1.id
+    }
+    allowVirtualNetworkAccess: false
+    allowForwardedTraffic: false
+    allowGatewayTransit: false
+    useRemoteGateways: false
+  }
 }

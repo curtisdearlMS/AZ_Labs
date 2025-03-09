@@ -7,7 +7,8 @@ This document will guide you through various Bicep templates that intentionally 
 2. [Scenario 1: Misconfigured Route Table](#scenario-1-misconfigured-route-table)
 3. [Scenario 2: Incorrect NSG Rules](#scenario-2-incorrect-nsg-rules)
 4. [Scenario 3: Faulty VNet Peering](#scenario-3-faulty-vnet-peering)
-5. [Reset to Default Configuration](#reset-to-default-configuration)
+5. [Scenario 4: NSG blocking](#scenario-4-nsg-blocking-vm2-in-vnet-1-from-accessing-vnet2)
+6. [Reset to Default Configuration](#reset-to-default-configuration)
 
 ## Introduction
 This document provides basic networking scenarios that can be demonstrated using Bicep templates. Each scenario will break network connectivity in different ways. At the end of the document, a reset to default template is provided to restore the configuration to a standard starting point.

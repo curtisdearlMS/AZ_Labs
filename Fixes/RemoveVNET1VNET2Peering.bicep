@@ -10,6 +10,11 @@ resource vnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
   name: 'VNET1toVNET2'
   parent: vnet1
   properties: {
+    allowVirtualNetworkAccess: false
+    allowForwardedTraffic: false
+    allowGatewayTransit: false
+    useRemoteGateways: false
+    peeringState	: 'Disconnected'
     remoteVirtualNetwork: {
       id: vnet2.id
     }
@@ -20,6 +25,11 @@ resource vnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
   name: 'VNET2toVNET1'
   parent: vnet2
   properties: {
+    allowVirtualNetworkAccess: false
+    allowForwardedTraffic: false
+    allowGatewayTransit: false
+    useRemoteGateways: false
+    peeringState	: 'Disconnected'
     remoteVirtualNetwork: {
       id: vnet1.id
     }

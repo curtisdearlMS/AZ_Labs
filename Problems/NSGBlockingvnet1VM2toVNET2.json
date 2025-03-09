@@ -5,83 +5,53 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "9327248995814514008"
+      "templateHash": "9627845941487891315"
     }
   },
-  "parameters": {
-    "vnetName": {
-      "type": "string",
-      "defaultValue": "VNET1"
-    },
-    "priority": {
-      "type": "int",
-      "defaultValue": 1000
-    },
-    "direction1": {
-      "type": "string",
-      "defaultValue": "Outbound"
-    },
-    "direction2": {
-      "type": "string",
-      "defaultValue": "Inbound"
-    },
-    "access": {
-      "type": "string",
-      "defaultValue": "Deny"
-    },
-    "protocol": {
-      "type": "string",
-      "defaultValue": "*"
-    },
-    "sourcePortRange": {
-      "type": "string",
-      "defaultValue": "*"
-    },
-    "destinationPortRange": {
-      "type": "string",
-      "defaultValue": "*"
-    },
-    "sourceAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.1.2.5"
-    },
-    "destinationAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.2.0.0/16"
-    }
+  "variables": {
+    "vnetName": "VNET1",
+    "priority": 1000,
+    "direction1": "Outbound",
+    "direction2": "Inbound",
+    "access": "Deny",
+    "protocol": "*",
+    "sourcePortRange": "*",
+    "destinationPortRange": "*",
+    "sourceAddressPrefix": "10.1.2.5",
+    "destinationAddressPrefix": "10.2.0.0/16"
   },
   "resources": [
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2023-09-01",
-      "name": "[format('{0}-nsgVMSubnet', parameters('vnetName'))]",
+      "name": "[format('{0}-nsgVMSubnet', variables('vnetName'))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
           {
             "name": "blockVNet1VM2toVNET2",
             "properties": {
-              "priority": "[parameters('priority')]",
-              "direction": "[parameters('direction1')]",
-              "access": "[parameters('access')]",
-              "protocol": "[parameters('protocol')]",
-              "sourcePortRange": "[parameters('sourcePortRange')]",
-              "destinationPortRange": "[parameters('destinationPortRange')]",
-              "sourceAddressPrefix": "[parameters('sourceAddressPrefix')]",
-              "destinationAddressPrefix": "[parameters('destinationAddressPrefix')]"
+              "priority": "[variables('priority')]",
+              "direction": "[variables('direction1')]",
+              "access": "[variables('access')]",
+              "protocol": "[variables('protocol')]",
+              "sourcePortRange": "[variables('sourcePortRange')]",
+              "destinationPortRange": "[variables('destinationPortRange')]",
+              "sourceAddressPrefix": "[variables('sourceAddressPrefix')]",
+              "destinationAddressPrefix": "[variables('destinationAddressPrefix')]"
             }
           },
           {
-            "name": "VNEt2toVNet1VM2",
+            "name": "blockVNEt2toVNet1VM2",
             "properties": {
-              "priority": "[parameters('priority')]",
-              "direction": "[parameters('direction2')]",
-              "access": "[parameters('access')]",
-              "protocol": "[parameters('protocol')]",
-              "sourcePortRange": "[parameters('sourcePortRange')]",
-              "destinationPortRange": "[parameters('destinationPortRange')]",
-              "sourceAddressPrefix": "[parameters('destinationAddressPrefix')]",
-              "destinationAddressPrefix": "[parameters('sourceAddressPrefix')]"
+              "priority": "[variables('priority')]",
+              "direction": "[variables('direction2')]",
+              "access": "[variables('access')]",
+              "protocol": "[variables('protocol')]",
+              "sourcePortRange": "[variables('sourcePortRange')]",
+              "destinationPortRange": "[variables('destinationPortRange')]",
+              "sourceAddressPrefix": "[variables('destinationAddressPrefix')]",
+              "destinationAddressPrefix": "[variables('sourceAddressPrefix')]"
             }
           }
         ]

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3883867709156625233"
+      "templateHash": "10210997515013243613"
     }
   },
   "resources": [
@@ -18,7 +18,6 @@
         "allowForwardedTraffic": false,
         "allowGatewayTransit": false,
         "useRemoteGateways": false,
-        "peeringState": "Disconnected",
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', 'vnet2')]"
         }
@@ -33,7 +32,6 @@
         "allowForwardedTraffic": false,
         "allowGatewayTransit": false,
         "useRemoteGateways": false,
-        "peeringState": "Disconnected",
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', 'vnet1')]"
         }

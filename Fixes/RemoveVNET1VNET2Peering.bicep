@@ -14,7 +14,7 @@ resource vnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
     allowForwardedTraffic: false
     allowGatewayTransit: false
     useRemoteGateways: false
-    peeringState	: 'Disconnected'
+    //peeringState	: 'Disconnected'
     remoteVirtualNetwork: {
       id: vnet2.id
     }
@@ -29,7 +29,7 @@ resource vnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
     allowForwardedTraffic: false
     allowGatewayTransit: false
     useRemoteGateways: false
-    peeringState	: 'Disconnected'
+    //peeringState	: 'Disconnected'
     remoteVirtualNetwork: {
       id: vnet1.id
     }

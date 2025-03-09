@@ -71,7 +71,7 @@ module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
 module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
   name: 'vnet2VmsDeployment'
   dependsOn: [
-    vnet1Vms //wait for vnet1VMs to finish
+    //vnet1Vms //wait for vnet1VMs to finish
     vnet2
     vnet2Peering
   ]
@@ -88,8 +88,8 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
 module createSAandPE './HubVNET/CreateSAandPE.bicep' = {
   name: 'createSAandPEDeployment'
   dependsOn: [
-    vnet1
-    vnet2
+    //vnet1
+    //vnet2
     hubVnet
   ]
 }

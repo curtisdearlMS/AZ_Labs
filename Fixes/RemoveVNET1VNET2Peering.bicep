@@ -7,7 +7,7 @@ resource vnet2 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
 }
 
 resource vnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: '${vnet1.name}-to-${vnet2.name}'
+  name: 'VNET1toVNET2'
   parent: vnet1
   properties: {
     remoteVirtualNetwork: {
@@ -17,7 +17,7 @@ resource vnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
 }
 
 resource vnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: '${vnet2.name}-to-${vnet1.name}'
+  name: 'VNET2toVNET1'
   parent: vnet2
   properties: {
     remoteVirtualNetwork: {
@@ -26,14 +26,14 @@ resource vnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
   }
 }
 
-resource removeVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: 'VNET1toVNET2'
-  parent: vnet1
-  properties: {}
-}
+// resource removeVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
+//   name: 'VNET1toVNET2'
+//   parent: vnet1
+//   properties: {}
+// }
 
-resource removeVnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: 'VNET2toVNET1'
-  parent: vnet2
-  properties: {}
-}
+// resource removeVnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
+//   name: 'VNET2toVNET1'
+//   parent: vnet2
+//   properties: {}
+// }

@@ -1,9 +1,9 @@
 resource vnet1 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
-  name: 'vnet1'
+  name: 'VNET1'
 }
 
 resource vnet2 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
-  name: 'vnet2'
+  name: 'VNET2'
 }
 
 resource vnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {

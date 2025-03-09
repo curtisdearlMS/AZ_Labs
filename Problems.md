@@ -44,6 +44,13 @@ Check the VNET peerings to find the problem, correct the misconfiguration and te
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FFaultyVNETPeering.json)
 
+## Scenario 4: NSG Blocking VM2 in VNET 1 from accessing VNET2
+Description: This scenario demonstrates the impact of NSG rules blocking an IP range.
+
+This creates 2 NSG rules that block VNET 2 from VM2 in VNET 1.
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNSGBlockingvnet1VM2toVNET2.json)
+
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.
 

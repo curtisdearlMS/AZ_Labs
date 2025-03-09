@@ -50,3 +50,8 @@ az vm list-skus --location REGION --output table
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FHubVNETGateway%2FVNETGateway.json">
   <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
 </a>
+
+### Deploy the Azure Firewall
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FHubAzureFirewall%2FHubAZFW.json">
+  <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
+</a>

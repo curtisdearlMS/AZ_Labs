@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "634031475887202798"
+      "templateHash": "4515895547217952698"
     }
   },
   "resources": [
@@ -165,39 +165,37 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "3284155391311523577"
+              "templateHash": "6838660835960583734"
             }
           },
           "resources": [
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
               "apiVersion": "2021-02-01",
-              "name": "[format('{0}/{1}', 'vnet1', format('{0}-to-{1}', 'vnet1', 'vnet2'))]",
+              "name": "[format('{0}/{1}', 'VNET1', 'VNET1toVNET2')]",
               "properties": {
                 "remoteVirtualNetwork": {
-                  "id": "[resourceId('Microsoft.Network/virtualNetworks', 'vnet2')]"
-                }
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks', 'VNET2')]"
+                },
+                "allowVirtualNetworkAccess": false,
+                "allowForwardedTraffic": false,
+                "allowGatewayTransit": false,
+                "useRemoteGateways": false
               }
             },
             {
               "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
               "apiVersion": "2021-02-01",
-              "name": "[format('{0}/{1}', 'vnet2', format('{0}-to-{1}', 'vnet2', 'vnet1'))]",
+              "name": "[format('{0}/{1}', 'VNET2', 'VNET2toVNET1')]",
               "properties": {
                 "remoteVirtualNetwork": {
-                  "id": "[resourceId('Microsoft.Network/virtualNetworks', 'vnet1')]"
-                }
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks', 'VNET1')]"
+                },
+                "allowVirtualNetworkAccess": false,
+                "allowForwardedTraffic": false,
+                "allowGatewayTransit": false,
+                "useRemoteGateways": false
               }
-            },
-            {
-              "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2021-02-01",
-              "name": "[format('{0}/{1}', 'vnet1', 'VNET1toVNET2')]"
-            },
-            {
-              "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-              "apiVersion": "2021-02-01",
-              "name": "[format('{0}/{1}', 'vnet2', 'VNET2toVNET1')]"
             }
           ]
         }

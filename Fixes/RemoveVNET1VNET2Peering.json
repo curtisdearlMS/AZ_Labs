@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3284155391311523577"
+      "templateHash": "4297576893982706950"
     }
   },
   "resources": [
@@ -32,12 +32,14 @@
     {
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2021-02-01",
-      "name": "[format('{0}/{1}', 'vnet1', 'VNET1toVNET2')]"
+      "name": "[format('{0}/{1}', 'vnet1', 'VNET1toVNET2')]",
+      "properties": {}
     },
     {
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2021-02-01",
-      "name": "[format('{0}/{1}', 'vnet2', 'VNET2toVNET1')]"
+      "name": "[format('{0}/{1}', 'vnet2', 'VNET2toVNET1')]",
+      "properties": {}
     }
   ]
 }

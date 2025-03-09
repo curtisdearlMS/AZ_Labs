@@ -29,9 +29,11 @@ resource vnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
 resource removeVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
   name: 'VNET1toVNET2'
   parent: vnet1
+  properties: {}
 }
 
 resource removeVnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
   name: 'VNET2toVNET1'
   parent: vnet2
+  properties: {}
 }

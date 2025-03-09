@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "2462631086962375447"
+      "templateHash": "16449283731829495699"
     }
   },
   "resources": [
@@ -26,7 +26,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "3424736751512445266"
+              "templateHash": "4515895547217952698"
             }
           },
           "resources": [
@@ -186,7 +186,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.33.93.31351",
-                      "templateHash": "16474949032162524506"
+                      "templateHash": "6838660835960583734"
                     }
                   },
                   "resources": [
@@ -194,13 +194,29 @@
                       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
                       "apiVersion": "2021-02-01",
                       "name": "[format('{0}/{1}', 'VNET1', 'VNET1toVNET2')]",
-                      "properties": null
+                      "properties": {
+                        "remoteVirtualNetwork": {
+                          "id": "[resourceId('Microsoft.Network/virtualNetworks', 'VNET2')]"
+                        },
+                        "allowVirtualNetworkAccess": false,
+                        "allowForwardedTraffic": false,
+                        "allowGatewayTransit": false,
+                        "useRemoteGateways": false
+                      }
                     },
                     {
                       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
                       "apiVersion": "2021-02-01",
                       "name": "[format('{0}/{1}', 'VNET2', 'VNET2toVNET1')]",
-                      "properties": null
+                      "properties": {
+                        "remoteVirtualNetwork": {
+                          "id": "[resourceId('Microsoft.Network/virtualNetworks', 'VNET1')]"
+                        },
+                        "allowVirtualNetworkAccess": false,
+                        "allowForwardedTraffic": false,
+                        "allowGatewayTransit": false,
+                        "useRemoteGateways": false
+                      }
                     }
                   ]
                 }

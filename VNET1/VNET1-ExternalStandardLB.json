@@ -1,0 +1,156 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.33.93.31351",
+      "templateHash": "7358922427853916572"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "publicLoadBalancer_Name": {
+      "type": "string",
+      "defaultValue": "VNET1_Ext_VM_LB"
+    },
+    "protocol": {
+      "type": "string",
+      "defaultValue": "TCP"
+    },
+    "frontendPort": {
+      "type": "int",
+      "defaultValue": 80
+    },
+    "backendPort": {
+      "type": "int",
+      "defaultValue": 80
+    },
+    "enableTcpReset": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "enableFloatingIP": {
+      "type": "bool",
+      "defaultValue": false
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2024-01-01",
+      "name": "[format('{0}_PIP', parameters('publicLoadBalancer_Name'))]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "type": "Microsoft.Network/loadBalancers",
+      "apiVersion": "2024-01-01",
+      "name": "[parameters('publicLoadBalancer_Name')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "fip",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', format('{0}_PIP', parameters('publicLoadBalancer_Name')))]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "bep",
+            "properties": {
+              "loadBalancerBackendAddresses": [
+                {
+                  "name": "vm1",
+                  "properties": {
+                    "ipAddress": "10.1.2.4"
+                  }
+                },
+                {
+                  "name": "vm2",
+                  "properties": {
+                    "ipAddress": "10.1.2.5"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "name": "inboundRule",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('publicLoadBalancer_Name'), 'fip')]"
+              },
+              "backendAddressPool": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('publicLoadBalancer_Name'), 'bep')]"
+              },
+              "disableOutboundSnat": true,
+              "protocol": "[parameters('protocol')]",
+              "frontendPort": "[parameters('frontendPort')]",
+              "backendPort": "[parameters('backendPort')]",
+              "enableFloatingIP": "[parameters('enableFloatingIP')]",
+              "idleTimeoutInMinutes": 4,
+              "enableTcpReset": "[parameters('enableTcpReset')]"
+            }
+          }
+        ],
+        "outboundRules": [
+          {
+            "name": "outboundRule",
+            "properties": {
+              "frontendIPConfigurations": [
+                {
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', parameters('publicLoadBalancer_Name'), 'fip')]"
+                }
+              ],
+              "backendAddressPool": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('publicLoadBalancer_Name'), 'bep')]"
+              },
+              "protocol": "All",
+              "idleTimeoutInMinutes": 4,
+              "enableTcpReset": "[parameters('enableTcpReset')]"
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', format('{0}_PIP', parameters('publicLoadBalancer_Name')))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "publicLoadBalancer_Name": {
+      "type": "string",
+      "value": "[parameters('publicLoadBalancer_Name')]"
+    },
+    "publicLoadBalancer_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/loadBalancers', parameters('publicLoadBalancer_Name'))]"
+    },
+    "publicIpAddress": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', format('{0}_PIP', parameters('publicLoadBalancer_Name'))), '2024-01-01').ipAddress]"
+    },
+    "publicLoadBalancer_BackendAddressPoolID": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Network/loadBalancers', parameters('publicLoadBalancer_Name')), '2024-01-01').backendAddressPools[0].id]"
+    }
+  }
+}

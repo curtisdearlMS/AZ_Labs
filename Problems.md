@@ -52,6 +52,20 @@ This creates 2 NSG rules that block VNET 2 from VM2 in VNET 1.
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNSGBlockingvnet1VM2toVNET2.json)
 
+## Problem 5: Azure External Standard Load Balancer Health Probes Down
+
+This Deploys an Azure External Load Balancer for the VMs in VNET1. Why are the health probes down?
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FVNET1-ExternalStandardLB.json)
+
+## Problem 6: Azure Firewall Blocking Traffic
+
+This requires the Azure Firewall is deployed in the HubVNET. 
+
+This will deploy an Azure Firewall Policy that will block transitive VNET traffic from VNET 1 to VNET 2 from going through the Firewall. How could a smart user bypass this rule?
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FVNET1-ExternalStandardLB.json)
+
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.
 

@@ -26,6 +26,11 @@ This will override the system created /32 route and send private endpoint traffi
     <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" />
 </a>
 
+## Fix the Azure Load Balancer Health Probes
+
+This will change the VNET1 VM load balancer to probe on port 22. 
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FHealthProbes.json)
 
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.

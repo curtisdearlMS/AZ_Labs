@@ -1,58 +1,75 @@
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-02-01' = {
-  name: 'myFirewallPolicy'
-  location: resourceGroup().location
+param firewallPolicies_AzureFirewallBlockingPolicy_name string = 'AzureFirewallBlockingPolicy'
+
+resource firewallPolicies_AzureFirewallBlockingPolicy_name_resource 'Microsoft.Network/firewallPolicies@2024-05-01' = {
+  name: firewallPolicies_AzureFirewallBlockingPolicy_name
   properties: {
-    threatIntelMode: 'Alert'
+    sku: {
+      tier: 'Standard'
+    }
+    threatIntelMode: 'Off'
+    threatIntelWhitelist: {
+      fqdns: []
+      ipAddresses: []
+    }
   }
 }
 
-resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2021-02-01' = {
-  name: 'myRuleCollectionGroup'
-  parent: firewallPolicy
+resource firewallPolicies_AzureFirewallBlockingPolicy_name_DefaultNetworkRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2024-05-01' = {
+  parent: firewallPolicies_AzureFirewallBlockingPolicy_name_resource
+  name: 'DefaultNetworkRuleCollectionGroup'
   properties: {
-    priority: 100
+    priority: 200
     ruleCollections: [
       {
-        name: 'blockVnet1ToVnet2'
-        priority: 100
-        ruleCollectionType: 'NetworkRuleCollection'
+        ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
         action: {
           type: 'Deny'
         }
         rules: [
           {
-            name: 'blockVnet1ToVnet2Rule'
             ruleType: 'NetworkRule'
+            name: 'BlockVNET1toVNET2'
+            ipProtocols: [
+              'UDP'
+              'TCP'
+            ]
             sourceAddresses: [
-              '10.1.0.0/16' // VNET 1 address range
+              '10.1.0.0/16'
             ]
+            sourceIpGroups: []
             destinationAddresses: [
-              '10.2.0.0/16' // VNET 2 address range
+              '10.2.0.0/16'
             ]
+            destinationIpGroups: []
+            destinationFqdns: []
             destinationPorts: [
               '*'
             ]
-            protocols: [
-              'Any'
+          }
+          {
+            ruleType: 'NetworkRule'
+            name: 'BlockVNET2toVNET1'
+            ipProtocols: [
+              'UDP'
+              'TCP'
+            ]
+            sourceAddresses: [
+              '10.2.0.0/16'
+            ]
+            sourceIpGroups: []
+            destinationAddresses: [
+              '10.1.0.0/16'
+            ]
+            destinationIpGroups: []
+            destinationFqdns: []
+            destinationPorts: [
+              '*'
             ]
           }
         ]
+        name: 'BlockVNETtoVNET'
+        priority: 10000
       }
     ]
-  }
-}
-
-resource hubVnetFirewall 'Microsoft.Network/azureFirewalls@2020-11-01' existing = {
-  name: 'hubVnetFirewall'
-  scope: resourceGroup()
-}
-
-resource firewallPolicyAssociation 'Microsoft.Network/azureFirewalls/providers/firewallPolicies@2021-02-01' = {
-  name: 'default'
-  parent: hubVnetFirewall/providers/Microsoft.Network/firewallPolicies
-  properties: {
-    firewallPolicy: {
-      id: firewallPolicy.id
-    }
   }
 }

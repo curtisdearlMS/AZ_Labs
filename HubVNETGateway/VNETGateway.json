@@ -5,32 +5,20 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "11652519286278890515"
+      "templateHash": "13664647166820270437"
     }
   },
-  "parameters": {
-    "publicIpVpnGwName": {
-      "type": "string",
-      "defaultValue": "vpnGwPublicIP"
-    },
-    "vpnGatewayName": {
-      "type": "string",
-      "defaultValue": "myVpnGateway"
-    },
-    "vpnGatewaySku": {
-      "type": "string",
-      "defaultValue": "vpngw1"
-    },
-    "hubVnetName": {
-      "type": "string",
-      "defaultValue": "HubVNET"
-    }
+  "variables": {
+    "publicIpVpnGwName": "vpnGwPublicIP",
+    "vpnGatewayName": "myVpnGateway",
+    "vpnGatewaySku": "vpngw1",
+    "hubVnetName": "HubVNET"
   },
   "resources": [
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-09-01",
-      "name": "[parameters('publicIpVpnGwName')]",
+      "name": "[variables('publicIpVpnGwName')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard",
@@ -43,7 +31,7 @@
     {
       "type": "Microsoft.Network/virtualNetworkGateways",
       "apiVersion": "2023-09-01",
-      "name": "[parameters('vpnGatewayName')]",
+      "name": "[variables('vpnGatewayName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "ipConfigurations": [
@@ -51,10 +39,10 @@
             "name": "vnetGatewayConfig",
             "properties": {
               "subnet": {
-                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('hubVnetName'), 'GatewaySubnet')]"
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('hubVnetName'), 'GatewaySubnet')]"
               },
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpVpnGwName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpVpnGwName'))]"
               }
             }
           }
@@ -62,12 +50,12 @@
         "gatewayType": "Vpn",
         "vpnType": "RouteBased",
         "sku": {
-          "name": "[parameters('vpnGatewaySku')]",
-          "tier": "[parameters('vpnGatewaySku')]"
+          "name": "[variables('vpnGatewaySku')]",
+          "tier": "[variables('vpnGatewaySku')]"
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpVpnGwName'))]"
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpVpnGwName'))]"
       ]
     }
   ]

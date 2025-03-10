@@ -5,31 +5,20 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "4270486251245892723"
-    }
-  },
-  "parameters": {
-    "vnetName": {
-      "type": "string",
-      "defaultValue": "HubVNET"
-    },
-    "firewallName": {
-      "type": "string",
-      "defaultValue": "myAzureFirewall"
-    },
-    "publicIpFirewallName": {
-      "type": "string",
-      "defaultValue": "fwPublicIP"
+      "templateHash": "18001299383222512689"
     }
   },
   "variables": {
-    "subnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), 'AzureFirewallSubnet')]"
+    "vnetName": "HubVNET",
+    "firewallName": "myAzureFirewall",
+    "publicIpFirewallName": "fwPublicIP",
+    "subnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), 'AzureFirewallSubnet')]"
   },
   "resources": [
     {
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2023-09-01",
-      "name": "[parameters('publicIpFirewallName')]",
+      "name": "[variables('publicIpFirewallName')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard",
@@ -42,7 +31,7 @@
     {
       "type": "Microsoft.Network/azureFirewalls",
       "apiVersion": "2023-09-01",
-      "name": "[parameters('firewallName')]",
+      "name": "[variables('firewallName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "ipConfigurations": [
@@ -53,14 +42,14 @@
                 "id": "[variables('subnetId')]"
               },
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpFirewallName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpFirewallName'))]"
               }
             }
           }
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpFirewallName'))]"
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpFirewallName'))]"
       ]
     }
   ]

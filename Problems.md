@@ -66,7 +66,7 @@ This requires the Azure Firewall is deployed in the HubVNET.
 
 This will deploy an Azure Firewall Policy that will block transitive VNET traffic from VNET 1 to VNET 2 from going through the Firewall. How could a smart user bypass this rule?
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FVNET1-ExternalStandardLB.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FAzureFirewallBlocking.json)
 
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.

@@ -1,6 +1,6 @@
-param vnetName string = 'HubVNET'
-param firewallName string = 'myAzureFirewall'
-param publicIpFirewallName string = 'fwPublicIP'
+var vnetName = 'HubVNET'
+var firewallName = 'myAzureFirewall'
+var publicIpFirewallName = 'fwPublicIP'
 
 var subnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, 'AzureFirewallSubnet')
 

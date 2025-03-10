@@ -1,0 +1,97 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.33.93.31351",
+      "templateHash": "17212784245449744146"
+    }
+  },
+  "parameters": {
+    "firewallPolicies_AzureFirewallBlockingPolicy_name": {
+      "type": "string",
+      "defaultValue": "AzureFirewallBlockingPolicy"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/firewallPolicies",
+      "apiVersion": "2024-05-01",
+      "name": "[parameters('firewallPolicies_AzureFirewallBlockingPolicy_name')]",
+      "properties": {
+        "sku": {
+          "tier": "Standard"
+        },
+        "threatIntelMode": "Off",
+        "threatIntelWhitelist": {
+          "fqdns": [],
+          "ipAddresses": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/firewallPolicies/ruleCollectionGroups",
+      "apiVersion": "2024-05-01",
+      "name": "[format('{0}/{1}', parameters('firewallPolicies_AzureFirewallBlockingPolicy_name'), 'DefaultNetworkRuleCollectionGroup')]",
+      "properties": {
+        "priority": 200,
+        "ruleCollections": [
+          {
+            "ruleCollectionType": "FirewallPolicyFilterRuleCollection",
+            "action": {
+              "type": "Deny"
+            },
+            "rules": [
+              {
+                "ruleType": "NetworkRule",
+                "name": "BlockVNET1toVNET2",
+                "ipProtocols": [
+                  "UDP",
+                  "TCP"
+                ],
+                "sourceAddresses": [
+                  "10.1.0.0/16"
+                ],
+                "sourceIpGroups": [],
+                "destinationAddresses": [
+                  "10.2.0.0/16"
+                ],
+                "destinationIpGroups": [],
+                "destinationFqdns": [],
+                "destinationPorts": [
+                  "*"
+                ]
+              },
+              {
+                "ruleType": "NetworkRule",
+                "name": "BlockVNET2toVNET1",
+                "ipProtocols": [
+                  "UDP",
+                  "TCP"
+                ],
+                "sourceAddresses": [
+                  "10.2.0.0/16"
+                ],
+                "sourceIpGroups": [],
+                "destinationAddresses": [
+                  "10.1.0.0/16"
+                ],
+                "destinationIpGroups": [],
+                "destinationFqdns": [],
+                "destinationPorts": [
+                  "*"
+                ]
+              }
+            ],
+            "name": "BlockVNETtoVNET",
+            "priority": 10000
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/firewallPolicies', parameters('firewallPolicies_AzureFirewallBlockingPolicy_name'))]"
+      ]
+    }
+  ]
+}

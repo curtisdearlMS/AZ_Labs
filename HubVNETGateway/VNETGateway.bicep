@@ -1,7 +1,7 @@
-param publicIpVpnGwName string = 'vpnGwPublicIP'
-param vpnGatewayName string = 'myVpnGateway'
-param vpnGatewaySku string = 'vpngw1'
-param hubVnetName string = 'HubVNET'
+var publicIpVpnGwName = 'vpnGwPublicIP'
+var vpnGatewayName = 'myVpnGateway'
+var vpnGatewaySku = 'vpngw1'
+var hubVnetName = 'HubVNET'
 
 //var hubVnetId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Network/virtualNetworks/${hubVnetName}'
 

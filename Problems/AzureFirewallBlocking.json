@@ -5,21 +5,19 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "17212784245449744146"
+      "templateHash": "5997749202679299873"
     }
   },
-  "parameters": {
-    "firewallPolicies_AzureFirewallBlockingPolicy_name": {
-      "type": "string",
-      "defaultValue": "AzureFirewallBlockingPolicy"
-    }
+  "variables": {
+    "firewallPolicies_AzureFirewallBlockingPolicy_name": "AzureFirewallBlockingPolicy"
   },
   "resources": [
     {
       "type": "Microsoft.Network/firewallPolicies",
       "apiVersion": "2024-05-01",
-      "name": "[parameters('firewallPolicies_AzureFirewallBlockingPolicy_name')]",
+      "name": "[variables('firewallPolicies_AzureFirewallBlockingPolicy_name')]",
       "properties": {
+        "location": "[resourceGroup().location]",
         "sku": {
           "tier": "Standard"
         },
@@ -33,8 +31,9 @@
     {
       "type": "Microsoft.Network/firewallPolicies/ruleCollectionGroups",
       "apiVersion": "2024-05-01",
-      "name": "[format('{0}/{1}', parameters('firewallPolicies_AzureFirewallBlockingPolicy_name'), 'DefaultNetworkRuleCollectionGroup')]",
+      "name": "[format('{0}/{1}', variables('firewallPolicies_AzureFirewallBlockingPolicy_name'), 'DefaultNetworkRuleCollectionGroup')]",
       "properties": {
+        "location": "[resourceGroup().location]",
         "priority": 200,
         "ruleCollections": [
           {
@@ -90,7 +89,7 @@
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/firewallPolicies', parameters('firewallPolicies_AzureFirewallBlockingPolicy_name'))]"
+        "[resourceId('Microsoft.Network/firewallPolicies', variables('firewallPolicies_AzureFirewallBlockingPolicy_name'))]"
       ]
     }
   ]

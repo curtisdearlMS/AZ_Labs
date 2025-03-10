@@ -1,20 +1,19 @@
-param location string = resourceGroup().location
+// Description: This Bicep template creates a Standard Load Balancer with a Public IP address and an outbound rule.
+var publicLoadBalancer_Name  = 'VNET1_Ext_VM_LB'
 
-param publicLoadBalancer_Name string = 'VNET1_Ext_VM_LB'
+var protocol  = 'TCP'
 
-param protocol string = 'TCP'
+var frontendPort  = 80
 
-param frontendPort int = 80
+var backendPort  = 80
 
-param backendPort int = 80
+var enableTcpReset = false
 
-param enableTcpReset bool = false
-
-param enableFloatingIP bool = false
+var enableFloatingIP = false
 
 resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2024-01-01' = {
   name: '${publicLoadBalancer_Name}_PIP'
-  location: location
+  location: resourceGroup().location
   sku: {
     name: 'Standard'
   }
@@ -25,7 +24,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2024-01-01' = {
 
 resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
   name: publicLoadBalancer_Name
-  location: location
+  location: resourceGroup().location
   sku: {
     name: 'Standard'
   }
@@ -43,22 +42,6 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
     backendAddressPools: [
       {
       name: 'bep'
-      properties: {
-        loadBalancerBackendAddresses: [
-        {
-          name: 'vm1' // Name of the first VM
-          properties: {
-            ipAddress: '10.1.2.4' // IP address of vm1
-          }
-        }
-        {
-          name: 'vm2' // Name of the first VM
-          properties: {
-            ipAddress: '10.1.2.5' // IP address of vm1
-          }
-        }
-        ]
-      }
       }
     ]
     loadBalancingRules: [
@@ -99,10 +82,38 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
         }
       }
     ]
+    probes: [
+      {
+        name: 'port80healthprobe'
+        properties: {
+          protocol: 'Tcp'
+          port: 80
+          intervalInSeconds: 5
+          numberOfProbes: 1
+          probeThreshold: 1
+        }
+      }
+    ]
   }
 }
 
-output publicLoadBalancer_Name string = loadBalancer.name
-output publicLoadBalancer_ID string = loadBalancer.id
-output publicIpAddress string = publicIpAddress.properties.ipAddress
-output publicLoadBalancer_BackendAddressPoolID string = loadBalancer.properties.backendAddressPools[0].id
+var bepname = '${publicLoadBalancer_Name}/bep'
+
+resource bep 'Microsoft.Network/loadBalancers/backendAddressPools@2024-05-01' = {
+  name: bepname
+  properties: {
+    loadBalancerBackendAddresses: [
+      {
+        name: 'netlab310.2_VNET1-vm2NICipconfig1'
+        properties: {}
+      }
+      {
+        name: 'netlab310.2_VNET1-vm1NICipconfig1'
+        properties: {}
+      }
+    ]
+  }
+  dependsOn: [
+    loadBalancer
+  ]
+}

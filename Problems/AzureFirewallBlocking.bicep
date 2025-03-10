@@ -2,8 +2,8 @@ var firewallPolicies_AzureFirewallBlockingPolicy_name = 'AzureFirewallBlockingPo
 
 resource firewallPolicies_AzureFirewallBlockingPolicy_name_resource 'Microsoft.Network/firewallPolicies@2024-05-01' = {
   name: firewallPolicies_AzureFirewallBlockingPolicy_name
+  location: resourceGroup().location
   properties: {
-    location: resourceGroup().location
     sku: {
       tier: 'Standard'
     }
@@ -18,8 +18,8 @@ resource firewallPolicies_AzureFirewallBlockingPolicy_name_resource 'Microsoft.N
 resource firewallPolicies_AzureFirewallBlockingPolicy_name_DefaultNetworkRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2024-05-01' = {
   parent: firewallPolicies_AzureFirewallBlockingPolicy_name_resource
   name: 'DefaultNetworkRuleCollectionGroup'
+  location: resourceGroup().location
   properties: {
-    location: resourceGroup().location
     priority: 200
     ruleCollections: [
       {

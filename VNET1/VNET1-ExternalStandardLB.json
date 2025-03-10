@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "12135831148487498241"
+      "templateHash": "3673626157036801072"
     }
   },
   "variables": {
@@ -70,7 +70,10 @@
               "backendPort": "[variables('backendPort')]",
               "enableFloatingIP": "[variables('enableFloatingIP')]",
               "idleTimeoutInMinutes": 4,
-              "enableTcpReset": "[variables('enableTcpReset')]"
+              "enableTcpReset": "[variables('enableTcpReset')]",
+              "probe": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', variables('publicLoadBalancer_Name'), 'port80healthprobe')]"
+              }
             }
           }
         ],
@@ -88,7 +91,8 @@
               },
               "protocol": "All",
               "idleTimeoutInMinutes": 4,
-              "enableTcpReset": "[variables('enableTcpReset')]"
+              "enableTcpReset": "[variables('enableTcpReset')]",
+              "allocatedOutboundPorts": 30000
             }
           }
         ],

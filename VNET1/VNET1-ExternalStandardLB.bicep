@@ -61,6 +61,9 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
           enableFloatingIP: enableFloatingIP
           idleTimeoutInMinutes: 4
           enableTcpReset: enableTcpReset
+          probe: {
+            id: resourceId('Microsoft.Network/loadBalancers/probes', publicLoadBalancer_Name, 'port80healthprobe')
+          }
         }
       }
     ]
@@ -79,6 +82,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
           protocol: 'All'
           idleTimeoutInMinutes: 4
           enableTcpReset: enableTcpReset
+          allocatedOutboundPorts: 30000
         }
       }
     ]

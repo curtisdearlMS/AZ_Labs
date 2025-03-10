@@ -15,7 +15,7 @@ This document provides basic networking scenarios that can be demonstrated using
 
 > **Warning:** After deploying each problem template, use the reset template to return to the 'default' network configuration. The default configuration can be viewed in the provided draw.io diagram.
 
-## Scenario 1: Misconfigured Route Table
+## Problem 1: Misconfigured Route Table
 Description: This scenario demonstrates the impact of a misconfigured route table.
 
 This will deploy a route table to VNET 1 that will break traffic. 
@@ -23,7 +23,7 @@ Why can the VM's in VNET 1 VM Subnet still reach the hub VNET Storage Account Pr
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2Fmisconfiguredroutetable.json)
 
-## Scenario 2: Incorrect NSG Rules
+## Problem 2: Incorrect NSG Rules
 Description: This scenario demonstrates the impact of incorrect NSG rules.
 
 This will deploy an NSG rule into the VNET 1 VM subnet NSG.
@@ -32,7 +32,7 @@ This 1 rule will blocked VM2 in VNET 1 from communicating with the storage accou
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNSGBlockingPE.json)
 
-## Scenario 3: Faulty VNet Peering
+## Problem 3: Faulty VNet Peering
 Description: This scenario demonstrates the impact of faulty VNet peering.
 
 This will deploy a VNET peering between VNET1 and VNET2. 
@@ -45,7 +45,7 @@ Check the VNET peerings to find the problem, correct the misconfiguration and te
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FFaultyVNETPeering.json)
 
-## Scenario 4: NSG Blocking VM2 in VNET 1 from accessing VNET2
+## Problem 4: NSG Blocking VM2 in VNET 1 from accessing VNET2
 Description: This scenario demonstrates the impact of NSG rules blocking an IP range.
 
 This creates 2 NSG rules that block VNET 2 from VM2 in VNET 1.

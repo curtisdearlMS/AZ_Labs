@@ -110,7 +110,7 @@ resource nic1 'Microsoft.Network/networkInterfaces@2021-02-01' = {
           }
           loadBalancerBackendAddressPools: [
             {
-              id: '${loadBalancer}/backendAddressPools/bep'
+                id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', publicLoadBalancer_Name, 'bep')
             }
           ]
         }
@@ -133,7 +133,7 @@ resource nic2 'Microsoft.Network/networkInterfaces@2021-02-01' = {
           }
           loadBalancerBackendAddressPools: [
             {
-              id: '${loadBalancer}/backendAddressPools/bep'
+              id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', publicLoadBalancer_Name, 'bep')
             }
           ]
         }

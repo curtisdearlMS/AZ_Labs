@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "18311540149828739123"
+      "templateHash": "1256930265690115665"
     }
   },
   "variables": {
@@ -128,16 +128,13 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[format('{0}/backendAddressPools/bep', reference(resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name')), '2024-01-01', 'full'))]"
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('publicLoadBalancer_Name'), 'bep')]"
                 }
               ]
             }
           }
         ]
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]"
-      ]
+      }
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
@@ -155,16 +152,13 @@
               },
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[format('{0}/backendAddressPools/bep', reference(resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name')), '2024-01-01', 'full'))]"
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('publicLoadBalancer_Name'), 'bep')]"
                 }
               ]
             }
           }
         ]
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]"
-      ]
+      }
     }
   ]
 }

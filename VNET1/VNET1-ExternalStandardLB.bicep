@@ -36,7 +36,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
     ]
     backendAddressPools: [
       {
-      name: 'bep/backendAddressPool'
+        name: 'bep'
       }
     ]
     loadBalancingRules: [
@@ -95,6 +95,3 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
     ]
   }
 }
-
-
-

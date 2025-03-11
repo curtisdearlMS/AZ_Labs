@@ -5,8 +5,35 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "1938494866978600684"
+      "templateHash": "14537436763651572892"
     }
   },
-  "resources": []
+  "variables": {
+    "publicLoadBalancer_Name": "VNET1_Ext_VM_LB"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/loadBalancers",
+      "apiVersion": "2024-01-01",
+      "name": "[variables('publicLoadBalancer_Name')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "probes": [
+          {
+            "name": "port80healthprobe",
+            "properties": {
+              "protocol": "Tcp",
+              "port": 22,
+              "intervalInSeconds": 5,
+              "numberOfProbes": 1,
+              "probeThreshold": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
 }

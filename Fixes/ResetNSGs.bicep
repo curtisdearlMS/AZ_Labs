@@ -18,6 +18,16 @@ resource nic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   name: 'VNET1-vm2NIC'
   location: resourceGroup().location
   properties: {
-    networkSecurityGroup: {}
+    ipConfigurations: [
+      {
+        name: 'ipconfig1'
+        properties: {
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets', 'VNET1', 'VMSubnet')
+          }
+        }
+      }
+    ]
   }
 }

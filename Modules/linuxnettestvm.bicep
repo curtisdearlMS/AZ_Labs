@@ -21,6 +21,8 @@ param accelNet bool
 
 param subnetID string
 
+param StaticIP string
+
 resource nic 'Microsoft.Network/networkInterfaces@2022-09-01' = {
   name: nic_Name
   location: location
@@ -30,7 +32,9 @@ resource nic 'Microsoft.Network/networkInterfaces@2022-09-01' = {
         name: 'ipconfig1'
         type: 'Microsoft.Network/networkInterfaces/ipConfigurations'
         properties: {
-          privateIPAllocationMethod: 'Dynamic'
+          //privateIPAllocationMethod: 'Dynamic'
+          privateIPAllocationMethod: 'Static'
+          privateIPAddress: StaticIP
           subnet: {
             id: subnetID
           }

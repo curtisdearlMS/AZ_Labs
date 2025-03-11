@@ -25,6 +25,7 @@ module vm1 '../Modules/linuxnettestvm.bicep' = {
     nic_Name: '${vnetName}-vm1NIC'
     accelNet: false
     subnetID: vmSubnet.id
+    StaticIP: '10.1.2.4'
   }
 }
 
@@ -39,5 +40,6 @@ module vm2 '../Modules/linuxnettestvm.bicep' = {
     nic_Name: '${vnetName}-vm2NIC'
     accelNet: false
     subnetID: vmSubnet.id
+    StaticIP: '10.1.2.5'
   }
 }

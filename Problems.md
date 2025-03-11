@@ -28,7 +28,7 @@ Description: This scenario demonstrates the impact of incorrect NSG rules.
 
 This will deploy an NSG rule into the VNET 1 VM subnet NSG.
 
-This 1 rule will blocked VM2 in VNET 1 from communicating with the storage account Private IP address in the Hub VNET. Do connection tests from VM1 and VM2 to the Private Endpoint.
+This 1 rule will block the VM2 in VNET 1 from communicating with the storage account Private IP address in the Hub VNET. Do connection tests from VM1 and VM2 to the Private Endpoint.
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNSGBlockingPE.json)
 

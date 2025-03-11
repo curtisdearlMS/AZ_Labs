@@ -1,4 +1,4 @@
-var firewallPolicies_AzureFirewallBlockingPolicy_name = 'AzureFirewallBlockingPolicy'
+var firewallPolicies_AzureFirewallBlockingPolicy_name = 'BlockingPolicy'
 
 resource firewallPolicies_AzureFirewallBlockingPolicy_name_resource 'Microsoft.Network/firewallPolicies@2024-05-01' = {
   name: firewallPolicies_AzureFirewallBlockingPolicy_name
@@ -73,5 +73,19 @@ resource firewallPolicies_AzureFirewallBlockingPolicy_name_DefaultNetworkRuleCol
         priority: 10000
       }
     ]
+  }
+}
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2024-05-01' existing = {
+  name: 'myAzureFirewall'
+  scope: resourceGroup()
+}
+
+resource firewallPolicyAssociation 'Microsoft.Network/azureFirewalls/firewallPolicies@2024-05-01' = {
+  parent: azureFirewall
+  name: 'firewallPolicyAssociation'
+  properties: {
+    firewallPolicy: {
+      id: firewallPolicies_AzureFirewallBlockingPolicy_name_resource.id
+    }
   }
 }

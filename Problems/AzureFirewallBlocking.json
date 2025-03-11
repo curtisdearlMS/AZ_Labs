@@ -5,11 +5,11 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "7808754825427817198"
+      "templateHash": "934425783544400866"
     }
   },
   "variables": {
-    "firewallPolicies_AzureFirewallBlockingPolicy_name": "AzureFirewallBlockingPolicy"
+    "firewallPolicies_AzureFirewallBlockingPolicy_name": "BlockingPolicy"
   },
   "resources": [
     {
@@ -87,6 +87,19 @@
             "priority": 10000
           }
         ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/firewallPolicies', variables('firewallPolicies_AzureFirewallBlockingPolicy_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/azureFirewalls/firewallPolicies",
+      "apiVersion": "2024-05-01",
+      "name": "[format('{0}/{1}', 'myAzureFirewall', 'firewallPolicyAssociation')]",
+      "properties": {
+        "firewallPolicy": {
+          "id": "[resourceId('Microsoft.Network/firewallPolicies', variables('firewallPolicies_AzureFirewallBlockingPolicy_name'))]"
+        }
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/firewallPolicies', variables('firewallPolicies_AzureFirewallBlockingPolicy_name'))]"

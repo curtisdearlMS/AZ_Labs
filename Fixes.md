@@ -32,6 +32,8 @@ This will change the VNET1 VM load balancer to probe on port 22.
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FHealthProbes.json)
 
+However VM2 in VNET1 has a NIC NSG applied.
+
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.
 

@@ -148,9 +148,9 @@ resource nic2 'Microsoft.Network/networkInterfaces@2021-02-01' = {
         }
       }
     ]
-    networkSecurityGroup: {
+    networkSecurityGroup: !empty(nsg.id) ? {
       id: nsg.id
-    }
+    } : null
   }
   dependsOn: [
     loadBalancer

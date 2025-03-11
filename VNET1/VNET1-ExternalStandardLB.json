@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "11863094293673469441"
+      "templateHash": "10657065462768758536"
     }
   },
   "variables": {
@@ -162,9 +162,7 @@
             }
           }
         ],
-        "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
-        }
+        "networkSecurityGroup": "[if(not(empty(resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName')))), createObject('id', resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))), null())]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]"

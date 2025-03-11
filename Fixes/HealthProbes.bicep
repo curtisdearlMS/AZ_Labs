@@ -83,10 +83,10 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
     ]
     probes: [
       {
-        name: 'port80healthprobe'
+        name: 'port22healthprobe'
         properties: {
           protocol: 'Tcp'
-          port: 80
+          port: 22
           intervalInSeconds: 5
           numberOfProbes: 1
           probeThreshold: 1

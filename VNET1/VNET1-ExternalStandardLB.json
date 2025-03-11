@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "16980851234893585761"
+      "templateHash": "15674035901569936854"
     }
   },
   "variables": {
@@ -14,8 +14,7 @@
     "frontendPort": 80,
     "backendPort": 80,
     "enableTcpReset": false,
-    "enableFloatingIP": false,
-    "bepname": "[format('{0}/bep', variables('publicLoadBalancer_Name'))]"
+    "enableFloatingIP": false
   },
   "resources": [
     {
@@ -51,7 +50,7 @@
         ],
         "backendAddressPools": [
           {
-            "name": "bep"
+            "name": "bep/backendAddressPool"
           }
         ],
         "loadBalancingRules": [
@@ -111,30 +110,6 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/publicIPAddresses', format('{0}_PIP', variables('publicLoadBalancer_Name')))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Network/loadBalancers/backendAddressPools",
-      "apiVersion": "2024-05-01",
-      "name": "[variables('bepname')]",
-      "properties": {
-        "loadBalancerBackendAddresses": [
-          {
-            "name": "netlab310.2_VNET1-vm2NICipconfig1",
-            "properties": {
-              "ipAddress": "10.1.2.4"
-            }
-          },
-          {
-            "name": "netlab310.2_VNET1-vm1NICipconfig1",
-            "properties": {
-              "ipAddress": "10.1.2.5"
-            }
-          }
-        ]
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]"
       ]
     }
   ]

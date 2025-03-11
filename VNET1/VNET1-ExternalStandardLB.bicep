@@ -36,7 +36,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
     ]
     backendAddressPools: [
       {
-      name: 'bep'
+      name: 'bep/backendAddressPool'
       }
     ]
     loadBalancingRules: [
@@ -96,27 +96,5 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
   }
 }
 
-var bepname = '${publicLoadBalancer_Name}/bep'
 
-resource bep 'Microsoft.Network/loadBalancers/backendAddressPools@2024-05-01' = {
-  name: bepname
-  properties: {
-    loadBalancerBackendAddresses: [
-      {
-        name: 'netlab310.2_VNET1-vm2NICipconfig1'
-        properties: {
-          ipAddress: '10.1.2.4'
-        }
-      }
-      {
-        name: 'netlab310.2_VNET1-vm1NICipconfig1'
-        properties: {
-           ipAddress: '10.1.2.5'
-        }
-      }
-    ]
-  }
-  dependsOn: [
-    loadBalancer
-  ]
-}
+

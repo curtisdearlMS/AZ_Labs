@@ -35,6 +35,8 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
   }
 }
 
+var VMsubnetID = resourceId('Microsoft.Network/virtualNetworks/subnets', 'VNET1', 'VMSubnet')
+
 resource nic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   name: 'VNET1-vm2NIC'
   location: resourceGroup().location
@@ -42,7 +44,12 @@ resource nic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
     ipConfigurations: [
       {
         name: 'ipconfig1'
-        type: 'Microsoft.Network/networkInterfaces/ipConfigurations'
+        properties: {
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: VMsubnetID
+          }
+        }
       }
     ]
     networkSecurityGroup: {

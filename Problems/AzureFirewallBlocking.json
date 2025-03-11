@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "11193552978476972406"
+      "templateHash": "16231319153402250319"
     }
   },
   "variables": {
@@ -95,6 +95,7 @@
       "type": "Microsoft.Network/azureFirewalls",
       "apiVersion": "2024-05-01",
       "name": "myAzureFirewall",
+      "location": "[resourceGroup().location]",
       "properties": {
         "firewallPolicy": {
           "id": "[resourceId('Microsoft.Network/firewallPolicies', variables('firewallPolicies_AzureFirewallBlockingPolicy_name'))]"

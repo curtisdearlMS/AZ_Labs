@@ -74,8 +74,10 @@ resource firewallPolicies_DefaultNetworkRuleCollectionGroup 'Microsoft.Network/f
     ]
   }
 }
+
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2024-05-01' = {
   name: 'myAzureFirewall'
+  location: resourceGroup().location
   properties:{  
     firewallPolicy: {
       id: firewallPolicies_BlockPolicy.id

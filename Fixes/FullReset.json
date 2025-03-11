@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15896547092469578657"
+      "templateHash": "4717740969082051670"
     }
   },
   "variables": {
@@ -246,7 +246,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "2307878044455062226"
+              "templateHash": "2099370848545396302"
             }
           },
           "resources": [
@@ -275,7 +275,7 @@
               "location": "[resourceGroup().location]",
               "properties": {
                 "networkSecurityGroup": {
-                  "id": "None"
+                  "id": null
                 }
               }
             }

@@ -5,13 +5,30 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14537436763651572892"
+      "templateHash": "2274109631312305776"
     }
   },
   "variables": {
-    "publicLoadBalancer_Name": "VNET1_Ext_VM_LB"
+    "publicLoadBalancer_Name": "VNET1_Ext_VM_LB",
+    "protocol": "TCP",
+    "frontendPort": 80,
+    "backendPort": 80,
+    "enableTcpReset": false,
+    "enableFloatingIP": false
   },
   "resources": [
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2024-01-01",
+      "name": "[format('{0}_PIP', variables('publicLoadBalancer_Name'))]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
     {
       "type": "Microsoft.Network/loadBalancers",
       "apiVersion": "2024-01-01",
@@ -21,19 +38,79 @@
         "name": "Standard"
       },
       "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "fip",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', format('{0}_PIP', variables('publicLoadBalancer_Name')))]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "bep"
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "name": "inboundRule",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', variables('publicLoadBalancer_Name'), 'fip')]"
+              },
+              "backendAddressPool": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('publicLoadBalancer_Name'), 'bep')]"
+              },
+              "disableOutboundSnat": true,
+              "protocol": "[variables('protocol')]",
+              "frontendPort": "[variables('frontendPort')]",
+              "backendPort": "[variables('backendPort')]",
+              "enableFloatingIP": "[variables('enableFloatingIP')]",
+              "idleTimeoutInMinutes": 4,
+              "enableTcpReset": "[variables('enableTcpReset')]",
+              "probe": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', variables('publicLoadBalancer_Name'), 'port80healthprobe')]"
+              }
+            }
+          }
+        ],
+        "outboundRules": [
+          {
+            "name": "outboundRule",
+            "properties": {
+              "frontendIPConfigurations": [
+                {
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', variables('publicLoadBalancer_Name'), 'fip')]"
+                }
+              ],
+              "backendAddressPool": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('publicLoadBalancer_Name'), 'bep')]"
+              },
+              "protocol": "All",
+              "idleTimeoutInMinutes": 4,
+              "enableTcpReset": "[variables('enableTcpReset')]",
+              "allocatedOutboundPorts": 30000
+            }
+          }
+        ],
         "probes": [
           {
             "name": "port80healthprobe",
             "properties": {
               "protocol": "Tcp",
-              "port": 22,
+              "port": 80,
               "intervalInSeconds": 5,
               "numberOfProbes": 1,
               "probeThreshold": 1
             }
           }
         ]
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', format('{0}_PIP', variables('publicLoadBalancer_Name')))]"
+      ]
     }
   ]
 }

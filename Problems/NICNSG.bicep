@@ -37,6 +37,7 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
 
 resource nic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   name: 'VNET1-vm2NIC'
+  location: resourceGroup().location
   properties: {
     networkSecurityGroup: {
       id: nsg.id

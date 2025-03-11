@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14250489114605048278"
+      "templateHash": "7798804423060709369"
     }
   },
   "variables": {
@@ -52,6 +52,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2021-02-01",
       "name": "VNET1-vm2NIC",
+      "location": "[resourceGroup().location]",
       "properties": {
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"

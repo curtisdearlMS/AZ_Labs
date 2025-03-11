@@ -1,14 +1,9 @@
 // Description: This Bicep template creates a Standard Load Balancer with a Public IP address and an outbound rule.
 var publicLoadBalancer_Name  = 'VNET1_Ext_VM_LB'
-
 var protocol  = 'TCP'
-
 var frontendPort  = 80
-
 var backendPort  = 80
-
 var enableTcpReset = false
-
 var enableFloatingIP = false
 
 resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2024-01-01' = {

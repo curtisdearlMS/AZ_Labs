@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "235807217113300095"
+      "templateHash": "11019553195164383093"
     }
   },
   "parameters": {
@@ -1552,7 +1552,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Deploy_the_Storage_Account_Private_Endpoint_and_Private_DNS_zone_Create_A_record_for_PE_Link_to_all_3_VNETs",
+      "name": "Deploy_the_Storage_Account_and_Private_Endpoint_and_Private_DNS_zone",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"

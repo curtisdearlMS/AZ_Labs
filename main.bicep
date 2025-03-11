@@ -85,7 +85,7 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
 
 // Deploy the Storage Account Private Endpoint, and Private DNS zone, Create A record for PE, Link to all 3 VNETs
 module createSAandPE './HubVNET/CreateSAandPE.bicep' = {
-  name: 'Deploy_the_Storage_Account_Private_Endpoint_and_Private_DNS_zone_Create_A_record_for_PE_Link_to_all_3_VNETs'
+  name: 'Deploy_the_Storage_Account_and_Private_Endpoint_and_Private_DNS_zone'
  dependsOn: [
     vnet1
     vnet2

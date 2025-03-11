@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "10657065462768758536"
+      "templateHash": "7201125430925407016"
     }
   },
   "variables": {
@@ -141,6 +141,13 @@
       ]
     },
     {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('nsgName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {}
+    },
+    {
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2021-02-01",
       "name": "VNET1-vm2NIC",
@@ -162,10 +169,13 @@
             }
           }
         ],
-        "networkSecurityGroup": "[if(not(empty(resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName')))), createObject('id', resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))), null())]"
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+        }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]"
+        "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
       ]
     }
   ]

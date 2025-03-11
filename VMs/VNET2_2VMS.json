@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15629427301212488629"
+      "templateHash": "16899611978481027467"
     }
   },
   "parameters": {
@@ -67,7 +67,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "9408142498977752604"
+              "templateHash": "12432071944618526973"
             }
           },
           "parameters": {
@@ -203,21 +203,6 @@
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]"
-              ]
-            },
-            {
-              "type": "Microsoft.Compute/virtualMachines/extensions",
-              "apiVersion": "2022-11-01",
-              "name": "[format('{0}/{1}', parameters('vm_Name'), 'AzureNetworkWatcherExtension')]",
-              "location": "[parameters('location')]",
-              "properties": {
-                "autoUpgradeMinorVersion": true,
-                "publisher": "Microsoft.Azure.NetworkWatcher",
-                "type": "NetworkWatcherAgentLinux",
-                "typeHandlerVersion": "1.4"
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('vm_Name'))]"
               ]
             }
           ]
@@ -269,7 +254,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "9408142498977752604"
+              "templateHash": "12432071944618526973"
             }
           },
           "parameters": {
@@ -405,21 +390,6 @@
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]"
-              ]
-            },
-            {
-              "type": "Microsoft.Compute/virtualMachines/extensions",
-              "apiVersion": "2022-11-01",
-              "name": "[format('{0}/{1}', parameters('vm_Name'), 'AzureNetworkWatcherExtension')]",
-              "location": "[parameters('location')]",
-              "properties": {
-                "autoUpgradeMinorVersion": true,
-                "publisher": "Microsoft.Azure.NetworkWatcher",
-                "type": "NetworkWatcherAgentLinux",
-                "typeHandlerVersion": "1.4"
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('vm_Name'))]"
               ]
             }
           ]

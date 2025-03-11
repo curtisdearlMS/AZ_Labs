@@ -109,11 +109,15 @@ resource bep 'Microsoft.Network/loadBalancers/backendAddressPools@2024-05-01' = 
     loadBalancerBackendAddresses: [
       {
         name: 'netlab310.2_VNET1-vm2NICipconfig1'
-        properties: {}
+        properties: {
+          ipAddress: '10.1.2.4'
+        }
       }
       {
         name: 'netlab310.2_VNET1-vm1NICipconfig1'
-        properties: {}
+        properties: {
+           ipAddress: '10.1.2.5'
+        }
       }
     ]
   }

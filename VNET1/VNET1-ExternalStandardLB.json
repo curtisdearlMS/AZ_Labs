@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "3673626157036801072"
+      "templateHash": "16980851234893585761"
     }
   },
   "variables": {
@@ -121,11 +121,15 @@
         "loadBalancerBackendAddresses": [
           {
             "name": "netlab310.2_VNET1-vm2NICipconfig1",
-            "properties": {}
+            "properties": {
+              "ipAddress": "10.1.2.4"
+            }
           },
           {
             "name": "netlab310.2_VNET1-vm1NICipconfig1",
-            "properties": {}
+            "properties": {
+              "ipAddress": "10.1.2.5"
+            }
           }
         ]
       },

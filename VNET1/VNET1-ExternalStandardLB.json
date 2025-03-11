@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "13631878491693138073"
+      "templateHash": "11863094293673469441"
     }
   },
   "variables": {
@@ -14,7 +14,8 @@
     "frontendPort": 80,
     "backendPort": 80,
     "enableTcpReset": false,
-    "enableFloatingIP": false
+    "enableFloatingIP": false,
+    "nsgName": "myNICNSG"
   },
   "resources": [
     {
@@ -160,7 +161,10 @@
               ]
             }
           }
-        ]
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+        }
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]"

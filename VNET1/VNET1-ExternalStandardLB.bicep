@@ -122,6 +122,12 @@ resource nic1 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   ]
 }
 
+var nsgName = 'myNICNSG'
+
+resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = {
+  name: nsgName
+}
+
 resource nic2 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   name: 'VNET1-vm2NIC'
   location: resourceGroup().location
@@ -142,6 +148,9 @@ resource nic2 'Microsoft.Network/networkInterfaces@2021-02-01' = {
         }
       }
     ]
+    networkSecurityGroup: {
+      id: nsg.id
+    }
   }
   dependsOn: [
     loadBalancer

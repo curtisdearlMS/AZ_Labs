@@ -117,6 +117,9 @@ resource nic1 'Microsoft.Network/networkInterfaces@2021-02-01' = {
       }
     ]
   }
+  dependsOn: [
+    loadBalancer
+  ]
 }
 
 resource nic2 'Microsoft.Network/networkInterfaces@2021-02-01' = {
@@ -140,4 +143,7 @@ resource nic2 'Microsoft.Network/networkInterfaces@2021-02-01' = {
       }
     ]
   }
+  dependsOn: [
+    loadBalancer
+  ]
 }

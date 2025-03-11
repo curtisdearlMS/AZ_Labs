@@ -72,6 +72,8 @@ This will deploy an Azure Firewall Policy that will block transitive VNET traffi
 
 This deploys an NSG applied to the NIC of VM2 in VNET 1. This demonstrates the behavior of multiple NSGs, and reminds everyone to check for both Subnet and NIC NSGs.
 
+This NSG will also block health probe from the Azure Load Balancer.
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNICNSG.json)
 
 ## Reset to Default Configuration

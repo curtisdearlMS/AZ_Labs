@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "18164509951639878411"
+      "templateHash": "14794572210134778856"
     }
   },
   "variables": {
@@ -246,7 +246,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "9617215390927005458"
+              "templateHash": "10417490922492819049"
             }
           },
           "resources": [
@@ -266,6 +266,16 @@
               "location": "[resourceGroup().location]",
               "properties": {
                 "securityRules": []
+              }
+            },
+            {
+              "type": "Microsoft.Network/networkInterfaces",
+              "apiVersion": "2021-02-01",
+              "name": "VNET1-vm2NIC",
+              "properties": {
+                "networkSecurityGroup": {
+                  "id": null
+                }
               }
             }
           ]

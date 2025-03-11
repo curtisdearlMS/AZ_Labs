@@ -13,3 +13,12 @@ resource nsgVMSubnetVNET2 'Microsoft.Network/networkSecurityGroups@2023-09-01' =
     securityRules: []
   }
 }
+
+resource nic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
+  name: 'VNET1-vm2NIC'
+  properties: {
+    networkSecurityGroup: {
+      id: null
+    }
+  }
+}

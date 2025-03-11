@@ -5,10 +5,14 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "11862962381358526187"
+      "templateHash": "235807217113300095"
     }
   },
   "parameters": {
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v6"
+    },
     "adminPassword": {
       "type": "securestring",
       "defaultValue": "[newGuid()]"
@@ -650,6 +654,9 @@
         "parameters": {
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },
+          "vmSize": {
+            "value": "[parameters('vmSize')]"
           }
         },
         "template": {
@@ -659,25 +666,21 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "16165718426196752987"
+              "templateHash": "8509607995921119585"
             }
           },
           "parameters": {
-            "adminUsername": {
-              "type": "string",
-              "defaultValue": "bob"
-            },
             "adminPassword": {
               "type": "securestring"
             },
             "vmSize": {
-              "type": "string",
-              "defaultValue": "Standard_D2s_v6"
+              "type": "string"
             }
           },
           "variables": {
             "vnetName": "VNET1",
-            "vmSubnetName": "VMSubnet"
+            "vmSubnetName": "VMSubnet",
+            "adminUsername": "bob"
           },
           "resources": [
             {
@@ -700,7 +703,7 @@
                     "value": "[parameters('vmSize')]"
                   },
                   "vm_AdminUserName": {
-                    "value": "[parameters('adminUsername')]"
+                    "value": "[variables('adminUsername')]"
                   },
                   "vm_AdminPassword": {
                     "value": "[parameters('adminPassword')]"
@@ -902,7 +905,7 @@
                     "value": "[parameters('vmSize')]"
                   },
                   "vm_AdminUserName": {
-                    "value": "[parameters('adminUsername')]"
+                    "value": "[variables('adminUsername')]"
                   },
                   "vm_AdminPassword": {
                     "value": "[parameters('adminPassword')]"
@@ -1104,6 +1107,9 @@
         "parameters": {
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
+          },
+          "vmSize": {
+            "value": "[parameters('vmSize')]"
           }
         },
         "template": {
@@ -1113,25 +1119,21 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "17439745119879151008"
+              "templateHash": "15629427301212488629"
             }
           },
           "parameters": {
-            "adminUsername": {
-              "type": "string",
-              "defaultValue": "bob"
-            },
             "adminPassword": {
               "type": "securestring"
             },
             "vmSize": {
-              "type": "string",
-              "defaultValue": "Standard_D2s_v6"
+              "type": "string"
             }
           },
           "variables": {
             "vnetName": "VNET2",
-            "vmSubnetName": "VMSubnet"
+            "vmSubnetName": "VMSubnet",
+            "adminUsername": "bob"
           },
           "resources": [
             {
@@ -1154,7 +1156,7 @@
                     "value": "[parameters('vmSize')]"
                   },
                   "vm_AdminUserName": {
-                    "value": "[parameters('adminUsername')]"
+                    "value": "[variables('adminUsername')]"
                   },
                   "vm_AdminPassword": {
                     "value": "[parameters('adminPassword')]"
@@ -1356,7 +1358,7 @@
                     "value": "[parameters('vmSize')]"
                   },
                   "vm_AdminUserName": {
-                    "value": "[parameters('adminUsername')]"
+                    "value": "[variables('adminUsername')]"
                   },
                   "vm_AdminPassword": {
                     "value": "[parameters('adminPassword')]"

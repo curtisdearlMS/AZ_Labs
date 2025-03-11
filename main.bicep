@@ -1,5 +1,4 @@
-//param vmSize string = 'Standard_D2s_v6' 
-//param adminUsername string = 'bob'
+param vmSize string = 'Standard_D2s_v6' 
 @secure()
 param adminPassword string = newGuid()
 
@@ -63,7 +62,7 @@ module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
     //vmSubnetName: 'VMSubnet'
     //adminUsername: adminUsername
     adminPassword: adminPassword
-    //vmSize: vmSize
+    vmSize: vmSize
   }
 }
 
@@ -80,7 +79,7 @@ module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
     //vmSubnetName: 'VMSubnet'
     //adminUsername: adminUsername
     adminPassword: adminPassword
-    //vmSize: vmSize
+    vmSize: vmSize
   }
 }
 

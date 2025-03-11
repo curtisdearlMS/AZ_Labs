@@ -1,9 +1,9 @@
 var vnetName = 'VNET1'
 var vmSubnetName = 'VMSubnet'
-param adminUsername string = 'bob'
+var adminUsername = 'bob'
 @secure()
 param adminPassword string
-param vmSize string = 'Standard_D2s_v6' 
+param vmSize string 
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnetName

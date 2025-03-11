@@ -35,3 +35,10 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2023-09-01' = {
     ]
   }
 }
+
+module allowPolicy '../HubAzureFirewall/AzureFirewallAllowPolicy.bicep' = {
+  name: 'allowPolicy'
+  dependsOn: [
+    azureFirewall
+  ]
+}

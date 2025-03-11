@@ -18,7 +18,7 @@ resource nic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   name: 'VNET1-vm2NIC'
   properties: {
     networkSecurityGroup: {
-      id: null
+      id: 'None'
     }
   }
 }

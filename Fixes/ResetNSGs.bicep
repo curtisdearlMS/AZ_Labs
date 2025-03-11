@@ -19,7 +19,7 @@ resource nic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   location: resourceGroup().location
   properties: {
     networkSecurityGroup: {
-      id: 'Null'
+      id: 'None'
     }
   }
 }

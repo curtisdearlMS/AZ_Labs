@@ -1,6 +1,6 @@
 var firewallPolicies_AzureFirewallBlockingPolicy_name = 'BlockingPolicy'
 
-resource firewallPolicies_AzureFirewallBlockingPolicy_name_resource 'Microsoft.Network/firewallPolicies@2024-05-01' = {
+resource firewallPolicies_BlockPolicy 'Microsoft.Network/firewallPolicies@2024-05-01' = {
   name: firewallPolicies_AzureFirewallBlockingPolicy_name
   location: resourceGroup().location
   properties: {
@@ -15,10 +15,9 @@ resource firewallPolicies_AzureFirewallBlockingPolicy_name_resource 'Microsoft.N
   }
 }
 
-resource firewallPolicies_AzureFirewallBlockingPolicy_name_DefaultNetworkRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2024-05-01' = {
-  parent: firewallPolicies_AzureFirewallBlockingPolicy_name_resource
+resource firewallPolicies_DefaultNetworkRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2024-05-01' = {
+  parent: firewallPolicies_BlockPolicy
   name: 'DefaultNetworkRuleCollectionGroup'
-  location: resourceGroup().location
   properties: {
     priority: 200
     ruleCollections: [
@@ -75,17 +74,13 @@ resource firewallPolicies_AzureFirewallBlockingPolicy_name_DefaultNetworkRuleCol
     ]
   }
 }
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2024-05-01' existing = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2024-05-01' = {
   name: 'myAzureFirewall'
-  scope: resourceGroup()
-}
-
-resource firewallPolicyAssociation 'Microsoft.Network/azureFirewalls/firewallPolicies@2024-05-01' = {
-  parent: azureFirewall
-  name: 'firewallPolicyAssociation'
-  properties: {
+  properties:{  
     firewallPolicy: {
-      id: firewallPolicies_AzureFirewallBlockingPolicy_name_resource.id
+      id: firewallPolicies_BlockPolicy.id
     }
   }
 }
+
+

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15753892300653212463"
+      "templateHash": "11862962381358526187"
     }
   },
   "parameters": {
@@ -18,7 +18,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Deploy Hub VNET",
+      "name": "Deploy_HubVNET",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -221,7 +221,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Deploy VNET1",
+      "name": "Deploy_VNET1",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -357,7 +357,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Peer VNET 1 and Hub VNET",
+      "name": "Peer_VNET1_and_HubVNET",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -424,14 +424,14 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy Hub VNET')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy VNET1')]"
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_HubVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Deploy VNET 2",
+      "name": "Deploy_VNET2",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -567,7 +567,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Peer VNET 2 and Hub VNET",
+      "name": "Peer_VNET2_and_HubVNET",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -634,14 +634,14 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy Hub VNET')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy VNET 2')]"
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_HubVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET2')]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Deploy 2 VMs into VNET1",
+      "name": "Deploy_2_VMs_into_VNET1",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1088,14 +1088,14 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy VNET1')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Peer VNET 1 and Hub VNET')]"
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]",
+        "[resourceId('Microsoft.Resources/deployments', 'Peer_VNET1_and_HubVNET')]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Deploy 2 VMs into VNET2",
+      "name": "Deploy_2_VMs_into_VNET2",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -1542,15 +1542,15 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy 2 VMs into VNET1')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy VNET 2')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Peer VNET 2 and Hub VNET')]"
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_2_VMs_into_VNET1')]",
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET2')]",
+        "[resourceId('Microsoft.Resources/deployments', 'Peer_VNET2_and_HubVNET')]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Deploy the Storage Account, Private Endpoint, and Private DNS zone, Create A record for PE, Link to all 3 VNETs",
+      "name": "Deploy_the_Storage_Account_Private_Endpoint_and_Private_DNS_zone_Create_A_record_for_PE_Link_to_all_3_VNETs",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -2051,15 +2051,15 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy Hub VNET')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy VNET1')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy VNET 2')]"
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_HubVNET')]",
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]",
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET2')]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "Deploy the External Standard Load Balancer in VNET1",
+      "name": "Deploy_the_Public_Load_Balancer_in_VNET1",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -2259,8 +2259,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy VNET1')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy 2 VMs into VNET1')]"
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]",
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_2_VMs_into_VNET1')]"
       ]
     }
   ]

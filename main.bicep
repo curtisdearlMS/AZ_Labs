@@ -60,47 +60,42 @@ module vnet1LoadBalancer './VNET1/VNET1-ExternalStandardLB.bicep' = {
   name: 'Deploy_the_Public_Load_Balancer_in_VNET1'
   dependsOn: [
     vnet1
-    linuxVMs
+    linuxVMsvnet1
   ]
 }
 
 //deploy vms here
-var vnetName = 'VNET'
-var vmSubnetName = 'VMSubnet'
+
+// Deploy VMs into VNET1
 param adminUsername string = 'bob'
 
 @secure()
 param adminPassword string = newGuid()
 
 @description('Size of the VM')
-param vmSize string = 'Standard_D2s_v6'
+param vmSize string = 'Standard_D2as_v4'
 
-resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
-  name: vnetName
-}
-
-resource vmSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existing = {
-  name: vmSubnetName
-  parent: vnet
-}
-@description('True enables Accelerated Networking and False disabled it.  Not all VM sizes support Accel Net')
+@description('True enables Accelerated Networking and False disables it. Not all VM sizes support Accel Net')
 var accelNet = false
 
 var vmCount = 2
 
-resource nics 'Microsoft.Network/networkInterfaces@2022-09-01' = [for i in range(0, vmCount): {
-  name: '${vnetName}-vm${i + 1}NIC'
+@description('Network interfaces for VMs')
+resource nicsvnet1 'Microsoft.Network/networkInterfaces@2022-09-01' = [for i in range(0, vmCount): {
+  name: 'VNET1-vm${i + 1}NIC'
   location: resourceGroup().location
+  dependsOn: [
+    vnet1
+  ]
   properties: {
     ipConfigurations: [
       {
         name: 'ipconfig1'
-        type: 'Microsoft.Network/networkInterfaces/ipConfigurations'
         properties: {
           privateIPAllocationMethod: 'Static'
           privateIPAddress: '10.1.2.${i + 4}'
           subnet: {
-            id: vmSubnet.id
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets', 'VNET1', 'VMSubnet')
           }
           primary: true
           privateIPAddressVersion: 'IPv4'
@@ -114,9 +109,12 @@ resource nics 'Microsoft.Network/networkInterfaces@2022-09-01' = [for i in range
   }
 }]
 
-resource linuxVMs 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range(0, vmCount): {
-  name: '${vnetName}-vm${i + 1}'
+resource linuxVMsvnet1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range(0, vmCount): {
+  name: 'VNET1-vm${i + 1}'
   location: resourceGroup().location
+  dependsOn: [
+    nicsvnet1
+  ]
   properties: {
     hardwareProfile: {
       vmSize: vmSize
@@ -130,7 +128,7 @@ resource linuxVMs 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in ran
       }
       osDisk: {
         osType: 'Linux'
-        name: '${vnetName}-vm${i + 1}_OsDisk_1'
+        name: 'VNET1-vm${i + 1}_OsDisk_1'
         createOption: 'FromImage'
         caching: 'ReadWrite'
         deleteOption: 'Delete'
@@ -138,7 +136,7 @@ resource linuxVMs 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in ran
       dataDisks: []
     }
     osProfile: {
-      computerName: '${vnetName}-vm${i + 1}'
+      computerName: 'VNET1-vm${i + 1}'
       adminUsername: adminUsername
       adminPassword: adminPassword
       linuxConfiguration: {
@@ -155,7 +153,95 @@ resource linuxVMs 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in ran
     networkProfile: {
       networkInterfaces: [
         {
-          id: nics[i].id
+          id: resourceId('Microsoft.Network/networkInterfaces', 'VNET1-vm${i + 1}NIC')
+          properties: {
+            deleteOption: 'Delete'
+          }
+        }
+      ]
+    }
+    diagnosticsProfile: {
+      bootDiagnostics: {
+        enabled: true
+      }
+    }
+  }
+}]
+
+@description('Network interfaces for VMs')
+resource nicsvnet2 'Microsoft.Network/networkInterfaces@2022-09-01' = [for i in range(0, vmCount): {
+  name: 'VNET2-vm${i + 1}NIC'
+  location: resourceGroup().location
+  dependsOn: [
+    vnet2
+  ]
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'ipconfig1'
+        properties: {
+          privateIPAllocationMethod: 'Static'
+          privateIPAddress: '10.2.2.${i + 4}'
+          subnet: {
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets', 'VNET2', 'VMSubnet')
+          }
+          primary: true
+          privateIPAddressVersion: 'IPv4'
+        }
+      }
+    ]
+    enableAcceleratedNetworking: accelNet
+    enableIPForwarding: false
+    disableTcpStateTracking: false
+    nicType: 'Standard'
+  }
+}]
+
+resource linuxVMsvnet2 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range(0, vmCount): {
+  name: 'VNET2-vm${i + 1}'
+  location: resourceGroup().location
+  dependsOn: [
+    nicsvnet2
+  ]
+  properties: {
+    hardwareProfile: {
+      vmSize: vmSize
+    }
+    storageProfile: {
+      imageReference: {
+        publisher: 'canonical'
+        offer: '0001-com-ubuntu-server-focal'
+        sku: '20_04-lts-gen2'
+        version: 'latest'
+      }
+      osDisk: {
+        osType: 'Linux'
+        name: 'VNET2-vm${i + 1}_OsDisk_1'
+        createOption: 'FromImage'
+        caching: 'ReadWrite'
+        deleteOption: 'Delete'
+      }
+      dataDisks: []
+    }
+    osProfile: {
+      computerName: 'VNET2-vm${i + 1}'
+      adminUsername: adminUsername
+      adminPassword: adminPassword
+      linuxConfiguration: {
+        disablePasswordAuthentication: false
+        provisionVMAgent: true
+        patchSettings: {
+          patchMode: 'ImageDefault'
+          assessmentMode: 'ImageDefault'
+        }
+      }
+      secrets: []
+      allowExtensionOperations: true
+    }
+    networkProfile: {
+      networkInterfaces: [
+        {
+          id: resourceId('Microsoft.Network/networkInterfaces', 'VNET2-vm${i + 1}NIC')
           properties: {
             deleteOption: 'Delete'
           }

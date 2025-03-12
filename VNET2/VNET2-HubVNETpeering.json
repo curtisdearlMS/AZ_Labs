@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "7869250557193293995"
+      "templateHash": "18264314212318686912"
     }
   },
   "parameters": {
@@ -29,7 +29,7 @@
         },
         "allowVirtualNetworkAccess": true,
         "allowForwardedTraffic": true,
-        "allowGatewayTransit": true,
+        "allowGatewayTransit": false,
         "useRemoteGateways": false
       }
     },
@@ -44,7 +44,7 @@
         "allowVirtualNetworkAccess": true,
         "allowForwardedTraffic": true,
         "allowGatewayTransit": false,
-        "useRemoteGateways": true
+        "useRemoteGateways": false
       }
     }
   ]

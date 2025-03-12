@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "8133154250443963077"
+      "templateHash": "575724862937313171"
     }
   },
   "parameters": {
@@ -19,38 +19,35 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v6",
+      "defaultValue": "Standard_D2as_v4",
       "metadata": {
         "description": "Size of the VM"
       }
     }
   },
   "variables": {
-    "vnetName": "VNET",
-    "vmSubnetName": "VMSubnet",
     "accelNet": false,
     "vmCount": 2
   },
   "resources": [
     {
       "copy": {
-        "name": "nics",
+        "name": "nicsvnet1",
         "count": "[length(range(0, variables('vmCount')))]"
       },
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2022-09-01",
-      "name": "[format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+      "name": "[format('VNET1-vm{0}NIC', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig1",
-            "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[format('10.1.2.{0}', add(range(0, variables('vmCount'))[copyIndex()], 4))]",
               "subnet": {
-                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'VNET1', 'VMSubnet')]"
               },
               "primary": true,
               "privateIPAddressVersion": "IPv4"
@@ -61,16 +58,22 @@
         "enableIPForwarding": false,
         "disableTcpStateTracking": false,
         "nicType": "Standard"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]"
+      ],
+      "metadata": {
+        "description": "Network interfaces for VMs"
       }
     },
     {
       "copy": {
-        "name": "linuxVMs",
+        "name": "linuxVMsvnet1",
         "count": "[length(range(0, variables('vmCount')))]"
       },
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2023-03-01",
-      "name": "[format('{0}-vm{1}', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+      "name": "[format('VNET1-vm{0}', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "hardwareProfile": {
@@ -85,7 +88,7 @@
           },
           "osDisk": {
             "osType": "Linux",
-            "name": "[format('{0}-vm{1}_OsDisk_1', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+            "name": "[format('VNET1-vm{0}_OsDisk_1', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
             "createOption": "FromImage",
             "caching": "ReadWrite",
             "deleteOption": "Delete"
@@ -93,7 +96,7 @@
           "dataDisks": []
         },
         "osProfile": {
-          "computerName": "[format('{0}-vm{1}', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+          "computerName": "[format('VNET1-vm{0}', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
           "linuxConfiguration": {
@@ -110,7 +113,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[range(0, variables('vmCount'))[copyIndex()]], 1)))]",
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', format('VNET1-vm{0}NIC', add(range(0, variables('vmCount'))[copyIndex()], 1)))]",
               "properties": {
                 "deleteOption": "Delete"
               }
@@ -124,7 +127,107 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[range(0, variables('vmCount'))[copyIndex()]], 1)))]"
+        "nicsvnet1"
+      ]
+    },
+    {
+      "copy": {
+        "name": "nicsvnet2",
+        "count": "[length(range(0, variables('vmCount')))]"
+      },
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2022-09-01",
+      "name": "[format('VNET2-vm{0}NIC', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[format('10.2.2.{0}', add(range(0, variables('vmCount'))[copyIndex()], 4))]",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'VNET2', 'VMSubnet')]"
+              },
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableAcceleratedNetworking": "[variables('accelNet')]",
+        "enableIPForwarding": false,
+        "disableTcpStateTracking": false,
+        "nicType": "Standard"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET2')]"
+      ],
+      "metadata": {
+        "description": "Network interfaces for VMs"
+      }
+    },
+    {
+      "copy": {
+        "name": "linuxVMsvnet2",
+        "count": "[length(range(0, variables('vmCount')))]"
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-03-01",
+      "name": "[format('VNET2-vm{0}', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "canonical",
+            "offer": "0001-com-ubuntu-server-focal",
+            "sku": "20_04-lts-gen2",
+            "version": "latest"
+          },
+          "osDisk": {
+            "osType": "Linux",
+            "name": "[format('VNET2-vm{0}_OsDisk_1', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+            "createOption": "FromImage",
+            "caching": "ReadWrite",
+            "deleteOption": "Delete"
+          },
+          "dataDisks": []
+        },
+        "osProfile": {
+          "computerName": "[format('VNET2-vm{0}', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": false,
+            "provisionVMAgent": true,
+            "patchSettings": {
+              "patchMode": "ImageDefault",
+              "assessmentMode": "ImageDefault"
+            }
+          },
+          "secrets": [],
+          "allowExtensionOperations": true
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', format('VNET2-vm{0}NIC', add(range(0, variables('vmCount'))[copyIndex()], 1)))]",
+              "properties": {
+                "deleteOption": "Delete"
+              }
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true
+          }
+        }
+      },
+      "dependsOn": [
+        "nicsvnet2"
       ]
     },
     {
@@ -483,7 +586,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "13715319698941877150"
+              "templateHash": "14621975082855749956"
             }
           },
           "parameters": {
@@ -507,7 +610,7 @@
                 },
                 "allowVirtualNetworkAccess": true,
                 "allowForwardedTraffic": true,
-                "allowGatewayTransit": true,
+                "allowGatewayTransit": false,
                 "useRemoteGateways": false
               }
             },
@@ -522,7 +625,7 @@
                 "allowVirtualNetworkAccess": true,
                 "allowForwardedTraffic": true,
                 "allowGatewayTransit": false,
-                "useRemoteGateways": true
+                "useRemoteGateways": false
               }
             }
           ]
@@ -693,7 +796,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "7869250557193293995"
+              "templateHash": "18264314212318686912"
             }
           },
           "parameters": {
@@ -717,7 +820,7 @@
                 },
                 "allowVirtualNetworkAccess": true,
                 "allowForwardedTraffic": true,
-                "allowGatewayTransit": true,
+                "allowGatewayTransit": false,
                 "useRemoteGateways": false
               }
             },
@@ -732,7 +835,7 @@
                 "allowVirtualNetworkAccess": true,
                 "allowForwardedTraffic": true,
                 "allowGatewayTransit": false,
-                "useRemoteGateways": true
+                "useRemoteGateways": false
               }
             }
           ]
@@ -1455,7 +1558,7 @@
         }
       },
       "dependsOn": [
-        "linuxVMs",
+        "linuxVMsvnet1",
         "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]"
       ]
     }

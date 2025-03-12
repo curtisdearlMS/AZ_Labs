@@ -20,7 +20,7 @@ resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     }
     allowVirtualNetworkAccess: true
     allowForwardedTraffic: true
-    allowGatewayTransit: true
+    allowGatewayTransit: false
     useRemoteGateways: false
   }
 }
@@ -35,6 +35,6 @@ resource vnet1ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     allowVirtualNetworkAccess: true
     allowForwardedTraffic: true
     allowGatewayTransit: false
-    useRemoteGateways: true
+    useRemoteGateways: false
   }
 }

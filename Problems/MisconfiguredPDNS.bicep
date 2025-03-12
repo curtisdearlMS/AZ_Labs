@@ -1,8 +1,8 @@
 @description('Name of the storage account')
-param storageAccountName string = uniqueString(resourceGroup().id, 'storageAccount')
+var storageAccountName = uniqueString(resourceGroup().id, 'storageAccount')
 
 @description('Name of the private DNS zone')
-param privateDnsZoneName string = 'privatelink.blob.${environment().suffixes.storage}'
+var privateDnsZoneName = 'privatelink.blob.${environment().suffixes.storage}'
 
 module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
   name: 'PrivateDNSZoneArecord'

@@ -5,30 +5,18 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "1202929663908446251"
+      "templateHash": "7052954022740823713"
     }
   },
-  "parameters": {
-    "storageAccountName": {
-      "type": "string",
-      "defaultValue": "[uniqueString(resourceGroup().id, 'storageAccount')]",
-      "metadata": {
-        "description": "Name of the storage account"
-      }
-    },
-    "privateDnsZoneName": {
-      "type": "string",
-      "defaultValue": "[format('privatelink.blob.{0}', environment().suffixes.storage)]",
-      "metadata": {
-        "description": "Name of the private DNS zone"
-      }
-    }
+  "variables": {
+    "storageAccountName": "[uniqueString(resourceGroup().id, 'storageAccount')]",
+    "privateDnsZoneName": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
   },
   "resources": [
     {
       "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
       "apiVersion": "2018-09-01",
-      "name": "[parameters('privateDnsZoneName')]",
+      "name": "[variables('privateDnsZoneName')]",
       "location": "global",
       "properties": {
         "registrationEnabled": false,
@@ -40,7 +28,7 @@
     {
       "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
       "apiVersion": "2018-09-01",
-      "name": "[parameters('privateDnsZoneName')]",
+      "name": "[variables('privateDnsZoneName')]",
       "location": "global",
       "properties": {
         "registrationEnabled": false,
@@ -60,10 +48,10 @@
         "mode": "Incremental",
         "parameters": {
           "PrivateDNSZone_Name": {
-            "value": "[parameters('privateDnsZoneName')]"
+            "value": "[variables('privateDnsZoneName')]"
           },
           "ARecord_name": {
-            "value": "[parameters('storageAccountName')]"
+            "value": "[variables('storageAccountName')]"
           },
           "ipv4Address": {
             "value": "0.0.0.0"

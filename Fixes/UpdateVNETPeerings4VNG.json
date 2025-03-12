@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "18029345470660437592"
+      "templateHash": "2298938077920269418"
     }
   },
   "variables": {
@@ -23,7 +23,10 @@
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet1Name'))]"
         },
-        "allowGatewayTransit": true
+        "allowVirtualNetworkAccess": true,
+        "allowForwardedTraffic": true,
+        "allowGatewayTransit": true,
+        "useRemoteGateways": false
       }
     },
     {
@@ -35,7 +38,10 @@
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet2Name'))]"
         },
-        "allowGatewayTransit": true
+        "allowVirtualNetworkAccess": true,
+        "allowForwardedTraffic": true,
+        "allowGatewayTransit": true,
+        "useRemoteGateways": false
       }
     },
     {
@@ -47,6 +53,9 @@
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
         },
+        "allowVirtualNetworkAccess": true,
+        "allowForwardedTraffic": true,
+        "allowGatewayTransit": false,
         "useRemoteGateways": true
       }
     },
@@ -59,6 +68,9 @@
         "remoteVirtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('hubVnetName'))]"
         },
+        "allowVirtualNetworkAccess": true,
+        "allowForwardedTraffic": true,
+        "allowGatewayTransit": false,
         "useRemoteGateways": true
       }
     }

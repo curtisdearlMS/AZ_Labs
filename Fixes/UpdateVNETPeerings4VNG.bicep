@@ -17,7 +17,10 @@ resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     remoteVirtualNetwork: {
       id: resourceId('Microsoft.Network/virtualNetworks', vnet1Name)
     }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
     allowGatewayTransit: true
+    useRemoteGateways: false
   }
 }
 
@@ -28,7 +31,10 @@ resource hubToVnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     remoteVirtualNetwork: {
       id: resourceId('Microsoft.Network/virtualNetworks', vnet2Name)
     }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
     allowGatewayTransit: true
+    useRemoteGateways: false
   }
 }
 
@@ -38,6 +44,9 @@ resource vnet1ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     remoteVirtualNetwork: {
       id: resourceId('Microsoft.Network/virtualNetworks', hubVnetName)
     }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: false
     useRemoteGateways: true
   }
 }
@@ -48,6 +57,9 @@ resource vnet2ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     remoteVirtualNetwork: {
       id: resourceId('Microsoft.Network/virtualNetworks', hubVnetName)
     }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: false
     useRemoteGateways: true
   }
 }

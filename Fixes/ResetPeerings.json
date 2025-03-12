@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "4515895547217952698"
+      "templateHash": "917249548839908141"
     }
   },
   "resources": [
@@ -33,7 +33,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "14621975082855749956"
+              "templateHash": "13715319698941877150"
             }
           },
           "parameters": {
@@ -57,7 +57,7 @@
                 },
                 "allowVirtualNetworkAccess": true,
                 "allowForwardedTraffic": true,
-                "allowGatewayTransit": false,
+                "allowGatewayTransit": true,
                 "useRemoteGateways": false
               }
             },
@@ -72,7 +72,7 @@
                 "allowVirtualNetworkAccess": true,
                 "allowForwardedTraffic": true,
                 "allowGatewayTransit": false,
-                "useRemoteGateways": false
+                "useRemoteGateways": true
               }
             }
           ]
@@ -103,7 +103,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "18264314212318686912"
+              "templateHash": "7869250557193293995"
             }
           },
           "parameters": {
@@ -127,7 +127,7 @@
                 },
                 "allowVirtualNetworkAccess": true,
                 "allowForwardedTraffic": true,
-                "allowGatewayTransit": false,
+                "allowGatewayTransit": true,
                 "useRemoteGateways": false
               }
             },
@@ -142,7 +142,7 @@
                 "allowVirtualNetworkAccess": true,
                 "allowForwardedTraffic": true,
                 "allowGatewayTransit": false,
-                "useRemoteGateways": false
+                "useRemoteGateways": true
               }
             }
           ]

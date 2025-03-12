@@ -19,6 +19,13 @@ module resetRouteTables 'ResetRouteTables.bicep' = {
   }
 }
 
+module resetPEDNS '../HubVNET/CreateSAandPE.bicep' = {
+  name: 'resetPrivateEndpoint'
+  params: {
+    // Add necessary parameters here
+  }
+}
+
 // Define the firewall resource
 resource firewall 'Microsoft.Network/azureFirewalls@2021-02-01' existing = {
   name: 'myAzureFirewall'

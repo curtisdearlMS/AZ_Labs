@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "7656707999137396253"
+      "templateHash": "4404552994378446923"
     }
   },
   "parameters": {
@@ -14,13 +14,6 @@
       "defaultValue": "[uniqueString(resourceGroup().id, 'storageAccount')]",
       "metadata": {
         "description": "Name of the storage account"
-      }
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Location for all resources"
       }
     },
     "vnetResourceGroupName": {
@@ -50,7 +43,7 @@
         "mode": "Incremental",
         "parameters": {
           "location": {
-            "value": "[parameters('location')]"
+            "value": "[resourceGroup().location]"
           },
           "storageAccount_Name": {
             "value": "[parameters('storageAccountName')]"
@@ -215,7 +208,7 @@
             "value": "[parameters('privateDnsZoneName')]"
           },
           "location": {
-            "value": "[parameters('location')]"
+            "value": "[resourceGroup().location]"
           },
           "privateEndpoint_SubnetID": {
             "value": "[resourceId(parameters('vnetResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', 'hubVNET', 'PrivateEndpointSubnet')]"

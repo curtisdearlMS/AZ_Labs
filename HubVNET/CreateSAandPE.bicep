@@ -1,9 +1,6 @@
 @description('Name of the storage account')
 param storageAccountName string = uniqueString(resourceGroup().id, 'storageAccount')
 
-@description('Location for all resources')
-param location string = resourceGroup().location
-
 @description('Name of the resource group containing the virtual networks')
 param vnetResourceGroupName string = resourceGroup().name
 
@@ -14,7 +11,7 @@ param privateDnsZoneName string = 'privatelink.blob.${environment().suffixes.sto
 module storageAccountModule '../Modules/StorageAccount.bicep' = {
   name: 'storageAccountModule'
   params: {
-    location: location
+    location: resourceGroup().location
     storageAccount_Name: storageAccountName
   }
 }
@@ -31,7 +28,7 @@ module privateEndpointModule '../Modules/PrivateEndpoint.bicep' = {
     ]
     groupID: 'blob'
     privateDNSZone_Name: privateDnsZoneName
-    location: location
+    location: resourceGroup().location
     privateEndpoint_SubnetID: resourceId(vnetResourceGroupName, 'Microsoft.Network/virtualNetworks/subnets', 'hubVNET', 'PrivateEndpointSubnet')
     privateLinkServiceId: storageAccountModule.outputs.storageAccount_ID
   }

@@ -25,13 +25,13 @@ resource virtualNetworkLink1 'Microsoft.Network/privateDnsZones/virtualNetworkLi
   }
 }
 
-resource virtualNetworkLink2 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  name: privateDnsZoneName
-  location: 'global'
-  properties: {
-    registrationEnabled: false
-    virtualNetwork: {
-      id: resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'VNET1')
-    }
-  }
-}
+// resource virtualNetworkLink2 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
+//   name: privateDnsZoneName
+//   location: 'global'
+//   properties: {
+//     registrationEnabled: false
+//     virtualNetwork: {
+//       id: resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'VNET1')
+//     }
+//   }
+// }

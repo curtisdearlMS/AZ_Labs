@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "7052954022740823713"
+      "templateHash": "18013517531038197720"
     }
   },
   "variables": {
@@ -22,18 +22,6 @@
         "registrationEnabled": false,
         "virtualNetwork": {
           "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'hubVNET')]"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-      "apiVersion": "2018-09-01",
-      "name": "[variables('privateDnsZoneName')]",
-      "location": "global",
-      "properties": {
-        "registrationEnabled": false,
-        "virtualNetwork": {
-          "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'VNET1')]"
         }
       }
     },

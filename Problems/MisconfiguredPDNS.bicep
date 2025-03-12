@@ -32,7 +32,7 @@ resource virtualNetworkUNLink 'Microsoft.Network/privateDnsZones/virtualNetworkL
   properties: {
     registrationEnabled: false
     virtualNetwork: {
-      id: null
+      id: ''
     }
   }
 }

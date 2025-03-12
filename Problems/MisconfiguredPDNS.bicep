@@ -9,7 +9,7 @@ module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
   params: {
     PrivateDNSZone_Name: privateDnsZoneName
     ARecord_name: storageAccountName
-    ipv4Address: '256.256.256.256'
+    ipv4Address: '0.0.0.0'
     ttlInSeconds: 3600
   }
 }

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "13230338754818013519"
+      "templateHash": "7091360402987673006"
     }
   },
   "parameters": {
@@ -42,7 +42,7 @@
             "value": "[parameters('storageAccountName')]"
           },
           "ipv4Address": {
-            "value": "256.256.256.256"
+            "value": "0.0.0.0"
           },
           "ttlInSeconds": {
             "value": 3600

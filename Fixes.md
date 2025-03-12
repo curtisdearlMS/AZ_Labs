@@ -1,6 +1,6 @@
 # Fixes
 
-## VNET Peering Fix
+## Enable Gateway Transit for VNET to Hub Peering Fix
 
 If you need to enable Gateway transit for the peering from VNET1 to Hub and from VNET2 to Hub, you can deploy the fix using the button below.
 

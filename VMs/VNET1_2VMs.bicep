@@ -1,6 +1,6 @@
 var vnetName = 'VNET1'
 var vmSubnetName = 'VMSubnet'
-var adminUsername = 'bob'
+param adminUsername string = 'bob'
 
 @secure()
 param adminPassword string = newGuid()
@@ -16,48 +16,13 @@ resource vmSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existin
   name: vmSubnetName
   parent: vnet
 }
-
-// module vm1 '../Modules/linuxnettestvm.bicep' = {
-//   name: 'vm1Deployment'
-//   params: {
-//     location: resourceGroup().location
-//     vm_Name: '${vnetName}-vm1'
-//     vmSize: vmSize
-//     vm_AdminUserName: adminUsername
-//     vm_AdminPassword: adminPassword
-//     nic_Name: '${vnetName}-vm1NIC'
-//     accelNet: false
-//     subnetID: vmSubnet.id
-//     StaticIP: '10.1.2.4'
-//   }
-// }
-
-// module vm2 '../Modules/linuxnettestvm.bicep' = {
-//   name: 'vm2Deployment'
-//   params: {
-//     location: resourceGroup().location
-//     vm_Name: '${vnetName}-vm2'
-//     vmSize: vmSize
-//     vm_AdminUserName: adminUsername
-//     vm_AdminPassword: adminPassword
-//     nic_Name: '${vnetName}-vm2NIC'
-//     accelNet: false
-//     subnetID: vmSubnet.id
-//     StaticIP: '10.1.2.5'
-//   }
-// }
-
-@description('Name of the Virtual Machine')
-var vm_Name = '${vnetName}-vm1'
-
-@description('Name of the Virtual Machines Network Interface')
-var nic_Name = '${vnetName}-vm1NIC'
-
 @description('True enables Accelerated Networking and False disabled it.  Not all VM sizes support Accel Net')
 var accelNet = false
 
-resource nic 'Microsoft.Network/networkInterfaces@2022-09-01' = {
-  name: nic_Name
+var vmCount = 2
+
+resource nics 'Microsoft.Network/networkInterfaces@2022-09-01' = [for i in range(0, vmCount): {
+  name: '${vnetName}-vm${i + 1}NIC'
   location: resourceGroup().location
   properties: {
     ipConfigurations: [
@@ -65,9 +30,8 @@ resource nic 'Microsoft.Network/networkInterfaces@2022-09-01' = {
         name: 'ipconfig1'
         type: 'Microsoft.Network/networkInterfaces/ipConfigurations'
         properties: {
-          //privateIPAllocationMethod: 'Dynamic'
           privateIPAllocationMethod: 'Static'
-          privateIPAddress: '10.1.2.4'
+          privateIPAddress: '10.1.2.${i + 4}'
           subnet: {
             id: vmSubnet.id
           }
@@ -81,10 +45,10 @@ resource nic 'Microsoft.Network/networkInterfaces@2022-09-01' = {
     disableTcpStateTracking: false
     nicType: 'Standard'
   }
-}
+}]
 
-resource linuxVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
-  name: vm_Name
+resource linuxVMs 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range(0, vmCount): {
+  name: '${vnetName}-vm${i + 1}'
   location: resourceGroup().location
   properties: {
     hardwareProfile: {
@@ -99,7 +63,7 @@ resource linuxVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
       }
       osDisk: {
         osType: 'Linux'
-        name: '${vm_Name}_OsDisk_1'
+        name: '${vnetName}-vm${i + 1}_OsDisk_1'
         createOption: 'FromImage'
         caching: 'ReadWrite'
         deleteOption: 'Delete'
@@ -107,7 +71,7 @@ resource linuxVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
       dataDisks: []
     }
     osProfile: {
-      computerName: vm_Name
+      computerName: '${vnetName}-vm${i + 1}'
       adminUsername: adminUsername
       adminPassword: adminPassword
       linuxConfiguration: {
@@ -124,7 +88,7 @@ resource linuxVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
     networkProfile: {
       networkInterfaces: [
         {
-          id: nic.id
+          id: nics[i].id
           properties: {
             deleteOption: 'Delete'
           }
@@ -137,4 +101,4 @@ resource linuxVM 'Microsoft.Compute/virtualMachines@2023-03-01' = {
       }
     }
   }
-}
+}]

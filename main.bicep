@@ -1,12 +1,7 @@
-param vmSize string = 'Standard_D2s_v6' 
-@secure()
-param adminPassword string = newGuid()
-
 // Module to deploy HubVNET
 module hubVnet './HubVNET/HubVNET.bicep' = {
   name: 'Deploy_HubVNET'
   params: {
-    vnetName: 'HubVNET'
   }
 }
 
@@ -50,39 +45,6 @@ module vnet2Peering './VNET2/VNET2-HubVNETpeering.bicep' = {
   }
 }
 
-// Module to deploy VMs in VNET1
-module vnet1Vms './VMs/VNET1_2VMs.bicep' = {
-  name: 'Deploy_2_VMs_into_VNET1'
-  dependsOn: [
-    vnet1
-    vnet1Peering
-  ]
-  params: {
-    //vnetName: 'VNET1'
-    //vmSubnetName: 'VMSubnet'
-    //adminUsername: adminUsername
-    adminPassword: adminPassword
-    vmSize: vmSize
-  }
-}
-
-// Module to deploy VMs in VNET2
-module vnet2Vms './VMs/VNET2_2VMs.bicep' = {
-  name: 'Deploy_2_VMs_into_VNET2'
-  dependsOn: [
-    vnet1Vms //wait for vnet1VMs to finish
-    vnet2
-    vnet2Peering
-  ]
-  params: {
-    //vnetName: 'VNET2'
-    //vmSubnetName: 'VMSubnet'
-    //adminUsername: adminUsername
-    adminPassword: adminPassword
-    vmSize: vmSize
-  }
-}
-
 // Deploy the Storage Account Private Endpoint, and Private DNS zone, Create A record for PE, Link to all 3 VNETs
 module createSAandPE './HubVNET/CreateSAandPE.bicep' = {
   name: 'Deploy_the_Storage_Account_and_Private_Endpoint'
@@ -101,3 +63,6 @@ module vnet1LoadBalancer './VNET1/VNET1-ExternalStandardLB.bicep' = {
     vnet1Vms
   ]
 }
+
+
+//deploy vms here

@@ -5,10 +5,14 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "14059951033423135917"
+      "templateHash": "6466802729416787412"
     }
   },
   "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "bob"
+    },
     "adminPassword": {
       "type": "securestring",
       "defaultValue": "[newGuid()]"
@@ -24,16 +28,18 @@
   "variables": {
     "vnetName": "VNET1",
     "vmSubnetName": "VMSubnet",
-    "adminUsername": "bob",
-    "vm_Name": "[format('{0}-vm1', variables('vnetName'))]",
-    "nic_Name": "[format('{0}-vm1NIC', variables('vnetName'))]",
-    "accelNet": false
+    "accelNet": false,
+    "vmCount": 2
   },
   "resources": [
     {
+      "copy": {
+        "name": "nics",
+        "count": "[length(range(0, variables('vmCount')))]"
+      },
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2022-09-01",
-      "name": "[variables('nic_Name')]",
+      "name": "[format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "ipConfigurations": [
@@ -42,7 +48,7 @@
             "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "10.1.2.4",
+              "privateIPAddress": "[format('10.1.2.{0}', add(range(0, variables('vmCount'))[copyIndex()], 4))]",
               "subnet": {
                 "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
               },
@@ -58,9 +64,13 @@
       }
     },
     {
+      "copy": {
+        "name": "linuxVMs",
+        "count": "[length(range(0, variables('vmCount')))]"
+      },
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2023-03-01",
-      "name": "[variables('vm_Name')]",
+      "name": "[format('{0}-vm{1}', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
       "location": "[resourceGroup().location]",
       "properties": {
         "hardwareProfile": {
@@ -75,7 +85,7 @@
           },
           "osDisk": {
             "osType": "Linux",
-            "name": "[format('{0}_OsDisk_1', variables('vm_Name'))]",
+            "name": "[format('{0}-vm{1}_OsDisk_1', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
             "createOption": "FromImage",
             "caching": "ReadWrite",
             "deleteOption": "Delete"
@@ -83,8 +93,8 @@
           "dataDisks": []
         },
         "osProfile": {
-          "computerName": "[variables('vm_Name')]",
-          "adminUsername": "[variables('adminUsername')]",
+          "computerName": "[format('{0}-vm{1}', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+          "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": false,
@@ -100,7 +110,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nic_Name'))]",
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[range(0, variables('vmCount'))[copyIndex()]], 1)))]",
               "properties": {
                 "deleteOption": "Delete"
               }
@@ -114,7 +124,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', variables('nic_Name'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[range(0, variables('vmCount'))[copyIndex()]], 1)))]"
       ]
     }
   ]

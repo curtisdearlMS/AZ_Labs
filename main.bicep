@@ -73,7 +73,7 @@ param adminUsername string = 'bob'
 param adminPassword string = newGuid()
 
 @description('Size of the VM')
-param vmSize string = 'Standard_D2as_v4'
+param vmSize string = 'Standard_D2s_v6'
 
 @description('True enables Accelerated Networking and False disables it. Not all VM sizes support Accel Net')
 var accelNet = false

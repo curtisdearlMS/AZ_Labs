@@ -31,9 +31,6 @@ resource virtualNetworkUNLink 'Microsoft.Network/privateDnsZones/virtualNetworkL
   location: 'global'
   properties: {
     registrationEnabled: false
-    virtualNetwork: {
-      id: null
-    }
   }
 }
 ]

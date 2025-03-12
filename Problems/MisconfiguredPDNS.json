@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "1747772334888141923"
+      "templateHash": "10147183712804500030"
     }
   },
   "variables": {
@@ -39,10 +39,7 @@
       "name": "[format('{0}/{1}_to_{2}', variables('privateDnsZoneName'), variables('storageAccountName'), createArray('VNET2')[copyIndex()])]",
       "location": "global",
       "properties": {
-        "registrationEnabled": false,
-        "virtualNetwork": {
-          "id": null
-        }
+        "registrationEnabled": false
       }
     },
     {

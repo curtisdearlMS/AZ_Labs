@@ -76,6 +76,12 @@ This NSG will also block health probe from the Azure Load Balancer.
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNICNSG.json)
 
+## Problem 8: Private DNS zone Misconfiguration
+
+This deploys an incorrect A record for the Storage Private Endpoint. 
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FMisconfiguredPDNS.json)
+
 ## Reset to Default Configuration
 Description: This template resets the network configuration to a standard starting point.
 

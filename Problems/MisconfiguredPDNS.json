@@ -1,0 +1,107 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.33.93.31351",
+      "templateHash": "13230338754818013519"
+    }
+  },
+  "parameters": {
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "[uniqueString(resourceGroup().id, 'storageAccount')]",
+      "metadata": {
+        "description": "Name of the storage account"
+      }
+    },
+    "privateDnsZoneName": {
+      "type": "string",
+      "defaultValue": "[format('privatelink.blob.{0}', environment().suffixes.storage)]",
+      "metadata": {
+        "description": "Name of the private DNS zone"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "PrivateDNSZoneArecord",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "PrivateDNSZone_Name": {
+            "value": "[parameters('privateDnsZoneName')]"
+          },
+          "ARecord_name": {
+            "value": "[parameters('storageAccountName')]"
+          },
+          "ipv4Address": {
+            "value": "256.256.256.256"
+          },
+          "ttlInSeconds": {
+            "value": 3600
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "4895782313933237292"
+            }
+          },
+          "parameters": {
+            "PrivateDNSZone_Name": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Private DNS Zone that the record will be created in."
+              }
+            },
+            "ARecord_name": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the A record."
+              }
+            },
+            "ipv4Address": {
+              "type": "string",
+              "metadata": {
+                "description": "IPv4 Address of the A record."
+              }
+            },
+            "ttlInSeconds": {
+              "type": "int",
+              "defaultValue": 3600,
+              "metadata": {
+                "description": "Time to Live for the A record in seconds.  Default is 3600 (1 hour)."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/privateDnsZones/A",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}/{1}', parameters('PrivateDNSZone_Name'), parameters('ARecord_name'))]",
+              "properties": {
+                "aRecords": [
+                  {
+                    "ipv4Address": "[parameters('ipv4Address')]"
+                  }
+                ],
+                "ttl": "[parameters('ttlInSeconds')]"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

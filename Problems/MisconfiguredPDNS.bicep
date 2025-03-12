@@ -15,7 +15,7 @@ module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
 }
 
 resource virtualNetworkLink_File 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = [ for virtualNetwork in ['HubVNET','VNET1']: {
-  name: '${storageAccountName}_to_${virtualNetwork}'
+  name: '${privateDnsZoneName}/${storageAccountName}_to_${virtualNetwork}'
   location: 'global'
   properties: {
     registrationEnabled: false

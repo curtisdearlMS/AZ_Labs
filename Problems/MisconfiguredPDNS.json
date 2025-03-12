@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "17361180148170736267"
+      "templateHash": "13221219419085670427"
     }
   },
   "variables": {
@@ -20,7 +20,7 @@
       },
       "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
       "apiVersion": "2018-09-01",
-      "name": "[format('{0}_to_{1}', variables('storageAccountName'), createArray('HubVNET', 'VNET1')[copyIndex()])]",
+      "name": "[format('{0}/{1}_to_{2}', variables('privateDnsZoneName'), variables('storageAccountName'), createArray('HubVNET', 'VNET1')[copyIndex()])]",
       "location": "global",
       "properties": {
         "registrationEnabled": false,

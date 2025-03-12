@@ -64,8 +64,6 @@ module vnet1LoadBalancer './VNET1/VNET1-ExternalStandardLB.bicep' = {
   ]
 }
 
-//deploy vms here
-
 // Deploy VMs into VNET1
 param adminUsername string = 'bob'
 
@@ -168,6 +166,7 @@ resource linuxVMsvnet1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i i
   }
 }]
 
+// Deploy VMs into VNET2
 @description('Network interfaces for VMs')
 resource nicsvnet2 'Microsoft.Network/networkInterfaces@2022-09-01' = [for i in range(0, vmCount): {
   name: 'VNET2-vm${i + 1}NIC'

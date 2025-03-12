@@ -1,5 +1,5 @@
-param vnet1NsgName string = 'VNET1-nsgVMSubnet'
-param vnet2NsgName string = 'VNET2-nsgVMSubnet'
+var vnet1NsgName = 'VNET1-nsgVMSubnet'
+var vnet2NsgName = 'VNET2-nsgVMSubnet'
 
 resource vnet1Nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' existing = {
   name: vnet1NsgName
@@ -34,7 +34,7 @@ resource vnet1NsgRule2 'Microsoft.Network/networkSecurityGroups/securityRules@20
     protocol: 'Tcp'
     sourcePortRange: '*'
     destinationPortRange: '22'
-    sourceAddressPrefix: 'CorpnetPublic'
+    sourceAddressPrefix: 'CorpNetPublic'
     destinationAddressPrefix: '*'
   }
 }

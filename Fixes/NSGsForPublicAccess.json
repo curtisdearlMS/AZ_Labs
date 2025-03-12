@@ -5,24 +5,18 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "6021625372683200720"
+      "templateHash": "8352888686052525119"
     }
   },
-  "parameters": {
-    "vnet1NsgName": {
-      "type": "string",
-      "defaultValue": "VNET1-nsgVMSubnet"
-    },
-    "vnet2NsgName": {
-      "type": "string",
-      "defaultValue": "VNET2-nsgVMSubnet"
-    }
+  "variables": {
+    "vnet1NsgName": "VNET1-nsgVMSubnet",
+    "vnet2NsgName": "VNET2-nsgVMSubnet"
   },
   "resources": [
     {
       "type": "Microsoft.Network/networkSecurityGroups/securityRules",
       "apiVersion": "2021-02-01",
-      "name": "[format('{0}/{1}', parameters('vnet1NsgName'), 'CORPNET-SSH-RDP-1')]",
+      "name": "[format('{0}/{1}', variables('vnet1NsgName'), 'CORPNET-SSH-RDP-1')]",
       "properties": {
         "priority": 150,
         "direction": "Inbound",
@@ -37,7 +31,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups/securityRules",
       "apiVersion": "2021-02-01",
-      "name": "[format('{0}/{1}', parameters('vnet1NsgName'), 'CORPNET-SSH-RDP-2')]",
+      "name": "[format('{0}/{1}', variables('vnet1NsgName'), 'CORPNET-SSH-RDP-2')]",
       "properties": {
         "priority": 160,
         "direction": "Inbound",
@@ -45,14 +39,14 @@
         "protocol": "Tcp",
         "sourcePortRange": "*",
         "destinationPortRange": "22",
-        "sourceAddressPrefix": "CorpnetPublic",
+        "sourceAddressPrefix": "CorpNetPublic",
         "destinationAddressPrefix": "*"
       }
     },
     {
       "type": "Microsoft.Network/networkSecurityGroups/securityRules",
       "apiVersion": "2021-02-01",
-      "name": "[format('{0}/{1}', parameters('vnet2NsgName'), 'CORPNET-SSH-RDP-1')]",
+      "name": "[format('{0}/{1}', variables('vnet2NsgName'), 'CORPNET-SSH-RDP-1')]",
       "properties": {
         "priority": 150,
         "direction": "Inbound",
@@ -67,7 +61,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups/securityRules",
       "apiVersion": "2021-02-01",
-      "name": "[format('{0}/{1}', parameters('vnet2NsgName'), 'CORPNET-SSH-RDP-2')]",
+      "name": "[format('{0}/{1}', variables('vnet2NsgName'), 'CORPNET-SSH-RDP-2')]",
       "properties": {
         "priority": 160,
         "direction": "Inbound",

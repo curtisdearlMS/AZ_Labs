@@ -1,4 +1,4 @@
-param vnetName string = 'HubVNET'
+var vnetName = 'HubVNET'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   name: vnetName

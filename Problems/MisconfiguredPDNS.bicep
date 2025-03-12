@@ -18,8 +18,8 @@ module PrivateEndpointDNSzone '../Modules/PrivateDNSZone.bicep' = {
   name: 'PrivateEndpointDNSzone'
   params: {
     virtualNetworkIDs : [
-      resourceId('vnetResourceGroupName', 'Microsoft.Network/virtualNetworks', 'hubVNET')
-      resourceId('vnetResourceGroupName', 'Microsoft.Network/virtualNetworks', 'vnet1')
+      resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'hubVNET')
+      resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'vnet1')
     ]
     privateDNSZone_Name: privateDnsZoneName
   }

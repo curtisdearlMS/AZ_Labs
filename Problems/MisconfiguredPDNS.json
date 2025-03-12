@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "16114212986622117334"
+      "templateHash": "15869351706155266092"
     }
   },
   "variables": {
@@ -103,8 +103,8 @@
         "parameters": {
           "virtualNetworkIDs": {
             "value": [
-              "[resourceId('vnetResourceGroupName', 'Microsoft.Network/virtualNetworks', 'hubVNET')]",
-              "[resourceId('vnetResourceGroupName', 'Microsoft.Network/virtualNetworks', 'vnet1')]"
+              "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'hubVNET')]",
+              "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'vnet1')]"
             ]
           },
           "privateDNSZone_Name": {

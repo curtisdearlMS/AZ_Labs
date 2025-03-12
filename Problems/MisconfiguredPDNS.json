@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "18013517531038197720"
+      "templateHash": "16114212986622117334"
     }
   },
   "variables": {
@@ -13,18 +13,6 @@
     "privateDnsZoneName": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
   },
   "resources": [
-    {
-      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-      "apiVersion": "2018-09-01",
-      "name": "[variables('privateDnsZoneName')]",
-      "location": "global",
-      "properties": {
-        "registrationEnabled": false,
-        "virtualNetwork": {
-          "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'hubVNET')]"
-        }
-      }
-    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -100,6 +88,94 @@
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "PrivateEndpointDNSzone",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualNetworkIDs": {
+            "value": [
+              "[resourceId('vnetResourceGroupName', 'Microsoft.Network/virtualNetworks', 'hubVNET')]",
+              "[resourceId('vnetResourceGroupName', 'Microsoft.Network/virtualNetworks', 'vnet1')]"
+            ]
+          },
+          "privateDNSZone_Name": {
+            "value": "[variables('privateDnsZoneName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "3108138053958299760"
+            }
+          },
+          "parameters": {
+            "privateDNSZone_Name": {
+              "type": "string"
+            },
+            "registrationEnabled": {
+              "type": "bool",
+              "defaultValue": false
+            },
+            "tagValues": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "virtualNetworkIDs": {
+              "type": "array"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2020-06-01",
+              "name": "[parameters('privateDNSZone_Name')]",
+              "location": "global",
+              "tags": "[parameters('tagValues')]"
+            },
+            {
+              "copy": {
+                "name": "virtualNetworkLink",
+                "count": "[length(parameters('virtualNetworkIDs'))]"
+              },
+              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}/{1}', parameters('privateDNSZone_Name'), last(split(parameters('virtualNetworkIDs')[copyIndex()], '/')))]",
+              "location": "global",
+              "properties": {
+                "registrationEnabled": "[parameters('registrationEnabled')]",
+                "virtualNetwork": {
+                  "id": "[parameters('virtualNetworkIDs')[copyIndex()]]"
+                }
+              },
+              "tags": "[parameters('tagValues')]",
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDNSZone_Name'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "PrivateDNSZone_Name": {
+              "type": "string",
+              "value": "[parameters('privateDNSZone_Name')]"
+            },
+            "PrivateDNSZone_ID": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDNSZone_Name'))]"
+            }
+          }
         }
       }
     }

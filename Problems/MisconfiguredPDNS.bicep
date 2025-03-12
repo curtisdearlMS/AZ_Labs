@@ -29,11 +29,6 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
 resource virtualNetworkUNLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = [ for virtualNetwork in ['VNET2']: {
   name: '${privateDnsZoneName}/${storageAccountName}_to_${virtualNetwork}'
   location: 'global'
-  properties: {
-    registrationEnabled: false
-    virtualNetwork: {
-      id: ''
-    }
-  }
+  properties: {}
 }
 ]

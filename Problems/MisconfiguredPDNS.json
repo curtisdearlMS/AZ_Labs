@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "400587681930065447"
+      "templateHash": "640810821193788233"
     }
   },
   "variables": {
@@ -38,12 +38,7 @@
       "apiVersion": "2018-09-01",
       "name": "[format('{0}/{1}_to_{2}', variables('privateDnsZoneName'), variables('storageAccountName'), createArray('VNET2')[copyIndex()])]",
       "location": "global",
-      "properties": {
-        "registrationEnabled": false,
-        "virtualNetwork": {
-          "id": ""
-        }
-      }
+      "properties": {}
     },
     {
       "type": "Microsoft.Resources/deployments",

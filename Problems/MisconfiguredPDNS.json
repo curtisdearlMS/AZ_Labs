@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "13221219419085670427"
+      "templateHash": "1747772334888141923"
     }
   },
   "variables": {
@@ -15,7 +15,7 @@
   "resources": [
     {
       "copy": {
-        "name": "virtualNetworkLink_File",
+        "name": "virtualNetworkLink",
         "count": "[length(createArray('HubVNET', 'VNET1'))]"
       },
       "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
@@ -26,6 +26,22 @@
         "registrationEnabled": false,
         "virtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', createArray('HubVNET', 'VNET1')[copyIndex()])]"
+        }
+      }
+    },
+    {
+      "copy": {
+        "name": "virtualNetworkUNLink",
+        "count": "[length(createArray('VNET2'))]"
+      },
+      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+      "apiVersion": "2018-09-01",
+      "name": "[format('{0}/{1}_to_{2}', variables('privateDnsZoneName'), variables('storageAccountName'), createArray('VNET2')[copyIndex()])]",
+      "location": "global",
+      "properties": {
+        "registrationEnabled": false,
+        "virtualNetwork": {
+          "id": null
         }
       }
     },

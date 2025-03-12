@@ -5,20 +5,128 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "16800112611901794096"
+      "templateHash": "8133154250443963077"
     }
   },
   "parameters": {
-    "vmSize": {
+    "adminUsername": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v6"
+      "defaultValue": "bob"
     },
     "adminPassword": {
       "type": "securestring",
       "defaultValue": "[newGuid()]"
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v6",
+      "metadata": {
+        "description": "Size of the VM"
+      }
     }
   },
+  "variables": {
+    "vnetName": "VNET",
+    "vmSubnetName": "VMSubnet",
+    "accelNet": false,
+    "vmCount": 2
+  },
   "resources": [
+    {
+      "copy": {
+        "name": "nics",
+        "count": "[length(range(0, variables('vmCount')))]"
+      },
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[format('10.1.2.{0}', add(range(0, variables('vmCount'))[copyIndex()], 4))]",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
+              },
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableAcceleratedNetworking": "[variables('accelNet')]",
+        "enableIPForwarding": false,
+        "disableTcpStateTracking": false,
+        "nicType": "Standard"
+      }
+    },
+    {
+      "copy": {
+        "name": "linuxVMs",
+        "count": "[length(range(0, variables('vmCount')))]"
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-03-01",
+      "name": "[format('{0}-vm{1}', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "canonical",
+            "offer": "0001-com-ubuntu-server-focal",
+            "sku": "20_04-lts-gen2",
+            "version": "latest"
+          },
+          "osDisk": {
+            "osType": "Linux",
+            "name": "[format('{0}-vm{1}_OsDisk_1', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+            "createOption": "FromImage",
+            "caching": "ReadWrite",
+            "deleteOption": "Delete"
+          },
+          "dataDisks": []
+        },
+        "osProfile": {
+          "computerName": "[format('{0}-vm{1}', variables('vnetName'), add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": false,
+            "provisionVMAgent": true,
+            "patchSettings": {
+              "patchMode": "ImageDefault",
+              "assessmentMode": "ImageDefault"
+            }
+          },
+          "secrets": [],
+          "allowExtensionOperations": true
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[range(0, variables('vmCount'))[copyIndex()]], 1)))]",
+              "properties": {
+                "deleteOption": "Delete"
+              }
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-vm{1}NIC', variables('vnetName'), add(range(0, variables('vmCount'))[range(0, variables('vmCount'))[copyIndex()]], 1)))]"
+      ]
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -28,11 +136,7 @@
           "scope": "inner"
         },
         "mode": "Incremental",
-        "parameters": {
-          "vnetName": {
-            "value": "HubVNET"
-          }
-        },
+        "parameters": {},
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
@@ -40,20 +144,17 @@
             "_generator": {
               "name": "bicep",
               "version": "0.33.93.31351",
-              "templateHash": "14950056880745834234"
+              "templateHash": "6293315026528378864"
             }
           },
-          "parameters": {
-            "vnetName": {
-              "type": "string",
-              "defaultValue": "HubVNET"
-            }
+          "variables": {
+            "vnetName": "HubVNET"
           },
           "resources": [
             {
               "type": "Microsoft.Network/virtualNetworks",
               "apiVersion": "2023-09-01",
-              "name": "[parameters('vnetName')]",
+              "name": "[variables('vnetName')]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "addressSpace": {
@@ -67,7 +168,7 @@
                     "properties": {
                       "addressPrefix": "10.28.15.0/24",
                       "routeTable": {
-                        "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtAzureFirewallSubnet', parameters('vnetName')))]"
+                        "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtAzureFirewallSubnet', variables('vnetName')))]"
                       }
                     }
                   },
@@ -76,7 +177,7 @@
                     "properties": {
                       "addressPrefix": "10.28.1.0/24",
                       "routeTable": {
-                        "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtGatewaySubnet', parameters('vnetName')))]"
+                        "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtGatewaySubnet', variables('vnetName')))]"
                       }
                     }
                   },
@@ -85,10 +186,10 @@
                     "properties": {
                       "addressPrefix": "10.28.2.0/24",
                       "networkSecurityGroup": {
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgPrivateEndpointSubnet', parameters('vnetName')))]"
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgPrivateEndpointSubnet', variables('vnetName')))]"
                       },
                       "routeTable": {
-                        "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtPrivateEndpointSubnet', parameters('vnetName')))]"
+                        "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtPrivateEndpointSubnet', variables('vnetName')))]"
                       }
                     }
                   },
@@ -97,28 +198,28 @@
                     "properties": {
                       "addressPrefix": "10.28.3.0/24",
                       "networkSecurityGroup": {
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgVirtualMachineSubnet', parameters('vnetName')))]"
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgVirtualMachineSubnet', variables('vnetName')))]"
                       },
                       "routeTable": {
-                        "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtVirtualMachineSubnet', parameters('vnetName')))]"
+                        "id": "[resourceId('Microsoft.Network/routeTables', format('{0}-rtVirtualMachineSubnet', variables('vnetName')))]"
                       }
                     }
                   }
                 ]
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgPrivateEndpointSubnet', parameters('vnetName')))]",
-                "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgVirtualMachineSubnet', parameters('vnetName')))]",
-                "[resourceId('Microsoft.Network/routeTables', format('{0}-rtAzureFirewallSubnet', parameters('vnetName')))]",
-                "[resourceId('Microsoft.Network/routeTables', format('{0}-rtGatewaySubnet', parameters('vnetName')))]",
-                "[resourceId('Microsoft.Network/routeTables', format('{0}-rtPrivateEndpointSubnet', parameters('vnetName')))]",
-                "[resourceId('Microsoft.Network/routeTables', format('{0}-rtVirtualMachineSubnet', parameters('vnetName')))]"
+                "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgPrivateEndpointSubnet', variables('vnetName')))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-nsgVirtualMachineSubnet', variables('vnetName')))]",
+                "[resourceId('Microsoft.Network/routeTables', format('{0}-rtAzureFirewallSubnet', variables('vnetName')))]",
+                "[resourceId('Microsoft.Network/routeTables', format('{0}-rtGatewaySubnet', variables('vnetName')))]",
+                "[resourceId('Microsoft.Network/routeTables', format('{0}-rtPrivateEndpointSubnet', variables('vnetName')))]",
+                "[resourceId('Microsoft.Network/routeTables', format('{0}-rtVirtualMachineSubnet', variables('vnetName')))]"
               ]
             },
             {
               "type": "Microsoft.Network/networkSecurityGroups",
               "apiVersion": "2023-09-01",
-              "name": "[format('{0}-nsgAzureFirewallSubnet', parameters('vnetName'))]",
+              "name": "[format('{0}-nsgAzureFirewallSubnet', variables('vnetName'))]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "securityRules": []
@@ -127,7 +228,7 @@
             {
               "type": "Microsoft.Network/routeTables",
               "apiVersion": "2023-09-01",
-              "name": "[format('{0}-rtAzureFirewallSubnet', parameters('vnetName'))]",
+              "name": "[format('{0}-rtAzureFirewallSubnet', variables('vnetName'))]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "routes": [
@@ -144,7 +245,7 @@
             {
               "type": "Microsoft.Network/networkSecurityGroups",
               "apiVersion": "2023-09-01",
-              "name": "[format('{0}-nsgGatewaySubnet', parameters('vnetName'))]",
+              "name": "[format('{0}-nsgGatewaySubnet', variables('vnetName'))]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "securityRules": []
@@ -153,7 +254,7 @@
             {
               "type": "Microsoft.Network/routeTables",
               "apiVersion": "2023-09-01",
-              "name": "[format('{0}-rtGatewaySubnet', parameters('vnetName'))]",
+              "name": "[format('{0}-rtGatewaySubnet', variables('vnetName'))]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "routes": []
@@ -162,7 +263,7 @@
             {
               "type": "Microsoft.Network/networkSecurityGroups",
               "apiVersion": "2023-09-01",
-              "name": "[format('{0}-nsgPrivateEndpointSubnet', parameters('vnetName'))]",
+              "name": "[format('{0}-nsgPrivateEndpointSubnet', variables('vnetName'))]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "securityRules": []
@@ -171,7 +272,7 @@
             {
               "type": "Microsoft.Network/routeTables",
               "apiVersion": "2023-09-01",
-              "name": "[format('{0}-rtPrivateEndpointSubnet', parameters('vnetName'))]",
+              "name": "[format('{0}-rtPrivateEndpointSubnet', variables('vnetName'))]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "routes": [
@@ -188,7 +289,7 @@
             {
               "type": "Microsoft.Network/networkSecurityGroups",
               "apiVersion": "2023-09-01",
-              "name": "[format('{0}-nsgVirtualMachineSubnet', parameters('vnetName'))]",
+              "name": "[format('{0}-nsgVirtualMachineSubnet', variables('vnetName'))]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "securityRules": []
@@ -197,7 +298,7 @@
             {
               "type": "Microsoft.Network/routeTables",
               "apiVersion": "2023-09-01",
-              "name": "[format('{0}-rtVirtualMachineSubnet', parameters('vnetName'))]",
+              "name": "[format('{0}-rtVirtualMachineSubnet', variables('vnetName'))]",
               "location": "[resourceGroup().location]",
               "properties": {
                 "routes": [
@@ -216,7 +317,7 @@
           "outputs": {
             "vnetId": {
               "type": "string",
-              "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+              "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
             }
           }
         }
@@ -640,853 +741,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'Deploy_HubVNET')]",
         "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET2')]"
-      ]
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "Deploy_2_VMs_into_VNET1",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "vmSize": {
-            "value": "[parameters('vmSize')]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.33.93.31351",
-              "templateHash": "730937052079940873"
-            }
-          },
-          "parameters": {
-            "adminPassword": {
-              "type": "securestring"
-            },
-            "vmSize": {
-              "type": "string"
-            }
-          },
-          "variables": {
-            "vnetName": "VNET1",
-            "vmSubnetName": "VMSubnet",
-            "adminUsername": "bob"
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
-              "name": "vm1Deployment",
-              "properties": {
-                "expressionEvaluationOptions": {
-                  "scope": "inner"
-                },
-                "mode": "Incremental",
-                "parameters": {
-                  "location": {
-                    "value": "[resourceGroup().location]"
-                  },
-                  "vm_Name": {
-                    "value": "[format('{0}-vm1', variables('vnetName'))]"
-                  },
-                  "vmSize": {
-                    "value": "[parameters('vmSize')]"
-                  },
-                  "vm_AdminUserName": {
-                    "value": "[variables('adminUsername')]"
-                  },
-                  "vm_AdminPassword": {
-                    "value": "[parameters('adminPassword')]"
-                  },
-                  "nic_Name": {
-                    "value": "[format('{0}-vm1NIC', variables('vnetName'))]"
-                  },
-                  "accelNet": {
-                    "value": false
-                  },
-                  "subnetID": {
-                    "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
-                  },
-                  "StaticIP": {
-                    "value": "10.1.2.4"
-                  }
-                },
-                "template": {
-                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-                  "contentVersion": "1.0.0.0",
-                  "metadata": {
-                    "_generator": {
-                      "name": "bicep",
-                      "version": "0.33.93.31351",
-                      "templateHash": "12432071944618526973"
-                    }
-                  },
-                  "parameters": {
-                    "location": {
-                      "type": "string"
-                    },
-                    "vm_Name": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Name of the Virtual Machine"
-                      }
-                    },
-                    "vmSize": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Size of the VM"
-                      }
-                    },
-                    "vm_AdminUserName": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Admin Username for the Virtual Machine"
-                      }
-                    },
-                    "vm_AdminPassword": {
-                      "type": "securestring",
-                      "metadata": {
-                        "description": "Password for the Virtual Machine Admin User"
-                      }
-                    },
-                    "nic_Name": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Name of the Virtual Machines Network Interface"
-                      }
-                    },
-                    "accelNet": {
-                      "type": "bool",
-                      "metadata": {
-                        "description": "True enables Accelerated Networking and False disabled it.  Not all VM sizes support Accel Net"
-                      }
-                    },
-                    "subnetID": {
-                      "type": "string"
-                    },
-                    "StaticIP": {
-                      "type": "string"
-                    }
-                  },
-                  "resources": [
-                    {
-                      "type": "Microsoft.Network/networkInterfaces",
-                      "apiVersion": "2022-09-01",
-                      "name": "[parameters('nic_Name')]",
-                      "location": "[parameters('location')]",
-                      "properties": {
-                        "ipConfigurations": [
-                          {
-                            "name": "ipconfig1",
-                            "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
-                            "properties": {
-                              "privateIPAllocationMethod": "Static",
-                              "privateIPAddress": "[parameters('StaticIP')]",
-                              "subnet": {
-                                "id": "[parameters('subnetID')]"
-                              },
-                              "primary": true,
-                              "privateIPAddressVersion": "IPv4"
-                            }
-                          }
-                        ],
-                        "enableAcceleratedNetworking": "[parameters('accelNet')]",
-                        "enableIPForwarding": false,
-                        "disableTcpStateTracking": false,
-                        "nicType": "Standard"
-                      }
-                    },
-                    {
-                      "type": "Microsoft.Compute/virtualMachines",
-                      "apiVersion": "2023-03-01",
-                      "name": "[parameters('vm_Name')]",
-                      "location": "[parameters('location')]",
-                      "properties": {
-                        "hardwareProfile": {
-                          "vmSize": "[parameters('vmSize')]"
-                        },
-                        "storageProfile": {
-                          "imageReference": {
-                            "publisher": "canonical",
-                            "offer": "0001-com-ubuntu-server-focal",
-                            "sku": "20_04-lts-gen2",
-                            "version": "latest"
-                          },
-                          "osDisk": {
-                            "osType": "Linux",
-                            "name": "[format('{0}_OsDisk_1', parameters('vm_Name'))]",
-                            "createOption": "FromImage",
-                            "caching": "ReadWrite",
-                            "deleteOption": "Delete"
-                          },
-                          "dataDisks": []
-                        },
-                        "osProfile": {
-                          "computerName": "[parameters('vm_Name')]",
-                          "adminUsername": "[parameters('vm_AdminUserName')]",
-                          "adminPassword": "[parameters('vm_AdminPassword')]",
-                          "linuxConfiguration": {
-                            "disablePasswordAuthentication": false,
-                            "provisionVMAgent": true,
-                            "patchSettings": {
-                              "patchMode": "ImageDefault",
-                              "assessmentMode": "ImageDefault"
-                            }
-                          },
-                          "secrets": [],
-                          "allowExtensionOperations": true
-                        },
-                        "networkProfile": {
-                          "networkInterfaces": [
-                            {
-                              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]",
-                              "properties": {
-                                "deleteOption": "Delete"
-                              }
-                            }
-                          ]
-                        },
-                        "diagnosticsProfile": {
-                          "bootDiagnostics": {
-                            "enabled": true
-                          }
-                        }
-                      },
-                      "dependsOn": [
-                        "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]"
-                      ]
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
-              "name": "vm2Deployment",
-              "properties": {
-                "expressionEvaluationOptions": {
-                  "scope": "inner"
-                },
-                "mode": "Incremental",
-                "parameters": {
-                  "location": {
-                    "value": "[resourceGroup().location]"
-                  },
-                  "vm_Name": {
-                    "value": "[format('{0}-vm2', variables('vnetName'))]"
-                  },
-                  "vmSize": {
-                    "value": "[parameters('vmSize')]"
-                  },
-                  "vm_AdminUserName": {
-                    "value": "[variables('adminUsername')]"
-                  },
-                  "vm_AdminPassword": {
-                    "value": "[parameters('adminPassword')]"
-                  },
-                  "nic_Name": {
-                    "value": "[format('{0}-vm2NIC', variables('vnetName'))]"
-                  },
-                  "accelNet": {
-                    "value": false
-                  },
-                  "subnetID": {
-                    "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
-                  },
-                  "StaticIP": {
-                    "value": "10.1.2.5"
-                  }
-                },
-                "template": {
-                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-                  "contentVersion": "1.0.0.0",
-                  "metadata": {
-                    "_generator": {
-                      "name": "bicep",
-                      "version": "0.33.93.31351",
-                      "templateHash": "12432071944618526973"
-                    }
-                  },
-                  "parameters": {
-                    "location": {
-                      "type": "string"
-                    },
-                    "vm_Name": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Name of the Virtual Machine"
-                      }
-                    },
-                    "vmSize": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Size of the VM"
-                      }
-                    },
-                    "vm_AdminUserName": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Admin Username for the Virtual Machine"
-                      }
-                    },
-                    "vm_AdminPassword": {
-                      "type": "securestring",
-                      "metadata": {
-                        "description": "Password for the Virtual Machine Admin User"
-                      }
-                    },
-                    "nic_Name": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Name of the Virtual Machines Network Interface"
-                      }
-                    },
-                    "accelNet": {
-                      "type": "bool",
-                      "metadata": {
-                        "description": "True enables Accelerated Networking and False disabled it.  Not all VM sizes support Accel Net"
-                      }
-                    },
-                    "subnetID": {
-                      "type": "string"
-                    },
-                    "StaticIP": {
-                      "type": "string"
-                    }
-                  },
-                  "resources": [
-                    {
-                      "type": "Microsoft.Network/networkInterfaces",
-                      "apiVersion": "2022-09-01",
-                      "name": "[parameters('nic_Name')]",
-                      "location": "[parameters('location')]",
-                      "properties": {
-                        "ipConfigurations": [
-                          {
-                            "name": "ipconfig1",
-                            "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
-                            "properties": {
-                              "privateIPAllocationMethod": "Static",
-                              "privateIPAddress": "[parameters('StaticIP')]",
-                              "subnet": {
-                                "id": "[parameters('subnetID')]"
-                              },
-                              "primary": true,
-                              "privateIPAddressVersion": "IPv4"
-                            }
-                          }
-                        ],
-                        "enableAcceleratedNetworking": "[parameters('accelNet')]",
-                        "enableIPForwarding": false,
-                        "disableTcpStateTracking": false,
-                        "nicType": "Standard"
-                      }
-                    },
-                    {
-                      "type": "Microsoft.Compute/virtualMachines",
-                      "apiVersion": "2023-03-01",
-                      "name": "[parameters('vm_Name')]",
-                      "location": "[parameters('location')]",
-                      "properties": {
-                        "hardwareProfile": {
-                          "vmSize": "[parameters('vmSize')]"
-                        },
-                        "storageProfile": {
-                          "imageReference": {
-                            "publisher": "canonical",
-                            "offer": "0001-com-ubuntu-server-focal",
-                            "sku": "20_04-lts-gen2",
-                            "version": "latest"
-                          },
-                          "osDisk": {
-                            "osType": "Linux",
-                            "name": "[format('{0}_OsDisk_1', parameters('vm_Name'))]",
-                            "createOption": "FromImage",
-                            "caching": "ReadWrite",
-                            "deleteOption": "Delete"
-                          },
-                          "dataDisks": []
-                        },
-                        "osProfile": {
-                          "computerName": "[parameters('vm_Name')]",
-                          "adminUsername": "[parameters('vm_AdminUserName')]",
-                          "adminPassword": "[parameters('vm_AdminPassword')]",
-                          "linuxConfiguration": {
-                            "disablePasswordAuthentication": false,
-                            "provisionVMAgent": true,
-                            "patchSettings": {
-                              "patchMode": "ImageDefault",
-                              "assessmentMode": "ImageDefault"
-                            }
-                          },
-                          "secrets": [],
-                          "allowExtensionOperations": true
-                        },
-                        "networkProfile": {
-                          "networkInterfaces": [
-                            {
-                              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]",
-                              "properties": {
-                                "deleteOption": "Delete"
-                              }
-                            }
-                          ]
-                        },
-                        "diagnosticsProfile": {
-                          "bootDiagnostics": {
-                            "enabled": true
-                          }
-                        }
-                      },
-                      "dependsOn": [
-                        "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]"
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Peer_VNET1_and_HubVNET')]"
-      ]
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "Deploy_2_VMs_into_VNET2",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "vmSize": {
-            "value": "[parameters('vmSize')]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.33.93.31351",
-              "templateHash": "16899611978481027467"
-            }
-          },
-          "parameters": {
-            "adminPassword": {
-              "type": "securestring"
-            },
-            "vmSize": {
-              "type": "string"
-            }
-          },
-          "variables": {
-            "vnetName": "VNET2",
-            "vmSubnetName": "VMSubnet",
-            "adminUsername": "bob"
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
-              "name": "vm1Deployment",
-              "properties": {
-                "expressionEvaluationOptions": {
-                  "scope": "inner"
-                },
-                "mode": "Incremental",
-                "parameters": {
-                  "location": {
-                    "value": "[resourceGroup().location]"
-                  },
-                  "vm_Name": {
-                    "value": "[format('{0}-vm1', variables('vnetName'))]"
-                  },
-                  "vmSize": {
-                    "value": "[parameters('vmSize')]"
-                  },
-                  "vm_AdminUserName": {
-                    "value": "[variables('adminUsername')]"
-                  },
-                  "vm_AdminPassword": {
-                    "value": "[parameters('adminPassword')]"
-                  },
-                  "nic_Name": {
-                    "value": "[format('{0}-vm1NIC', variables('vnetName'))]"
-                  },
-                  "accelNet": {
-                    "value": false
-                  },
-                  "subnetID": {
-                    "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
-                  },
-                  "StaticIP": {
-                    "value": "10.2.2.4"
-                  }
-                },
-                "template": {
-                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-                  "contentVersion": "1.0.0.0",
-                  "metadata": {
-                    "_generator": {
-                      "name": "bicep",
-                      "version": "0.33.93.31351",
-                      "templateHash": "12432071944618526973"
-                    }
-                  },
-                  "parameters": {
-                    "location": {
-                      "type": "string"
-                    },
-                    "vm_Name": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Name of the Virtual Machine"
-                      }
-                    },
-                    "vmSize": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Size of the VM"
-                      }
-                    },
-                    "vm_AdminUserName": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Admin Username for the Virtual Machine"
-                      }
-                    },
-                    "vm_AdminPassword": {
-                      "type": "securestring",
-                      "metadata": {
-                        "description": "Password for the Virtual Machine Admin User"
-                      }
-                    },
-                    "nic_Name": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Name of the Virtual Machines Network Interface"
-                      }
-                    },
-                    "accelNet": {
-                      "type": "bool",
-                      "metadata": {
-                        "description": "True enables Accelerated Networking and False disabled it.  Not all VM sizes support Accel Net"
-                      }
-                    },
-                    "subnetID": {
-                      "type": "string"
-                    },
-                    "StaticIP": {
-                      "type": "string"
-                    }
-                  },
-                  "resources": [
-                    {
-                      "type": "Microsoft.Network/networkInterfaces",
-                      "apiVersion": "2022-09-01",
-                      "name": "[parameters('nic_Name')]",
-                      "location": "[parameters('location')]",
-                      "properties": {
-                        "ipConfigurations": [
-                          {
-                            "name": "ipconfig1",
-                            "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
-                            "properties": {
-                              "privateIPAllocationMethod": "Static",
-                              "privateIPAddress": "[parameters('StaticIP')]",
-                              "subnet": {
-                                "id": "[parameters('subnetID')]"
-                              },
-                              "primary": true,
-                              "privateIPAddressVersion": "IPv4"
-                            }
-                          }
-                        ],
-                        "enableAcceleratedNetworking": "[parameters('accelNet')]",
-                        "enableIPForwarding": false,
-                        "disableTcpStateTracking": false,
-                        "nicType": "Standard"
-                      }
-                    },
-                    {
-                      "type": "Microsoft.Compute/virtualMachines",
-                      "apiVersion": "2023-03-01",
-                      "name": "[parameters('vm_Name')]",
-                      "location": "[parameters('location')]",
-                      "properties": {
-                        "hardwareProfile": {
-                          "vmSize": "[parameters('vmSize')]"
-                        },
-                        "storageProfile": {
-                          "imageReference": {
-                            "publisher": "canonical",
-                            "offer": "0001-com-ubuntu-server-focal",
-                            "sku": "20_04-lts-gen2",
-                            "version": "latest"
-                          },
-                          "osDisk": {
-                            "osType": "Linux",
-                            "name": "[format('{0}_OsDisk_1', parameters('vm_Name'))]",
-                            "createOption": "FromImage",
-                            "caching": "ReadWrite",
-                            "deleteOption": "Delete"
-                          },
-                          "dataDisks": []
-                        },
-                        "osProfile": {
-                          "computerName": "[parameters('vm_Name')]",
-                          "adminUsername": "[parameters('vm_AdminUserName')]",
-                          "adminPassword": "[parameters('vm_AdminPassword')]",
-                          "linuxConfiguration": {
-                            "disablePasswordAuthentication": false,
-                            "provisionVMAgent": true,
-                            "patchSettings": {
-                              "patchMode": "ImageDefault",
-                              "assessmentMode": "ImageDefault"
-                            }
-                          },
-                          "secrets": [],
-                          "allowExtensionOperations": true
-                        },
-                        "networkProfile": {
-                          "networkInterfaces": [
-                            {
-                              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]",
-                              "properties": {
-                                "deleteOption": "Delete"
-                              }
-                            }
-                          ]
-                        },
-                        "diagnosticsProfile": {
-                          "bootDiagnostics": {
-                            "enabled": true
-                          }
-                        }
-                      },
-                      "dependsOn": [
-                        "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]"
-                      ]
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
-              "name": "vm2Deployment",
-              "properties": {
-                "expressionEvaluationOptions": {
-                  "scope": "inner"
-                },
-                "mode": "Incremental",
-                "parameters": {
-                  "location": {
-                    "value": "[resourceGroup().location]"
-                  },
-                  "vm_Name": {
-                    "value": "[format('{0}-vm2', variables('vnetName'))]"
-                  },
-                  "vmSize": {
-                    "value": "[parameters('vmSize')]"
-                  },
-                  "vm_AdminUserName": {
-                    "value": "[variables('adminUsername')]"
-                  },
-                  "vm_AdminPassword": {
-                    "value": "[parameters('adminPassword')]"
-                  },
-                  "nic_Name": {
-                    "value": "[format('{0}-vm2NIC', variables('vnetName'))]"
-                  },
-                  "accelNet": {
-                    "value": false
-                  },
-                  "subnetID": {
-                    "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vmSubnetName'))]"
-                  },
-                  "StaticIP": {
-                    "value": "10.2.2.5"
-                  }
-                },
-                "template": {
-                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-                  "contentVersion": "1.0.0.0",
-                  "metadata": {
-                    "_generator": {
-                      "name": "bicep",
-                      "version": "0.33.93.31351",
-                      "templateHash": "12432071944618526973"
-                    }
-                  },
-                  "parameters": {
-                    "location": {
-                      "type": "string"
-                    },
-                    "vm_Name": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Name of the Virtual Machine"
-                      }
-                    },
-                    "vmSize": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Size of the VM"
-                      }
-                    },
-                    "vm_AdminUserName": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Admin Username for the Virtual Machine"
-                      }
-                    },
-                    "vm_AdminPassword": {
-                      "type": "securestring",
-                      "metadata": {
-                        "description": "Password for the Virtual Machine Admin User"
-                      }
-                    },
-                    "nic_Name": {
-                      "type": "string",
-                      "metadata": {
-                        "description": "Name of the Virtual Machines Network Interface"
-                      }
-                    },
-                    "accelNet": {
-                      "type": "bool",
-                      "metadata": {
-                        "description": "True enables Accelerated Networking and False disabled it.  Not all VM sizes support Accel Net"
-                      }
-                    },
-                    "subnetID": {
-                      "type": "string"
-                    },
-                    "StaticIP": {
-                      "type": "string"
-                    }
-                  },
-                  "resources": [
-                    {
-                      "type": "Microsoft.Network/networkInterfaces",
-                      "apiVersion": "2022-09-01",
-                      "name": "[parameters('nic_Name')]",
-                      "location": "[parameters('location')]",
-                      "properties": {
-                        "ipConfigurations": [
-                          {
-                            "name": "ipconfig1",
-                            "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
-                            "properties": {
-                              "privateIPAllocationMethod": "Static",
-                              "privateIPAddress": "[parameters('StaticIP')]",
-                              "subnet": {
-                                "id": "[parameters('subnetID')]"
-                              },
-                              "primary": true,
-                              "privateIPAddressVersion": "IPv4"
-                            }
-                          }
-                        ],
-                        "enableAcceleratedNetworking": "[parameters('accelNet')]",
-                        "enableIPForwarding": false,
-                        "disableTcpStateTracking": false,
-                        "nicType": "Standard"
-                      }
-                    },
-                    {
-                      "type": "Microsoft.Compute/virtualMachines",
-                      "apiVersion": "2023-03-01",
-                      "name": "[parameters('vm_Name')]",
-                      "location": "[parameters('location')]",
-                      "properties": {
-                        "hardwareProfile": {
-                          "vmSize": "[parameters('vmSize')]"
-                        },
-                        "storageProfile": {
-                          "imageReference": {
-                            "publisher": "canonical",
-                            "offer": "0001-com-ubuntu-server-focal",
-                            "sku": "20_04-lts-gen2",
-                            "version": "latest"
-                          },
-                          "osDisk": {
-                            "osType": "Linux",
-                            "name": "[format('{0}_OsDisk_1', parameters('vm_Name'))]",
-                            "createOption": "FromImage",
-                            "caching": "ReadWrite",
-                            "deleteOption": "Delete"
-                          },
-                          "dataDisks": []
-                        },
-                        "osProfile": {
-                          "computerName": "[parameters('vm_Name')]",
-                          "adminUsername": "[parameters('vm_AdminUserName')]",
-                          "adminPassword": "[parameters('vm_AdminPassword')]",
-                          "linuxConfiguration": {
-                            "disablePasswordAuthentication": false,
-                            "provisionVMAgent": true,
-                            "patchSettings": {
-                              "patchMode": "ImageDefault",
-                              "assessmentMode": "ImageDefault"
-                            }
-                          },
-                          "secrets": [],
-                          "allowExtensionOperations": true
-                        },
-                        "networkProfile": {
-                          "networkInterfaces": [
-                            {
-                              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]",
-                              "properties": {
-                                "deleteOption": "Delete"
-                              }
-                            }
-                          ]
-                        },
-                        "diagnosticsProfile": {
-                          "bootDiagnostics": {
-                            "enabled": true
-                          }
-                        }
-                      },
-                      "dependsOn": [
-                        "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_Name'))]"
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy_2_VMs_into_VNET1')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET2')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Peer_VNET2_and_HubVNET')]"
       ]
     },
     {
@@ -2201,8 +1455,8 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]",
-        "[resourceId('Microsoft.Resources/deployments', 'Deploy_2_VMs_into_VNET1')]"
+        "linuxVMs",
+        "[resourceId('Microsoft.Resources/deployments', 'Deploy_VNET1')]"
       ]
     }
   ]

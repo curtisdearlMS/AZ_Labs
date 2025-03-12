@@ -6,7 +6,7 @@ param adminUsername string = 'bob'
 param adminPassword string = newGuid()
 
 @description('Size of the VM')
-param vmSize string = 'Standard_D2as_v4'
+param vmSize string = 'Standard_D2s_v6'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnetName

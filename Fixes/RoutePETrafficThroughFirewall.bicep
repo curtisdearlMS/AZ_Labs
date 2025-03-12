@@ -1,4 +1,4 @@
-param peSubnetName string = 'PrivateEndpointSubnet'
+var peSubnetName = 'PrivateEndpointSubnet'
 var peSubnetAddressPrefix = '10.28.2.0/24' // why is this hardcoded and not a referernce 
 var firewallIp = '10.28.15.4'
 

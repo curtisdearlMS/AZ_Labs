@@ -1,6 +1,6 @@
-param hubVnetName string = 'hubVNet'
-param vnet1Name string = 'vnet1'
-param vnet2Name string = 'vnet2'
+var hubVnetName = 'hubVNet'
+var vnet1Name = 'vnet1'
+var vnet2Name = 'vnet2'
 
 resource hubVnet 'Microsoft.Network/virtualNetworks@2020-11-01' existing = {
   name: hubVnetName

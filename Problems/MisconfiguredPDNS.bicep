@@ -14,13 +14,14 @@ module PrivateDNSZoneArecord '../Modules/PrivateDNSZoneArecord.bicep' = {
   }
 }
 
-module PrivateEndpointDNSzone '../Modules/PrivateDNSZone.bicep' = {
-  name: 'PrivateEndpointDNSzone'
-  params: {
-    virtualNetworkIDs : [
-      resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'hubVNET')
-      resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'vnet1')
-    ]
-    privateDNSZone_Name: privateDnsZoneName
+resource virtualNetworkLink_File 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = [ for virtualNetwork in ['HubVNET','VNET1']: {
+  name: '${storageAccountName}_to_${virtualNetwork}'
+  location: 'global'
+  properties: {
+    registrationEnabled: false
+    virtualNetwork: {
+      id: resourceId('Microsoft.Network/virtualNetworks', virtualNetwork)
+    }
   }
 }
+]

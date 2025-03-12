@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "15869351706155266092"
+      "templateHash": "17361180148170736267"
     }
   },
   "variables": {
@@ -13,6 +13,22 @@
     "privateDnsZoneName": "[format('privatelink.blob.{0}', environment().suffixes.storage)]"
   },
   "resources": [
+    {
+      "copy": {
+        "name": "virtualNetworkLink_File",
+        "count": "[length(createArray('HubVNET', 'VNET1'))]"
+      },
+      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+      "apiVersion": "2018-09-01",
+      "name": "[format('{0}_to_{1}', variables('storageAccountName'), createArray('HubVNET', 'VNET1')[copyIndex()])]",
+      "location": "global",
+      "properties": {
+        "registrationEnabled": false,
+        "virtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', createArray('HubVNET', 'VNET1')[copyIndex()])]"
+        }
+      }
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -88,94 +104,6 @@
               }
             }
           ]
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "PrivateEndpointDNSzone",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "virtualNetworkIDs": {
-            "value": [
-              "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'hubVNET')]",
-              "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'vnet1')]"
-            ]
-          },
-          "privateDNSZone_Name": {
-            "value": "[variables('privateDnsZoneName')]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.33.93.31351",
-              "templateHash": "3108138053958299760"
-            }
-          },
-          "parameters": {
-            "privateDNSZone_Name": {
-              "type": "string"
-            },
-            "registrationEnabled": {
-              "type": "bool",
-              "defaultValue": false
-            },
-            "tagValues": {
-              "type": "object",
-              "defaultValue": {}
-            },
-            "virtualNetworkIDs": {
-              "type": "array"
-            }
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Network/privateDnsZones",
-              "apiVersion": "2020-06-01",
-              "name": "[parameters('privateDNSZone_Name')]",
-              "location": "global",
-              "tags": "[parameters('tagValues')]"
-            },
-            {
-              "copy": {
-                "name": "virtualNetworkLink",
-                "count": "[length(parameters('virtualNetworkIDs'))]"
-              },
-              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-              "apiVersion": "2020-06-01",
-              "name": "[format('{0}/{1}', parameters('privateDNSZone_Name'), last(split(parameters('virtualNetworkIDs')[copyIndex()], '/')))]",
-              "location": "global",
-              "properties": {
-                "registrationEnabled": "[parameters('registrationEnabled')]",
-                "virtualNetwork": {
-                  "id": "[parameters('virtualNetworkIDs')[copyIndex()]]"
-                }
-              },
-              "tags": "[parameters('tagValues')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDNSZone_Name'))]"
-              ]
-            }
-          ],
-          "outputs": {
-            "PrivateDNSZone_Name": {
-              "type": "string",
-              "value": "[parameters('privateDNSZone_Name')]"
-            },
-            "PrivateDNSZone_ID": {
-              "type": "string",
-              "value": "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDNSZone_Name'))]"
-            }
-          }
         }
       }
     }

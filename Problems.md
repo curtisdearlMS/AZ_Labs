@@ -3,15 +3,16 @@
 This document will guide you through various Bicep templates that intentionally misconfigure network settings such as route tables, NSGs, and VNet Peerings. These scenarios are designed for learning purposes to understand the impact of network misconfigurations.
 
 ## Table of Contents
-1. [Introduction](#introduction)
-2. [Scenario 1: Misconfigured Route Table](#scenario-1-misconfigured-route-table)
-3. [Scenario 2: Incorrect NSG Rules](#scenario-2-incorrect-nsg-rules)
-4. [Scenario 3: Faulty VNet Peering](#scenario-3-faulty-vnet-peering)
-5. [Scenario 4: NSG blocking](#scenario-4-nsg-blocking-vm2-in-vnet-1-from-accessing-vnet2)
-6. [Reset to Default Configuration](#reset-to-default-configuration)
 
-## Introduction
-This document provides basic networking scenarios that can be demonstrated using Bicep templates. Each scenario will break network connectivity in different ways. At the end of the document, a reset to default template is provided to restore the configuration to a standard starting point.
+1. [Problem 1: Misconfigured Route Table](#problem-1-misconfigured-route-table)
+2. [Problem 2: Incorrect NSG Rules](#problem-2-incorrect-nsg-rules)
+3. [Problem 3: Faulty VNet Peering](#problem-3-faulty-vnet-peering)
+4. [Problem 4: NSG Blocking VM2 in VNET 1 from accessing VNET2](#problem-4-nsg-blocking-vm2-in-vnet-1-from-accessing-vnet2)
+5. [Problem 5: Azure External Standard Load Balancer Health Probes Down](#problem-5-azure-external-standard-load-balancer-health-probes-down)
+6. [Problem 6: Azure Firewall Blocking Traffic](#problem-6-azure-firewall-blocking-traffic)
+7. [Problem 7: NIC NSG Blocking Traffic](#problem-7-nic-nsg-blocking-traffic)
+8. [Problem 8: Private DNS zone Misconfiguration](#problem-8-private-dns-zone-misconfiguration)
+9. [Reset to Default Configuration](#reset-to-default-configuration)
 
 > **Warning:** After deploying each problem template, use the reset template to return to the 'default' network configuration. The default configuration can be viewed in the provided draw.io diagram.
 

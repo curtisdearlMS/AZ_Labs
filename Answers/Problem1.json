@@ -1,0 +1,88 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.33.93.31351",
+      "templateHash": "3080843093795014651"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "resetRouteTables",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {},
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.33.93.31351",
+              "templateHash": "5611116293212295748"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/routeTables",
+              "apiVersion": "2023-09-01",
+              "name": "[format('{0}-rtVMSubnet', 'vnet1')]",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "routes": [
+                  {
+                    "name": "defaultRoute",
+                    "properties": {
+                      "addressPrefix": "0.0.0.0/0",
+                      "nextHopType": "VirtualAppliance",
+                      "nextHopIpAddress": "10.28.15.4"
+                    }
+                  },
+                  {
+                    "name": "vnet2Route",
+                    "properties": {
+                      "addressPrefix": "10.2.0.0/16",
+                      "nextHopType": "VirtualNetworkGateway"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Network/routeTables",
+              "apiVersion": "2023-09-01",
+              "name": "[format('{0}-rtVMSubnet', 'vnet2')]",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "routes": [
+                  {
+                    "name": "defaultRoute",
+                    "properties": {
+                      "addressPrefix": "0.0.0.0/0",
+                      "nextHopType": "VirtualAppliance",
+                      "nextHopIpAddress": "10.28.15.4"
+                    }
+                  },
+                  {
+                    "name": "vnet1Route",
+                    "properties": {
+                      "addressPrefix": "10.1.0.0/16",
+                      "nextHopType": "VirtualNetworkGateway"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

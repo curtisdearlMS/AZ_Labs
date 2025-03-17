@@ -10,6 +10,32 @@ resource vnetGateway 'Microsoft.Network/virtualNetworkGateways@2020-11-01' exist
   name: 'myVpnGateway'
 }
 
+resource vnet1ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
+  name: '${vnet1Name}/vnet1ToHubPeering'
+  properties: {
+    remoteVirtualNetwork: {
+      id: resourceId('Microsoft.Network/virtualNetworks', hubVnetName)
+    }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: false
+    useRemoteGateways: true
+  }
+}
+
+resource vnet2ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
+  name: '${vnet2Name}/vnet2ToHubPeering'
+  properties: {
+    remoteVirtualNetwork: {
+      id: resourceId('Microsoft.Network/virtualNetworks', hubVnetName)
+    }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: false
+    useRemoteGateways: true
+  }
+}
+
 resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
   parent: hubVnet
   name: 'hubToVnet1Peering'
@@ -35,31 +61,5 @@ resource hubToVnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     allowForwardedTraffic: true
     allowGatewayTransit: true
     useRemoteGateways: false
-  }
-}
-
-resource vnet1ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
-  name: '${vnet1Name}/vnet1ToHubPeering'
-  properties: {
-    remoteVirtualNetwork: {
-      id: resourceId('Microsoft.Network/virtualNetworks', hubVnetName)
-    }
-    allowVirtualNetworkAccess: true
-    allowForwardedTraffic: true
-    allowGatewayTransit: false
-    useRemoteGateways: true
-  }
-}
-
-resource vnet2ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
-  name: '${vnet2Name}/vnet2ToHubPeering'
-  properties: {
-    remoteVirtualNetwork: {
-      id: resourceId('Microsoft.Network/virtualNetworks', hubVnetName)
-    }
-    allowVirtualNetworkAccess: true
-    allowForwardedTraffic: true
-    allowGatewayTransit: false
-    useRemoteGateways: true
   }
 }

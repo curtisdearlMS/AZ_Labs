@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.33.93.31351",
-      "templateHash": "17788994031622143507"
+      "version": "0.34.1.11899",
+      "templateHash": "14770108383329521175"
     }
   },
   "variables": {
@@ -17,7 +17,7 @@
     "sourcePortRange": "*",
     "destinationPortRange": "*",
     "sourceAddressPrefix": "10.1.2.5",
-    "destinationAddressPrefix": "10.28.2.5"
+    "destinationAddressPrefix": "10.28.2.4"
   },
   "resources": [
     {

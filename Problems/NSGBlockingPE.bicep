@@ -6,7 +6,7 @@ var protocol = '*'
 var sourcePortRange = '*'
 var destinationPortRange = '*'
 var sourceAddressPrefix = '10.1.2.5' // IP address of VM 2
-var destinationAddressPrefix = '10.28.2.5' // IP address of Storage private endpoint
+var destinationAddressPrefix = '10.28.2.4' // IP address of Storage private endpoint
 
 // Create a network security group (NSG) for the VM subnet, 
 //this will block VM2 from accessing the hub vnet PE for the storage account

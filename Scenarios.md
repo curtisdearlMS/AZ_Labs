@@ -46,7 +46,7 @@ This requires a second VPN Gateway to be deployed to simulate an On Premises VPN
 ### Deploy the Broken IPsec Connection to the On Prem VPN Device
 This deploys the incorrectly configured VPN tunnel. Why can VNET1 and VNET2 not reach the on premise IP ranges. 
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVNET1%2FIncorrectIPSecConfig.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2OnPremVNET%2FVNETandGW.json)
 
 ### Correct the IPsec configuration
 

@@ -1,0 +1,179 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.34.44.8038",
+      "templateHash": "8718980685847076246"
+    }
+  },
+  "parameters": {
+    "sKey": {
+      "type": "securestring",
+      "defaultValue": "[newGuid()]"
+    }
+  },
+  "variables": {
+    "vnetName": "OnPremVNET",
+    "publicIpVpnGwName": "OnPremvpnGwPublicIP",
+    "vpnGatewayName": "OnPremVpnGateway",
+    "vpnGatewaySku": "vpngw1",
+    "LNG1": "HubVNETNetworkGateway",
+    "connection1": "OnPremToHubConnection",
+    "hubVNETAddressPrefix": [
+      "10.28.0.0/16",
+      "10.1.0.0/16",
+      "10.2.0.0/16"
+    ],
+    "LNG2": "OnPremVNETNetworkGateway",
+    "connection2": "HubToOnPremConnection",
+    "onPremVNETAddressPrefix": [
+      "192.168.0.0/24",
+      "192.168.3.0/24"
+    ]
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('vnetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "192.168.0.0/24",
+            "192.168.3.0/24"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "GatewaySubnet",
+            "properties": {
+              "addressPrefix": "192.168.0.0/24"
+            }
+          },
+          {
+            "name": "VirtualMachineSubnet",
+            "properties": {
+              "addressPrefix": "192.168.3.0/24"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('publicIpVpnGwName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Regional"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworkGateways",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('vpnGatewayName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "vnetGatewayConfig",
+            "properties": {
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), 'GatewaySubnet')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpVpnGwName'))]"
+              }
+            }
+          }
+        ],
+        "gatewayType": "Vpn",
+        "vpnType": "RouteBased",
+        "sku": {
+          "name": "[variables('vpnGatewaySku')]",
+          "tier": "[variables('vpnGatewaySku')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpVpnGwName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/localNetworkGateways",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('LNG1')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "gatewayIpAddress": "string",
+        "localNetworkAddressSpace": {
+          "addressPrefixes": "[variables('hubVNETAddressPrefix')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/vpnConnections",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('connection1')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "connectionType": "IPsec",
+        "sharedKey": "[parameters('sKey')]",
+        "virtualNetworkGateway1": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', 'OnPremVpnGateway')]"
+        },
+        "localNetworkGateway2": {
+          "id": "[resourceId('Microsoft.Network/localNetworkGateways', variables('LNG1'))]"
+        },
+        "enableBgp": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/localNetworkGateways', variables('LNG1'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/localNetworkGateways",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('LNG2')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "gatewayIpAddress": "string",
+        "localNetworkAddressSpace": {
+          "addressPrefixes": "[variables('onPremVNETAddressPrefix')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/vpnConnections",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('connection2')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "connectionType": "IPsec",
+        "sharedKey": "[parameters('sKey')]",
+        "virtualNetworkGateway1": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway')]"
+        },
+        "localNetworkGateway2": {
+          "id": "[resourceId('Microsoft.Network/localNetworkGateways', variables('LNG2'))]"
+        },
+        "enableBgp": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/localNetworkGateways', variables('LNG2'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "vnetId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+    }
+  }
+}

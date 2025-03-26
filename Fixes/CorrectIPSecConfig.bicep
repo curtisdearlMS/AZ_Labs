@@ -1,6 +1,6 @@
 
 var LNG2 = 'OnPremVNETNetworkGateway'
-var connection2 = 'HubToOnPremConnection'
+
 var onPremVNETAddressPrefix = [
   '192.168.0.0/24'
   '192.168.3.0/24'

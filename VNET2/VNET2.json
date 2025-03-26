@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.1.11899",
-      "templateHash": "13861300872200591101"
+      "templateHash": "7270536745286396567"
     }
   },
   "parameters": {
@@ -113,8 +113,9 @@
           {
             "name": "vnet1Route",
             "properties": {
-              "addressPrefix": "10.1.0.0/16",
-              "nextHopType": "VirtualNetworkGateway"
+              "addressPrefix": "10.0.0.0/15",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "10.28.15.4"
             }
           }
         ]

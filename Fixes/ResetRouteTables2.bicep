@@ -26,7 +26,7 @@ resource rtVMSubnet1 'Microsoft.Network/routeTables@2023-09-01' = {
       {
         name: 'vnet2Route'
         properties: {
-          addressPrefix: '10.2.0.0/16'
+          addressPrefix: '10.2.0.0/15'
           //nextHopType: 'VirtualNetworkGateway' // does work if the VNET GW is deploy, simpler to default to the Azure Firewall
           nextHopType: 'VirtualAppliance'
           nextHopIpAddress: '10.28.15.4' // Azure Firewall private IP
@@ -52,7 +52,7 @@ resource rtVMSubnet2 'Microsoft.Network/routeTables@2023-09-01' = {
       {
         name: 'vnet1Route'
         properties: {
-          addressPrefix: '10.1.0.0/16'
+          addressPrefix: '10.0.0.0/15'
           //nextHopType: 'VirtualNetworkGateway' // does work if the VNET GW is deploy, simpler to default to the Azure Firewall
           nextHopType: 'VirtualAppliance'
           nextHopIpAddress: '10.28.15.4' // Azure Firewall private IP

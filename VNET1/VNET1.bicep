@@ -80,8 +80,11 @@ resource rtVMSubnet 'Microsoft.Network/routeTables@2023-09-01' = {
       {
         name: 'vnet2Route'
         properties: {
-          addressPrefix: '10.2.0.0/16'
-          nextHopType: 'VirtualNetworkGateway'
+          addressPrefix: '10.2.0.0/15'// bigger than VNET 1 address space so that a direct peering will have a more specific route
+          //this is used for traffic not routed to the firewall when a system route has a more specific route
+          //nextHopType: 'VirtualNetworkGateway' // does work if the VNET GW is deploy, simpler to default to the Azure Firewall
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: '10.28.15.4' // Azure Firewall private IP
         }
       }
     ]

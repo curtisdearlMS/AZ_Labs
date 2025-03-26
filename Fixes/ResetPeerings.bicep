@@ -36,11 +36,4 @@ module vnet2Peering '../VNET2/VNET2-HubVNETpeering.bicep' = {
     vnet2Name: vnet2.name
   }
 }
-// Module to remove peering between VNET1 and VNET2
-module removeVnet1Vnet2Peering './RemoveVNET1VNET2Peering.bicep' = {
-  name: 'removeVnet1Vnet2PeeringDeployment'
-  dependsOn: [
-    vnet1
-    vnet2
-  ]
-}
+

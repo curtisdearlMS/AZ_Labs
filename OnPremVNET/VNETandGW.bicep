@@ -96,7 +96,7 @@ resource localNetworkGatewayA 'Microsoft.Network/localNetworkGateways@2023-09-01
     }
   }
 }
-resource connectionA 'Microsoft.Network/Connections@2023-09-01' = {
+resource connectionA 'Microsoft.Network/connections@2023-09-01' = {
   name: connection1
   location: resourceGroup().location
   properties: {
@@ -133,7 +133,7 @@ resource localNetworkGatewayB 'Microsoft.Network/localNetworkGateways@2023-09-01
   }
 }
 
-resource connectionB 'Microsoft.Network/Connections@2023-09-01' = {
+resource connectionB 'Microsoft.Network/connections@2023-09-01' = {
   name: connection2
   location: resourceGroup().location
   properties: {

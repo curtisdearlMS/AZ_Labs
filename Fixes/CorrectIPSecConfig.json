@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.34.44.8038",
+      "templateHash": "7074629978678047552"
+    }
+  },
+  "variables": {
+    "LNG2": "OnPremVNETNetworkGateway",
+    "connection2": "HubToOnPremConnection",
+    "onPremVNETAddressPrefix": [
+      "192.168.0.0/24",
+      "192.168.3.0/24"
+    ]
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/localNetworkGateways",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('LNG2')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "gatewayIpAddress": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, resourceGroup().name), 'Microsoft.Network/publicIPAddresses', 'OnPremvpnGwPublicIP'), '2023-09-01').ipAddress]",
+        "localNetworkAddressSpace": {
+          "addressPrefixes": "[variables('onPremVNETAddressPrefix')]"
+        }
+      }
+    }
+  ]
+}

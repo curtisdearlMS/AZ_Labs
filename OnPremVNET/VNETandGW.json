@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "7233433561690457638"
+      "templateHash": "13104852363956895715"
     }
   },
   "parameters": {
@@ -16,8 +16,8 @@
   },
   "variables": {
     "vnetName": "OnPremVNET",
-    "publicIpVpnGwName": "OnPremvpnGwPublicIP",
-    "vpnGatewayName": "OnPremVpnGateway",
+    "publicIpVpnGwName": "OnPremVPNGwPublicIP",
+    "vpnGatewayName": "OnPremVPNGateway",
     "vpnGatewaySku": "vpngw1",
     "LNG1": "HubVNETNetworkGateway",
     "connection1": "OnPremToHubConnection",
@@ -30,7 +30,7 @@
     "connection2": "HubToOnPremConnection",
     "onPremVNETAddressPrefix": [
       "192.168.0.0/24",
-      "192.168.3.0/24"
+      "192.168.1.0/24"
     ]
   },
   "resources": [

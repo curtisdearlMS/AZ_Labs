@@ -46,7 +46,7 @@ This deploys the incorrectly configured VPN tunnel. Why can VNET1 and VNET2 not 
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FOnPremVNET%2FVNETandGW.json)
 
-### Correct the IPsec configuration
+### Correct the VPN configuration
 
 This corrects the Site-to-Site configuration and permits communication across the IPsec tunnel.
 

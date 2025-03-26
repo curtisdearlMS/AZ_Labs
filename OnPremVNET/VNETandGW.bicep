@@ -1,6 +1,6 @@
 var vnetName = 'OnPremVNET'
-var publicIpVpnGwName = 'OnPremvpnGwPublicIP'
-var vpnGatewayName = 'OnPremVpnGateway'
+var publicIpVpnGwName = 'OnPremVPNGwPublicIP'
+var vpnGatewayName = 'OnPremVPNGateway'
 var vpnGatewaySku = 'vpngw1'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
@@ -96,6 +96,7 @@ resource localNetworkGatewayA 'Microsoft.Network/localNetworkGateways@2023-09-01
     }
   }
 }
+
 resource connectionA 'Microsoft.Network/connections@2023-09-01' = {
   name: connection1
   location: resourceGroup().location
@@ -119,7 +120,7 @@ var LNG2 = 'OnPremVNETNetworkGateway'
 var connection2 = 'HubToOnPremConnection'
 var onPremVNETAddressPrefix = [
   '192.168.0.0/24'
-  '192.168.3.0/24'
+  '192.168.1.0/24'
 ]
 
 resource localNetworkGatewayB 'Microsoft.Network/localNetworkGateways@2023-09-01' = {

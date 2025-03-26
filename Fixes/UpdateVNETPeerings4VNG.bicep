@@ -10,6 +10,34 @@ resource vnetGateway 'Microsoft.Network/virtualNetworkGateways@2020-11-01' exist
   name: 'myVpnGateway'
 }
 
+resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
+  parent: hubVnet
+  name: 'hubToVnet1Peering'
+  properties: {
+    remoteVirtualNetwork: {
+      id: resourceId('Microsoft.Network/virtualNetworks', vnet1Name)
+    }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: true
+    useRemoteGateways: false
+  }
+}
+
+resource hubToVnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
+  parent: hubVnet
+  name: 'hubToVnet2Peering'
+  properties: {
+    remoteVirtualNetwork: {
+      id: resourceId('Microsoft.Network/virtualNetworks', vnet2Name)
+    }
+    allowVirtualNetworkAccess: true
+    allowForwardedTraffic: true
+    allowGatewayTransit: true
+    useRemoteGateways: false
+  }
+}
+
 resource vnet1ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
   name: '${vnet1Name}/vnet1ToHubPeering'
   properties: {
@@ -40,32 +68,4 @@ resource vnet2ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
   dependsOn: [
     hubToVnet2Peering
   ]
-}
-
-resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
-  parent: hubVnet
-  name: 'hubToVnet1Peering'
-  properties: {
-    remoteVirtualNetwork: {
-      id: resourceId('Microsoft.Network/virtualNetworks', vnet1Name)
-    }
-    allowVirtualNetworkAccess: true
-    allowForwardedTraffic: true
-    allowGatewayTransit: true
-    useRemoteGateways: false
-  }
-}
-
-resource hubToVnet2Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
-  parent: hubVnet
-  name: 'hubToVnet2Peering'
-  properties: {
-    remoteVirtualNetwork: {
-      id: resourceId('Microsoft.Network/virtualNetworks', vnet2Name)
-    }
-    allowVirtualNetworkAccess: true
-    allowForwardedTraffic: true
-    allowGatewayTransit: true
-    useRemoteGateways: false
-  }
 }

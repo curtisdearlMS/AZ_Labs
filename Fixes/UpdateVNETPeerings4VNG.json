@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "12308570262156495957"
+      "templateHash": "7149491148168548288"
     }
   },
   "variables": {
@@ -14,6 +14,36 @@
     "vnet2Name": "vnet2"
   },
   "resources": [
+    {
+      "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "apiVersion": "2020-11-01",
+      "name": "[format('{0}/{1}', variables('hubVnetName'), 'hubToVnet1Peering')]",
+      "properties": {
+        "remoteVirtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet1Name'))]"
+        },
+        "allowVirtualNetworkAccess": true,
+        "allowForwardedTraffic": true,
+        "allowGatewayTransit": true,
+        "useRemoteGateways": false
+      }
+    },
+    {
+      "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
+      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+      "apiVersion": "2020-11-01",
+      "name": "[format('{0}/{1}', variables('hubVnetName'), 'hubToVnet2Peering')]",
+      "properties": {
+        "remoteVirtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet2Name'))]"
+        },
+        "allowVirtualNetworkAccess": true,
+        "allowForwardedTraffic": true,
+        "allowGatewayTransit": true,
+        "useRemoteGateways": false
+      }
+    },
     {
       "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
@@ -49,36 +79,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', variables('hubVnetName'), 'hubToVnet2Peering')]"
       ]
-    },
-    {
-      "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
-      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-      "apiVersion": "2020-11-01",
-      "name": "[format('{0}/{1}', variables('hubVnetName'), 'hubToVnet1Peering')]",
-      "properties": {
-        "remoteVirtualNetwork": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet1Name'))]"
-        },
-        "allowVirtualNetworkAccess": true,
-        "allowForwardedTraffic": true,
-        "allowGatewayTransit": true,
-        "useRemoteGateways": false
-      }
-    },
-    {
-      "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
-      "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-      "apiVersion": "2020-11-01",
-      "name": "[format('{0}/{1}', variables('hubVnetName'), 'hubToVnet2Peering')]",
-      "properties": {
-        "remoteVirtualNetwork": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet2Name'))]"
-        },
-        "allowVirtualNetworkAccess": true,
-        "allowForwardedTraffic": true,
-        "allowGatewayTransit": true,
-        "useRemoteGateways": false
-      }
     }
   ]
 }

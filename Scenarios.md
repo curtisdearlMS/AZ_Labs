@@ -57,7 +57,15 @@ This corrects the Site-to-Site configuration and permits communication across th
 
 ## Scenario 4: Azure Firewall
 
-### Deploy an Azure Firewall 
+This assumes that you have the Azure Firewall deployed. 
+
+To use the Azure Firewall as the transivitive routing bewtween Spoke VNETs deploy the following route table changes before proceeding with deploying the blocking policy. 
+
+### Deploy Route Tables for VM subnets to use the HubVNET Firewall
+This will also disable the VNET peering from VNET1 and VNET2 which would be the preferred route. 
+
+
+### Deploy an Azure Firewall policy which blocks VNET to VNET access
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FAzureFirewallBlocking.json)
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FAzureFirewallAllowPolicy.json)

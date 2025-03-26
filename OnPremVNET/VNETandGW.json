@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "13104852363956895715"
+      "templateHash": "15845025349281259869"
     }
   },
   "parameters": {
@@ -174,11 +174,5 @@
         "[resourceId('Microsoft.Network/virtualNetworkGateways', variables('vpnGatewayName'))]"
       ]
     }
-  ],
-  "outputs": {
-    "vnetId": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
-    }
-  }
+  ]
 }

@@ -30,8 +30,6 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
   }
 }
 
-output vnetId string = vnet.id
-
 resource publicIpVpnGw 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   name: publicIpVpnGwName
   location: resourceGroup().location

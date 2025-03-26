@@ -30,9 +30,13 @@ This will change the VNET1 VM load balancer to probe on port 22. (now default)
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FSpokeVNETPeering.json)
 
-## Override VNET Peering Routes for VNET1 to VNET2 to use AZ FW
+## Use Azure System Default Route for VNET1 to VNET2 
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FResetRouteTables2.json)
+
+## Override VNET Peering Routes for VNET1 to VNET2 to use AZ FW
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FResetRouteTables.json)
 
 ## Override VNET Peering Routes for VNET1 to VNET2 to use VNET Gateway
 

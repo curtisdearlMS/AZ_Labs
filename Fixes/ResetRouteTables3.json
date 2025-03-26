@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "4431051825033779094"
+      "templateHash": "17077300908105965656"
     }
   },
   "resources": [
@@ -28,8 +28,7 @@
             "name": "vnet2Route",
             "properties": {
               "addressPrefix": "10.2.0.0/16",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "10.28.15.4"
+              "nextHopType": "VirtualNetworkGateway"
             }
           }
         ]
@@ -54,8 +53,7 @@
             "name": "vnet1Route",
             "properties": {
               "addressPrefix": "10.1.0.0/16",
-              "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "10.28.15.4"
+              "nextHopType": "VirtualNetworkGateway"
             }
           }
         ]

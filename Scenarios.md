@@ -75,7 +75,7 @@ Why does VNET1 to VNET2 traffic no longer show up in the firewall logs when VNET
 
 ### Leave VNET1 to VNET2 Peering enabled, but force VNET1 to VNET2 traffic through the Azure Firewall
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FResetRouteTables2.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FResetRouteTables.json)
 
 
 ## Scenario 5: Private Endpoint

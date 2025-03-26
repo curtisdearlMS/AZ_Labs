@@ -1,6 +1,6 @@
-# Training Labs: Network Misconfiguration Scenarios
+# Training Labs: Network Problems
 
-This document will guide you through various Bicep templates that intentionally misconfigure network settings such as route tables, NSGs, and VNet Peerings. These scenarios are designed for learning purposes to understand the impact of network misconfigurations.
+This document will guide you through various Bicep templates that intentionally misconfigure network settings such as route tables, NSGs, and VNet Peerings. These problems are designed for learning purposes to understand the impact of network misconfigurations.
 
 ## Table of Contents
 
@@ -59,7 +59,7 @@ This Deploys an Azure External Load Balancer for the VMs in VNET1.
 
 Why are the health probes down?
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVNET1%2FVNET1-ExternalStandardLB.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVNET1%2FVNET1-ExternalStandardLB80Probe.json)
 
 ## Problem 6: Azure Firewall Blocking Traffic
 

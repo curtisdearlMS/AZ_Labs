@@ -2,7 +2,7 @@
 var publicLoadBalancer_Name  = 'VNET1_Ext_VM_LB'
 var protocol  = 'TCP'
 var frontendPort  = 80
-var backendPort  = 80
+var backendPort  = 22
 var enableTcpReset = false
 var enableFloatingIP = false
 

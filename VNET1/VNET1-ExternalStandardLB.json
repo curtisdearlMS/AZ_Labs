@@ -4,15 +4,15 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.33.93.31351",
-      "templateHash": "8285547937473254871"
+      "version": "0.34.1.11899",
+      "templateHash": "7683886396669700747"
     }
   },
   "variables": {
     "publicLoadBalancer_Name": "VNET1_Ext_VM_LB",
     "protocol": "TCP",
     "frontendPort": 80,
-    "backendPort": 80,
+    "backendPort": 22,
     "enableTcpReset": false,
     "enableFloatingIP": false,
     "nsgName": "myNICNSG"

@@ -81,11 +81,16 @@ var hubVNETAddressPrefix = [
 @secure()
 param sKey string = newGuid()
 
+resource hubVpnGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2023-09-01' existing = {
+  scope: resourceGroup(subscription().subscriptionId, resourceGroup().name)
+  name: 'vpnGwPublicIP'
+}
+
 resource localNetworkGatewayA 'Microsoft.Network/localNetworkGateways@2023-09-01' = {
   name: LNG1
   location: resourceGroup().location
   properties: {
-    gatewayIpAddress: resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')
+    gatewayIpAddress: hubVpnGatewayPublicIP.properties.ipAddress
     localNetworkAddressSpace: {
       addressPrefixes: hubVNETAddressPrefix
     }

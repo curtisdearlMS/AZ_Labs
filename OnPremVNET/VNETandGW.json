@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "7778554518365870622"
+      "templateHash": "15740579005603263958"
     }
   },
   "parameters": {
@@ -111,7 +111,7 @@
       "name": "[variables('LNG1')]",
       "location": "[resourceGroup().location]",
       "properties": {
-        "gatewayIpAddress": "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]",
+        "gatewayIpAddress": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, resourceGroup().name), 'Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP'), '2023-09-01').ipAddress]",
         "localNetworkAddressSpace": {
           "addressPrefixes": "[variables('hubVNETAddressPrefix')]"
         }

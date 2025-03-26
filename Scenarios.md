@@ -14,21 +14,24 @@ This document will guide you through various Bicep templates that intentionally 
 > **Warning:** After deploying each Scenario template, use the reset template to return to the 'default' network configuration. The default configuration can be viewed in the provided Visio diagram.
 
 ## Scenario 1: VM to VM, Between VNETs
-Description: This scenario demonstrates the impact of incorrect NSG rules.
 
-Deploy Incorrect NSG rules that prevent VNET to VNET traffic
+### Deploy Incorrect NSG rules that prevent VNET to VNET traffic
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FNSGBlockingvnet1VM2toVNET2.json)
 
-Fix the NSG rules to Allow VNET to VNET traffic
+### Fix the NSG rules to Allow VNET to VNET traffic
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FResetNSGs.json)
 
 
 ## Scenario 2: Access to VMs is Broken
 
-The public IP should allow access on Port 80. Deploy this to break inbound access.
+### The public IP should allow access on Port 80. Deploy this to break inbound access.
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVNET1%2FVNET1-ExternalStandardLB80Probe.json)
 
-Fix the LB configureation by deploying the following.
+### Fix the LB configureation by deploying the following.
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVNET1%2FVNET1-ExternalStandardLB.json)
 
 
@@ -37,21 +40,27 @@ Fix the LB configureation by deploying the following.
 This requires a second VPN Gateway to be deployed to simulate an On Premises VPN device. This assumes you have deployed the VNET Gateway into the HubVNET. 
 
 ### Deploy the VNET Gateway
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FHubVNETGateway%2FVNETGateway.json)
 
 ### Deploy the Broken IPsec Connection to the On Prem VPN Device
+This deploys the incorrectly configured VPN tunnel. Why can VNET1 and VNET2 not reach the on premise IP ranges. 
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVNET1%2F.json)
 
 ### Correct the IPsec configuration
+
 This corrects the Site-to-Site configuration and permits communication across the IPsec tunnel.
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FAnswer%2FNSGBlockingPE.json)
 
 
 ## Scenario 4: Azure Firewall
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FVNET1%2FVNET1-ExternalStandardLB.json)
+### Deploy an Azure Firewall 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FProblems%2FAzureFirewallBlocking.json)
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FAnswer%2FNSGBlockingPE.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FAzureFirewallAllowPolicy.json)
 
 
 ## Scenario 5: Private Endpoint

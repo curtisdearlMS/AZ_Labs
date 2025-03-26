@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.1.11899",
-      "templateHash": "7683886396669700747"
+      "templateHash": "14202561810130356211"
     }
   },
   "variables": {
@@ -72,7 +72,7 @@
               "idleTimeoutInMinutes": 4,
               "enableTcpReset": "[variables('enableTcpReset')]",
               "probe": {
-                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', variables('publicLoadBalancer_Name'), 'port80healthprobe')]"
+                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', variables('publicLoadBalancer_Name'), 'port22healthprobe')]"
               }
             }
           }

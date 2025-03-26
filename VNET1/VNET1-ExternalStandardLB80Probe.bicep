@@ -57,7 +57,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2024-01-01' = {
           idleTimeoutInMinutes: 4
           enableTcpReset: enableTcpReset
           probe: {
-            id: resourceId('Microsoft.Network/loadBalancers/probes', publicLoadBalancer_Name, 'port22healthprobe')
+            id: resourceId('Microsoft.Network/loadBalancers/probes', publicLoadBalancer_Name, 'port80healthprobe')
           }
         }
       }

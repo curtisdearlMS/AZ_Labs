@@ -1,0 +1,192 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.34.44.8038",
+      "templateHash": "15642140688691351367"
+    }
+  },
+  "variables": {
+    "publicLoadBalancer_Name": "VNET1_Ext_VM_LB",
+    "protocol": "TCP",
+    "frontendPort": 80,
+    "backendPort": 22,
+    "enableTcpReset": false,
+    "enableFloatingIP": false,
+    "nsgName": "myNICNSG"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2024-01-01",
+      "name": "[format('{0}_PIP', variables('publicLoadBalancer_Name'))]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "type": "Microsoft.Network/loadBalancers",
+      "apiVersion": "2024-01-01",
+      "name": "[variables('publicLoadBalancer_Name')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "fip",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', format('{0}_PIP', variables('publicLoadBalancer_Name')))]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "bep"
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "name": "inboundRule",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', variables('publicLoadBalancer_Name'), 'fip')]"
+              },
+              "backendAddressPool": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('publicLoadBalancer_Name'), 'bep')]"
+              },
+              "disableOutboundSnat": true,
+              "protocol": "[variables('protocol')]",
+              "frontendPort": "[variables('frontendPort')]",
+              "backendPort": "[variables('backendPort')]",
+              "enableFloatingIP": "[variables('enableFloatingIP')]",
+              "idleTimeoutInMinutes": 4,
+              "enableTcpReset": "[variables('enableTcpReset')]",
+              "probe": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/probes', variables('publicLoadBalancer_Name'), 'port80healthprobe')]"
+              }
+            }
+          }
+        ],
+        "outboundRules": [
+          {
+            "name": "outboundRule",
+            "properties": {
+              "frontendIPConfigurations": [
+                {
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIpConfigurations', variables('publicLoadBalancer_Name'), 'fip')]"
+                }
+              ],
+              "backendAddressPool": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('publicLoadBalancer_Name'), 'bep')]"
+              },
+              "protocol": "All",
+              "idleTimeoutInMinutes": 4,
+              "enableTcpReset": "[variables('enableTcpReset')]",
+              "allocatedOutboundPorts": 30000
+            }
+          }
+        ],
+        "probes": [
+          {
+            "name": "port22healthprobe",
+            "properties": {
+              "protocol": "Tcp",
+              "port": 22,
+              "intervalInSeconds": 5,
+              "numberOfProbes": 1,
+              "probeThreshold": 1
+            }
+          },
+          {
+            "name": "port80healthprobe",
+            "properties": {
+              "protocol": "Tcp",
+              "port": 80,
+              "intervalInSeconds": 5,
+              "numberOfProbes": 1,
+              "probeThreshold": 1
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', format('{0}_PIP', variables('publicLoadBalancer_Name')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2021-02-01",
+      "name": "VNET1-vm1NIC",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'VNET1', 'VMSubnet')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('publicLoadBalancer_Name'), 'bep')]"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('nsgName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2021-02-01",
+      "name": "VNET1-vm2NIC",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'VNET1', 'VMSubnet')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', variables('publicLoadBalancer_Name'), 'bep')]"
+                }
+              ]
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/loadBalancers', variables('publicLoadBalancer_Name'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+      ]
+    }
+  ]
+}

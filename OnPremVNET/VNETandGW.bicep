@@ -85,7 +85,7 @@ resource localNetworkGatewayA 'Microsoft.Network/localNetworkGateways@2023-09-01
   name: LNG1
   location: resourceGroup().location
   properties: {
-    gatewayIpAddress: 'string'
+    gatewayIpAddress: resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')
     localNetworkAddressSpace: {
       addressPrefixes: hubVNETAddressPrefix
     }
@@ -119,7 +119,7 @@ resource localNetworkGatewayB 'Microsoft.Network/localNetworkGateways@2023-09-01
   name: LNG2
   location: resourceGroup().location
   properties: {
-    gatewayIpAddress: 'string'
+    gatewayIpAddress: publicIpVpnGw.properties.ipAddress
     localNetworkAddressSpace: {
       addressPrefixes: onPremVNETAddressPrefix
     }

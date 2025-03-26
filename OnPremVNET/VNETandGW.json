@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "8718980685847076246"
+      "templateHash": "7778554518365870622"
     }
   },
   "parameters": {
@@ -111,7 +111,7 @@
       "name": "[variables('LNG1')]",
       "location": "[resourceGroup().location]",
       "properties": {
-        "gatewayIpAddress": "string",
+        "gatewayIpAddress": "[resourceId('Microsoft.Network/publicIPAddresses', 'vpnGwPublicIP')]",
         "localNetworkAddressSpace": {
           "addressPrefixes": "[variables('hubVNETAddressPrefix')]"
         }
@@ -143,11 +143,14 @@
       "name": "[variables('LNG2')]",
       "location": "[resourceGroup().location]",
       "properties": {
-        "gatewayIpAddress": "string",
+        "gatewayIpAddress": "[reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpVpnGwName')), '2023-09-01').ipAddress]",
         "localNetworkAddressSpace": {
           "addressPrefixes": "[variables('onPremVNETAddressPrefix')]"
         }
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpVpnGwName'))]"
+      ]
     },
     {
       "type": "Microsoft.Network/vpnConnections",

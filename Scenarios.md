@@ -37,7 +37,7 @@ This document will guide you through various Bicep templates that intentionally 
 
 ## Scenario 3: VPN connectivity
 
-This requires a second VPN Gateway to be deployed to simulate an On Premises VPN device. 
+This deploys a second VPN Gateway to be deployed to simulate an On Premises VPN device. 
 
 This assumes you have deployed the VNET Gateway into the HubVNET. 
 

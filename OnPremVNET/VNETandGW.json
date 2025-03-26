@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "15740579005603263958"
+      "templateHash": "7233433561690457638"
     }
   },
   "parameters": {
@@ -118,7 +118,7 @@
       }
     },
     {
-      "type": "Microsoft.Network/vpnConnections",
+      "type": "Microsoft.Network/connections",
       "apiVersion": "2023-09-01",
       "name": "[variables('connection1')]",
       "location": "[resourceGroup().location]",
@@ -134,7 +134,8 @@
         "enableBgp": false
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/localNetworkGateways', variables('LNG1'))]"
+        "[resourceId('Microsoft.Network/localNetworkGateways', variables('LNG1'))]",
+        "[resourceId('Microsoft.Network/virtualNetworkGateways', variables('vpnGatewayName'))]"
       ]
     },
     {
@@ -153,7 +154,7 @@
       ]
     },
     {
-      "type": "Microsoft.Network/vpnConnections",
+      "type": "Microsoft.Network/connections",
       "apiVersion": "2023-09-01",
       "name": "[variables('connection2')]",
       "location": "[resourceGroup().location]",
@@ -169,7 +170,8 @@
         "enableBgp": false
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/localNetworkGateways', variables('LNG2'))]"
+        "[resourceId('Microsoft.Network/localNetworkGateways', variables('LNG2'))]",
+        "[resourceId('Microsoft.Network/virtualNetworkGateways', variables('vpnGatewayName'))]"
       ]
     }
   ],

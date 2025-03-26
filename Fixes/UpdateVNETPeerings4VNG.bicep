@@ -21,6 +21,9 @@ resource vnet1ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     allowGatewayTransit: false
     useRemoteGateways: true
   }
+  dependsOn: [
+    hubToVnet1Peering
+  ]
 }
 
 resource vnet2ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {
@@ -34,6 +37,9 @@ resource vnet2ToHubPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeer
     allowGatewayTransit: false
     useRemoteGateways: true
   }
+  dependsOn: [
+    hubToVnet2Peering
+  ]
 }
 
 resource hubToVnet1Peering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2020-11-01' = if (vnetGateway.id != '') {

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.34.1.11899",
-      "templateHash": "7828523537586467359"
+      "version": "0.34.44.8038",
+      "templateHash": "12308570262156495957"
     }
   },
   "variables": {
@@ -27,7 +27,10 @@
         "allowForwardedTraffic": true,
         "allowGatewayTransit": false,
         "useRemoteGateways": true
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', variables('hubVnetName'), 'hubToVnet1Peering')]"
+      ]
     },
     {
       "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",
@@ -42,7 +45,10 @@
         "allowForwardedTraffic": true,
         "allowGatewayTransit": false,
         "useRemoteGateways": true
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', variables('hubVnetName'), 'hubToVnet2Peering')]"
+      ]
     },
     {
       "condition": "[not(equals(resourceId('Microsoft.Network/virtualNetworkGateways', 'myVpnGateway'), ''))]",

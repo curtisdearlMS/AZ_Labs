@@ -18,7 +18,7 @@ resource vnet1TOvnet2 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
       id: vnet2.id
     }
     allowVirtualNetworkAccess: true
-    allowForwardedTraffic: true
+    allowForwardedTraffic: false
     allowGatewayTransit: false
     useRemoteGateways: false
   }
@@ -32,7 +32,7 @@ resource vnet2TOvnet1 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@
       id: vnet1.id
     }
     allowVirtualNetworkAccess: false
-    allowForwardedTraffic: true
+    allowForwardedTraffic: false 
     allowGatewayTransit: false
     useRemoteGateways: false
   }

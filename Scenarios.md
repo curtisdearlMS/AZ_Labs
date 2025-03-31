@@ -52,6 +52,9 @@ This corrects the Site-to-Site configuration and permits communication across th
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FFixes%2FCorrectIPSecConfig.json)
 
+### Deploy 2 VMs in the OnPrem VNET VM Subnet
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoftAzureAaron%2FNET_TrainingLabs%2Fmain%2FOnPremVNET%2FDeployVMs.json)
 
 ## Scenario 4: Azure Firewall
 

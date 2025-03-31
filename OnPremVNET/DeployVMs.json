@@ -1,0 +1,131 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.34.44.8038",
+      "templateHash": "1879611328917696730"
+    }
+  },
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "bob"
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "defaultValue": "[newGuid()]"
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v6",
+      "metadata": {
+        "description": "Size of the VM"
+      }
+    }
+  },
+  "variables": {
+    "accelNet": false,
+    "vmCount": 2
+  },
+  "resources": [
+    {
+      "copy": {
+        "name": "nicsvnet1",
+        "count": "[length(range(0, variables('vmCount')))]"
+      },
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2022-09-01",
+      "name": "[format('OnPremVNET-vm{0}NIC', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[format('192.168.3.{0}', add(range(0, variables('vmCount'))[copyIndex()], 4))]",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'OnPremVNET', 'VirtualMachineSubnet')]"
+              },
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableAcceleratedNetworking": "[variables('accelNet')]",
+        "enableIPForwarding": false,
+        "disableTcpStateTracking": false,
+        "nicType": "Standard"
+      },
+      "metadata": {
+        "description": "Network interfaces for VMs"
+      }
+    },
+    {
+      "copy": {
+        "name": "linuxVMsvnet1",
+        "count": "[length(range(0, variables('vmCount')))]"
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-03-01",
+      "name": "[format('OnPremVNET-vm{0}', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "canonical",
+            "offer": "0001-com-ubuntu-server-focal",
+            "sku": "20_04-lts-gen2",
+            "version": "latest"
+          },
+          "osDisk": {
+            "osType": "Linux",
+            "name": "[format('OnPremVNET-vm{0}_OsDisk_1', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+            "createOption": "FromImage",
+            "caching": "ReadWrite",
+            "deleteOption": "Delete"
+          },
+          "dataDisks": []
+        },
+        "osProfile": {
+          "computerName": "[format('OnPremVNET-vm{0}', add(range(0, variables('vmCount'))[copyIndex()], 1))]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": false,
+            "provisionVMAgent": true,
+            "patchSettings": {
+              "patchMode": "ImageDefault",
+              "assessmentMode": "ImageDefault"
+            }
+          },
+          "secrets": [],
+          "allowExtensionOperations": true
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', format('OnPremVNET-vm{0}NIC', add(range(0, variables('vmCount'))[copyIndex()], 1)))]",
+              "properties": {
+                "deleteOption": "Delete"
+              }
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true
+          }
+        }
+      },
+      "dependsOn": [
+        "nicsvnet1"
+      ]
+    }
+  ]
+}
